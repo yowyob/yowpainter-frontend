@@ -1,0 +1,291 @@
+@import "tailwindcss";
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* Thème clair : façon toile de maître (Warm Parchment) */
+  --background: #F2EFE9;
+  --foreground: #141210;
+
+  /* Couleur d'accentuation élégante (Terracotta / Or brossé) */
+  --accent: #C26D5C;
+  --accent-light: #E8B4A8;
+
+  --muted: #9A8880;
+
+  /* Surfaces cartes — restent sombres en mode clair ET sombre */
+  --card-surface: #1E1C1A;
+  --card-surface-fg: #F0EDE8;
+  --card-surface-muted: rgba(240, 237, 232, 0.55);
+  --card-surface-border: rgba(240, 237, 232, 0.1);
+  --card-elevated: rgba(255, 255, 255, 0.55);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-accent: var(--accent);
+  --color-accent-light: var(--accent-light);
+  --color-cream:  var(--background);
+  --color-ink:    var(--foreground);
+  --color-light:  var(--accent-light);
+  --color-muted:  var(--muted);
+  --color-card-surface: var(--card-surface);
+  --color-card-surface-fg: var(--card-surface-fg);
+  --color-card-surface-muted: var(--card-surface-muted);
+  --color-card-elevated: var(--card-elevated);
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-playfair), ui-serif, Georgia, serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Thème sombre : Noir profond Musée (par défaut système) */
+    --background: #121211;
+    --foreground: #F5F4F0;
+    --accent: #D48878;
+    --accent-light: #8A4B3D;
+    --card-surface: #1A1918;
+    --card-surface-fg: #E3E0DA;
+    --card-surface-muted: rgba(227, 224, 218, 0.5);
+    --card-surface-border: rgba(227, 224, 218, 0.08);
+    --card-elevated: #1C1B19;
+  }
+}
+
+/* Overrides manuels — priorité sur la media query grâce à la specificité */
+html.dark {
+  --background: #121211;
+  --foreground: #F5F4F0;
+  --accent: #D48878;
+  --accent-light: #8A4B3D;
+  --card-surface: #1A1918;
+  --card-surface-fg: #E3E0DA;
+  --card-surface-muted: rgba(227, 224, 218, 0.5);
+  --card-surface-border: rgba(227, 224, 218, 0.08);
+  --card-elevated: #1C1B19;
+}
+
+html.light {
+  --background: #F2EFE9;
+  --foreground: #141210;
+  --accent: #C26D5C;
+  --accent-light: #E8B4A8;
+  --card-surface: #1E1C1A;
+  --card-surface-fg: #F0EDE8;
+  --card-surface-muted: rgba(240, 237, 232, 0.55);
+  --card-surface-border: rgba(240, 237, 232, 0.1);
+  --card-elevated: rgba(255, 255, 255, 0.55);
+}
+
+/* Transition fluide lors du changement de thème */
+body, body * {
+  transition: background-color 0.4s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+}
+
+@layer utilities {
+
+  /* Effet de verre poli mais subtil et professionnel */
+  .glass-elegant {
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  }
+
+  .dark .glass-elegant {
+    background: rgba(13, 13, 12, 0.6);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  /* Formes artistiques MAIS professionnelles (Douces) */
+  .art-frame {
+    border-radius: 2px;
+    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.1);
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .art-frame:hover {
+    box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.15);
+    transform: translateY(-8px) scale(1.01);
+  }
+
+  .dark .art-frame {
+    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
+  }
+
+  /* MÉLANGE DE COULEURS ÉDITORIAL */
+  .mix-multiply {
+    mix-blend-mode: multiply;
+  }
+
+  .mix-overlay {
+    mix-blend-mode: overlay;
+  }
+
+  .dark .mix-multiply {
+    mix-blend-mode: screen;
+  }
+
+  /* PARALLAXE LÉGER */
+  .parallax-slow {
+    animation: float 20s infinite alternate ease-in-out;
+  }
+
+  /* REVEAL ANIMATIONS (Désactivées pour simplicité) */
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+
+  .reveal-active {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .reveal-delay-1 {
+    transition-delay: 0.2s;
+  }
+
+  .reveal-delay-2 {
+    transition-delay: 0.4s;
+  }
+
+  .reveal-delay-3 {
+    transition-delay: 0.6s;
+  }
+
+  /* PREMIUM SHIMMER EFFECT for Skeletons */
+  .shimmer {
+    position: relative;
+    overflow: hidden;
+    background: color-mix(in srgb, var(--foreground) 5%, transparent);
+  }
+
+  .shimmer::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      color-mix(in srgb, var(--foreground) 3%, transparent),
+      color-mix(in srgb, var(--foreground) 8%, transparent),
+      color-mix(in srgb, var(--foreground) 3%, transparent),
+      transparent
+    );
+    animation: shimmer 2s infinite;
+  }
+
+  /* Header Progress Bar */
+  .loading-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    z-index: 1000;
+    background: var(--accent);
+    transform-origin: left;
+    animation: loading-bar 1.5s ease-in-out infinite;
+  }
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes loading-bar {
+  0% { transform: scaleX(0); }
+  50% { transform: scaleX(0.7); }
+  100% { transform: scaleX(1); opacity: 0; }
+}
+
+@keyframes float {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+
+  100% {
+    transform: translate(2%, 3%) rotate(2deg);
+  }
+}
+
+@keyframes landing-news-marquee {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.landing-news-track {
+  animation: landing-news-marquee var(--marquee-duration, 32s) linear infinite;
+  will-change: transform;
+}
+
+.landing-news-track.is-paused {
+  animation-play-state: paused;
+}
+
+/* Texture subtile type "Toile / Grain Papier" persistante */
+.canvas-grain::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.04;
+  /* Réduit l'opacité pour plus de finesse */
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Cadre bois — pseudo-éléments impossibles en Tailwind pur */
+.wood-outer {
+  background: linear-gradient(155deg,#d4a06a 0%,#a06838 18%,#c49050 35%,#7d4e2d 52%,#b88040 68%,#8a5830 84%,#c49060 100%);
+  box-shadow: 0 1px 3px rgba(0,0,0,.12), inset 0 1px 2px rgba(255,210,140,.15), inset 0 -1px 2px rgba(0,0,0,.12);
+}
+.wood-outer::before {
+  content: '';
+  position: absolute; inset: 0; pointer-events: none;
+  background: repeating-linear-gradient(94deg,transparent,transparent 4px,rgba(0,0,0,.022) 4px,rgba(0,0,0,.022) 8px);
+}
+.wood-outer:hover { box-shadow: 0 2px 8px rgba(0,0,0,.18), inset 0 1px 2px rgba(255,210,140,.15); }
+
+.wood-inner {
+  background: linear-gradient(135deg,#4a2810,#7a4c28,#6a3e20);
+  box-shadow: inset 1px 1px 2px rgba(0,0,0,.3);
+}
+
+/* Custom Scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
+}
+.dark .custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+}

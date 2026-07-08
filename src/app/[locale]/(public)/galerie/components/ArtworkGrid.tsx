@@ -1,0 +1,175 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
+import type { ArtworkResponse } from "@/lib/models/ArtworkResponse";
+import ArtworkPost from "@/components/artdashboard/ArtworkPost";
+import PostModal from "@/components/artdashboard/PostModal";
+import GallerySkeleton from "./GallerySkeleton";
+import type { Work } from "@/components/artdashboard/types";
+import { ArtistsService } from "@/lib/services/ArtistsService";
+import type { ArtistResponse } from "@/lib/models/ArtistResponse";
+import { useLocale, useTranslations } from "next-intl";
+
+const GRADIENTS = [
+    'linear-gradient(135deg,#e8c4a0,#c8804a)',
+    'linear-gradient(135deg,#a8c4d0,#5888a8)',
+    'linear-gradient(135deg,#d4c4b8,#9a7060)',
+    'linear-gradient(135deg,#c8d4a0,#7a9850)',
+    'linear-gradient(135deg,#dcc8e0,#9870a8)',
+]
+
+interface ArtworkGridProps {
+    artworks: ArtworkResponse[];
+    isLoading: boolean;
+    isLoggedIn?: boolean;
+}
+
+type ArtworkModalEvent = CustomEvent<{ index: number }>;
+
+/* ── Carte individuelle ── */
+function ArtworkPostWithArtist({ artwork, index, artistData, locale, artistFallback }: { artwork: ArtworkResponse; index: number; artistData?: ArtistResponse; locale: string; artistFallback: string }) {
+
+    const work: Work = {
+        id: artwork.id!,
+        title: artwork.title!,
+        type: (artwork.videoUrls && artwork.videoUrls.length > 0) ? 'video' : 'image',
+        bg: GRADIENTS[index % GRADIENTS.length],
+        likes: artwork.likeCount || 0,
+        comments: 0,
+        shares: 0,
+        date: artwork.publishedAt
+            ? new Date(artwork.publishedAt).toLocaleDateString(locale, { day: 'numeric', month: 'long', year: 'numeric' })
+            : '',
+        desc: artwork.description || '',
+        tags: artwork.tags || [],
+        imageUrls: artwork.imageUrls || [],
+        videoUrls: artwork.videoUrls || [],
+        // pas de status → pas de badge
+    }
+
+    const displayName = artistData?.artistName
+        || `${artistData?.firstName ?? ''} ${artistData?.lastName ?? ''}`.trim()
+        || artwork.artistName
+        || artistFallback
+
+    return (
+        <ArtworkPost
+            key={work.id}
+            work={work}
+            inlineComments
+            artist={{
+                name: displayName,
+                avatar: artistData?.profilePictureUrl || undefined,
+                username: artistData?.email?.split('@')[0] || undefined,
+                slug: artistData?.slug || undefined,
+            }}
+            onClick={() => {
+                const customEvent = new CustomEvent('open-artwork-modal', { detail: { index } });
+                window.dispatchEvent(customEvent);
+            }}
+        />
+    )
+}
+
+export default function ArtworkGrid({ artworks, isLoading }: ArtworkGridProps) {
+    const locale = useLocale();
+    const t = useTranslations("Gallery");
+    const uniqueArtistIds = Array.from(
+        new Set(artworks.map((a) => a.artistId).filter(Boolean))
+    ) as string[];
+
+    const { data: artistsMap, isLoading: isArtistsLoading } = useQuery({
+        queryKey: ['grid-artists', uniqueArtistIds],
+        queryFn: async () => {
+            const map = new Map<string, ArtistResponse>();
+            const results = await Promise.allSettled(
+                uniqueArtistIds.map((id) => ArtistsService.getArtistById(id))
+            );
+            results.forEach((result, index) => {
+                if (result.status === 'fulfilled') {
+                    map.set(uniqueArtistIds[index], result.value);
+                }
+            });
+            return map;
+        },
+        enabled: uniqueArtistIds.length > 0,
+        staleTime: 5 * 60 * 1000, // 5 min cache
+    });
+
+    const [modal, setModal] = useState<{ dataset: Work[]; index: number } | null>(null);
+
+    useEffect(() => {
+        const handleOpenModal = (event: Event) => {
+            const e = event as ArtworkModalEvent;
+            if (e.detail && typeof e.detail.index === 'number') {
+                const dataset: Work[] = artworks.map((artwork, i) => {
+                    const artistData = artwork.artistId ? artistsMap?.get(artwork.artistId) : undefined;
+                    return {
+                        id: artwork.id!,
+                        title: artwork.title!,
+                        type: (artwork.videoUrls && artwork.videoUrls.length > 0) ? 'video' : 'image',
+                        bg: GRADIENTS[i % GRADIENTS.length],
+                        likes: artwork.likeCount || 0,
+                        comments: 0,
+                        shares: 0,
+                        date: artwork.publishedAt
+                            ? new Date(artwork.publishedAt).toLocaleDateString(locale, { day: 'numeric', month: 'long', year: 'numeric' })
+                            : '',
+                        desc: artwork.description || '',
+                        tags: artwork.tags || [],
+                        imageUrls: artwork.imageUrls || [],
+                        videoUrls: artwork.videoUrls || [],
+                    };
+                });
+                setModal({ dataset, index: e.detail.index });
+            }
+        };
+        window.addEventListener('open-artwork-modal', handleOpenModal);
+        return () => window.removeEventListener('open-artwork-modal', handleOpenModal);
+    }, [artworks, artistsMap]);
+
+    if (isLoading || (uniqueArtistIds.length > 0 && isArtistsLoading)) {
+        return <GallerySkeleton />;
+    }
+
+    if (artworks.length === 0) {
+        return (
+            <div className="w-full py-20 flex flex-col items-center justify-center text-center reveal">
+                <div className="w-20 h-20 rounded-full border border-foreground/5 flex items-center justify-center mb-6">
+                    <span className="text-4xl text-foreground/10 font-serif">?</span>
+                </div>
+                <h3 className="font-serif text-3xl mb-4">{t("emptyTitle")}</h3>
+                <p className="text-foreground/40 max-w-sm">
+                    {t("emptyDescription")}
+                </p>
+            </div>
+        );
+    }
+
+    return (
+        <>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 reveal">
+                {artworks.map((artwork, index) => (
+                    <ArtworkPostWithArtist 
+                        key={artwork.id} 
+                        artwork={artwork} 
+                        index={index} 
+                        artistData={artwork.artistId ? artistsMap?.get(artwork.artistId) : undefined} 
+                        locale={locale}
+                        artistFallback={t("artistFallback")}
+                    />
+                ))}
+            </div>
+
+            {modal && (
+                <PostModal 
+                    dataset={modal.dataset} 
+                    initialIndex={modal.index} 
+                    onClose={() => setModal(null)} 
+                    mode="carousel"
+                />
+            )}
+        </>
+    );
+}
