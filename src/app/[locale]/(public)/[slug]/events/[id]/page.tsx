@@ -19,6 +19,10 @@ export default function EventDetailPage() {
     enabled: !!id && !!slug,
   })
 
+  const isSoldOut = event
+    ? event.status === 'FULL' || (event.maxAttendees ? event.currentAttendees >= event.maxAttendees : false)
+    : false;
+
   const formatDateRange = () => {
     if (!event) return ''
     const start = new Date(event.startDate)
@@ -112,10 +116,18 @@ export default function EventDetailPage() {
                 alt={event.title}
                 fill
                 sizes="(max-width: 768px) 100vw, 70vw"
-                className="object-cover group-hover:scale-105 transition-transform duration-[3s] ease-out"
+                className={`object-cover group-hover:scale-105 transition-transform duration-[3s] ease-out ${isSoldOut ? 'filter grayscale brightness-[0.3]' : ''}`}
                 priority
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-80" />
+
+              {isSoldOut && (
+                <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none">
+                  <div className="border-4 border-red-500 text-red-500 px-10 py-4 text-3xl font-black uppercase tracking-[0.4em] rotate-[-12deg] shadow-2xl bg-black/50 backdrop-blur-sm animate-pulse">
+                    COMPLET
+                  </div>
+                </div>
+              )}
 
               <div className="absolute bottom-10 left-10 right-10 text-white">
                 <span className="inline-block px-5 py-2 bg-accent text-[11px] uppercase tracking-[0.3em] font-bold mb-6 border border-accent/20 shadow-xl">
@@ -163,10 +175,17 @@ export default function EventDetailPage() {
                 </div>
                 <div className="space-y-2">
                   <p className="text-[9px] uppercase tracking-[0.3em] text-foreground/30">Statut</p>
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-green-500 animate-pulse" />
-                    <p className="font-bold text-sm tracking-widest text-green-600 uppercase">Confirmé</p>
-                  </div>
+                  {isSoldOut ? (
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-red-500 animate-pulse" />
+                      <p className="font-bold text-sm tracking-widest text-red-600 uppercase">Complet</p>
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-green-500 animate-pulse" />
+                      <p className="font-bold text-sm tracking-widest text-green-600 uppercase">Confirmé</p>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

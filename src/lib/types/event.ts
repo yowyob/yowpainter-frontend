@@ -1,6 +1,6 @@
 // lib/types/event.ts
 export type EventType = 'FREE' | 'PAID' | 'PRIVATE';
-export type EventStatus = 'DRAFT' | 'PUBLISHED' | 'CANCELLED' | 'COMPLETED';
+export type EventStatus = 'DRAFT' | 'PUBLISHED' | 'FULL' | 'CANCELLED' | 'COMPLETED';
 
 export interface Event {
     id: string;

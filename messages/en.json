@@ -406,6 +406,7 @@
     "emptyEvents": "The artist has no upcoming event.",
     "freeEntry": "Free Entry",
     "reservePass": "Reserve my pass ->",
+    "soldOut": "Sold Out",
     "artistFallback": "Artist",
     "coverAlt": "Artist cover",
     "personalPortfolio": "Personal Portfolio",

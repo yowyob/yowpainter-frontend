@@ -3,6 +3,8 @@ import { EventsService } from '../services/EventsService';
 import { ArtistsService } from '../services/ArtistsService';
 import type { EventResponse } from '../models/EventResponse';
 import type { Event, TicketReservation } from '@/lib/types/event';
+import { OpenAPI } from '../core/OpenAPI';
+import { request as __request } from '../core/request';
 
 /**
  * Mapper pour convertir EventResponse (Backend) vers Event (Frontend)
@@ -107,6 +109,37 @@ export async function reserveTicket(eventId: string, data: {
 export async function getMyTickets(eventId?: string): Promise<TicketReservation[]> {
     if (typeof window === 'undefined') return [];
 
+    try {
+        // Tenter de récupérer les réservations sécurisées depuis le backend
+        const responses = await __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/events/reservations/me',
+        }) as any[];
+
+        if (Array.isArray(responses)) {
+            const mappedTickets: TicketReservation[] = responses.map((r: any) => ({
+                id: r.id,
+                eventId: r.eventId,
+                eventTitle: r.eventName || 'Événement',
+                userName: r.userName || 'Visiteur',
+                userEmail: r.userEmail || '',
+                qrCodeData: r.qrCodeData || r.id,
+                isScanned: r.status === 'CONFIRMED' ? false : true,
+                purchasedAt: r.createdAt || new Date().toISOString(),
+                price: r.ticketPrice || 0,
+                eventLocation: r.eventLocation || '',
+            }));
+
+            if (eventId) {
+                return mappedTickets.filter(t => t.eventId === eventId);
+            }
+            return mappedTickets;
+        }
+    } catch (err) {
+        console.warn('Impossible de récupérer les tickets depuis le backend, repli sur localStorage:', err);
+    }
+
+    // Repli (Fallback) sur localStorage si non connecté ou erreur réseau
     const tickets: TicketReservation[] = [];
     for (let i = 0; i < localStorage.length; i++) {
         const key = localStorage.key(i);
@@ -124,7 +157,7 @@ export async function getMyTickets(eventId?: string): Promise<TicketReservation[
                         isScanned: ticket.isScanned || false,
                         purchasedAt: ticket.purchasedAt || ticket.createdAt || new Date().toISOString(),
                         price: ticket.price || 0,
-                        eventLocation: '',
+                        eventLocation: ticket.eventLocation || '',
                     });
                 }
             } catch (e) {

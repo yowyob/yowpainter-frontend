@@ -5,6 +5,7 @@ import { Link } from '@/i18n/navigation'
 import { useDemoStore } from '@/lib/atelier/context/DemoStoreContext'
 import { getRelatedFiches } from '@/lib/atelier/utils/ficheUtils'
 import { findRoadmapsForFiche } from '@/lib/atelier/utils/roadmapUtils'
+import { Palette, HelpCircle, BarChart3, Clock, Printer, Map } from 'lucide-react'
 
 interface FicheDetailPageProps {
   params: Promise<{ locale: string; slug: string }>
@@ -108,7 +109,7 @@ export default function FicheDetailPage({ params }: FicheDetailPageProps) {
             </div>
           ) : (
             <div className="w-full aspect-[4/5] max-w-[220px] rounded-2xl bg-gradient-to-br from-accent/10 to-amber-500/10 flex flex-col items-center justify-center border border-foreground/5 shadow-sm text-center p-4">
-              <span className="text-4xl mb-2">🎨</span>
+              <Palette className="w-10 h-10 text-accent mb-2" />
               <span className="text-xs uppercase font-bold tracking-wider text-accent">{fiche.category}</span>
             </div>
           )}
@@ -122,8 +123,8 @@ export default function FicheDetailPage({ params }: FicheDetailPageProps) {
           <h1 className="font-serif text-3xl md:text-4xl font-medium tracking-tight leading-tight">
             {fiche.title}
           </h1>
-          <p className="text-base text-accent font-medium leading-relaxed">
-            ❓ {fiche.question}
+          <p className="text-base text-accent font-medium leading-relaxed flex items-start gap-1.5">
+            <HelpCircle className="w-5 h-5 text-accent shrink-0 mt-0.5" /> {fiche.question}
           </p>
           
           {fiche.pigmentCode && (
@@ -133,11 +134,11 @@ export default function FicheDetailPage({ params }: FicheDetailPageProps) {
           )}
 
           <div className="flex flex-wrap gap-2 pt-2">
-            <span className="px-3 py-1 rounded-full text-xs font-semibold bg-accent/10 text-accent border border-accent/20">
-              📊 {fiche.level}
+            <span className="px-3 py-1 rounded-full text-xs font-semibold bg-accent/10 text-accent border border-accent/20 flex items-center gap-1">
+              <BarChart3 className="w-3.5 h-3.5" /> {fiche.level}
             </span>
-            <span className="px-3 py-1 rounded-full text-xs font-semibold bg-foreground/5 text-muted-foreground border border-foreground/10">
-              ⏱️ {fiche.duration}
+            <span className="px-3 py-1 rounded-full text-xs font-semibold bg-foreground/5 text-muted-foreground border border-foreground/10 flex items-center gap-1">
+              <Clock className="w-3.5 h-3.5" /> {fiche.duration}
             </span>
           </div>
 
@@ -145,9 +146,9 @@ export default function FicheDetailPage({ params }: FicheDetailPageProps) {
             <button 
               type="button" 
               onClick={() => window.print()}
-              className="px-4 py-2 bg-foreground/5 hover:bg-foreground/10 text-foreground font-bold text-xs rounded-xl transition-colors cursor-pointer"
+              className="px-4 py-2 bg-foreground/5 hover:bg-foreground/10 text-foreground font-bold text-xs rounded-xl transition-colors cursor-pointer flex items-center gap-1.5"
             >
-              🖨️ Imprimer cette fiche
+              <Printer className="w-3.5 h-3.5" /> Imprimer cette fiche
             </button>
           </div>
         </div>
@@ -227,7 +228,7 @@ export default function FicheDetailPage({ params }: FicheDetailPageProps) {
                     className="block group p-3.5 rounded-xl bg-background border border-foreground/5 hover:border-accent/40 shadow-sm transition-all"
                   >
                     <div className="flex items-center gap-2 text-xs font-bold text-accent mb-1">
-                      <span>🗺️</span>
+                      <Map className="w-3.5 h-3.5" />
                       <span className="truncate max-w-[150px]">{roadmap.title}</span>
                     </div>
                     <div className="text-[10px] text-muted-foreground leading-normal">

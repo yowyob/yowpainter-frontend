@@ -7,7 +7,7 @@ type Props = {
   date: string;
   tickets: string; 
   extra: string; 
-  status: 'upcoming' | 'past';
+  status: 'upcoming' | 'past' | 'full';
   posterUrl?: string;
   onEdit?: () => void;
   onCancel?: () => void;
@@ -44,12 +44,16 @@ export default function TicketCard({ title, subtitle, date, tickets, extra, stat
             </div>
             <div className="flex flex-col items-end gap-2">
               <span className={`text-[9px] px-2 py-0.5 rounded-full uppercase tracking-wider font-medium flex-shrink-0 mt-0.5 ${
-                status === 'upcoming' ? 'bg-accent/20 text-light' : 'bg-white/[0.07] text-white/35'
+                status === 'upcoming'
+                  ? 'bg-accent/20 text-light'
+                  : status === 'full'
+                  ? 'bg-amber-500/20 text-amber-300'
+                  : 'bg-white/[0.07] text-white/35'
               }`}>
-                {status === 'upcoming' ? 'À venir' : 'Passé'}
+                {status === 'upcoming' ? 'À venir' : status === 'full' ? 'Complet' : 'Passé'}
               </span>
               <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                {status === 'upcoming' ? (
+                {status !== 'past' ? (
                   <>
                     <button 
                       onClick={onEdit}

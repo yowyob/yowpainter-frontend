@@ -102,8 +102,15 @@ export function ArtistPublicSpace({ artist, slug }: ArtistPublicSpaceProps) {
   }))
 
   const upcomingEvents = (events || []).filter((e) => {
+    // 1. Filter out past events
     const end = e.endDateTime ?? e.startDateTime
-    return end != null && new Date(end) > new Date()
+    const isPast = end == null || new Date(end) <= new Date()
+    if (isPast) return false
+
+    // 2. Filter out cancelled or completed events
+    if (e.status === 'CANCELLED' || e.status === 'COMPLETED') return false
+
+    return true
   })
 
   const paginatedWorks = WORKS.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE)
@@ -293,61 +300,73 @@ export function ArtistPublicSpace({ artist, slug }: ArtistPublicSpaceProps) {
             ) : upcomingEvents.length > 0 ? (
               <>
                 <div className="grid grid-cols-1 gap-10 md:gap-12">
-                  {paginatedEvents.map((event) => (
-                    <Link 
-                      key={event.id}
-                      href={`/${slug}/events/${event.id}`}
-                      className="group relative h-[400px] md:h-[350px] overflow-hidden border border-foreground/5 shadow-2xl flex flex-col justify-end p-8 md:p-14 transition-all duration-700"
-                    >
-                      {/* ... (Event content) ... */}
-                      <Image 
-                        src={event.posterUrl || '/images/placeholder.png'} 
-                        alt={event.name!} 
-                        fill 
-                        sizes="(max-width: 768px) 100vw, 80vw"
-                        className="object-cover transition-transform duration-[3s] group-hover:scale-105" 
-                      />
-                      
-                      <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-black/90 via-black/40 to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
-                      
-                      <div className="absolute top-0 left-0 w-[2px] h-full bg-accent scale-y-0 group-hover:scale-y-100 transition-transform duration-700 origin-top" />
+                  {paginatedEvents.map((event) => {
+                    const isSoldOut = event.status === 'FULL' || (event.maxCapacity != null && event.reservedCount != null && event.reservedCount >= event.maxCapacity);
 
-                      <div className="relative z-10 space-y-6 md:space-y-8 max-w-3xl">
-                        <div className="flex flex-wrap items-center gap-4">
-                          <span className="bg-accent text-white px-5 py-1.5 text-[10px] font-black uppercase tracking-[0.3em] shadow-xl">
-                            {new Date(event.startDateTime!).toLocaleDateString(locale, { day: 'numeric', month: 'long' })}
-                          </span>
-                          <span className="bg-white/10 backdrop-blur-xl text-white border border-white/20 px-5 py-1.5 text-[10px] font-bold uppercase tracking-[0.3em]">
-                            {getEventTypeName(event.type)}
-                          </span>
-                          <span className="bg-white/5 backdrop-blur-xl text-white/80 border border-white/10 px-5 py-1.5 text-[10px] font-bold uppercase tracking-[0.3em]">
-                            {event.ticketPrice === 0 ? t('freeEntry') : `${event.ticketPrice?.toLocaleString(locale)} FCFA`}
-                          </span>
+                    return (
+                      <Link 
+                        key={event.id}
+                        href={`/${slug}/events/${event.id}`}
+                        className="group relative h-[400px] md:h-[350px] overflow-hidden border border-foreground/5 shadow-2xl flex flex-col justify-end p-8 md:p-14 transition-all duration-700"
+                      >
+                        {/* ... (Event content) ... */}
+                        <Image 
+                          src={event.posterUrl || '/images/placeholder.png'} 
+                          alt={event.name!} 
+                          fill 
+                          sizes="(max-width: 768px) 100vw, 80vw"
+                          className={`object-cover transition-transform duration-[3s] group-hover:scale-105 ${isSoldOut ? 'filter grayscale brightness-[0.3]' : ''}`} 
+                        />
+                        
+                        <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-black/90 via-black/40 to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
+                        
+                        <div className="absolute top-0 left-0 w-[2px] h-full bg-accent scale-y-0 group-hover:scale-y-100 transition-transform duration-700 origin-top" />
+
+                        {isSoldOut && (
+                          <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none">
+                            <div className="border-4 border-red-500 text-red-500 px-8 py-3 text-2xl font-black uppercase tracking-[0.4em] rotate-[-12deg] shadow-lg bg-black/40 backdrop-blur-sm animate-pulse">
+                              {t('soldOut').toUpperCase()}
+                            </div>
+                          </div>
+                        )}
+
+                        <div className="relative z-10 space-y-6 md:space-y-8 max-w-3xl">
+                          <div className="flex flex-wrap items-center gap-4">
+                            <span className="bg-accent text-white px-5 py-1.5 text-[10px] font-black uppercase tracking-[0.3em] shadow-xl">
+                              {new Date(event.startDateTime!).toLocaleDateString(locale, { day: 'numeric', month: 'long' })}
+                            </span>
+                            <span className="bg-white/10 backdrop-blur-xl text-white border border-white/20 px-5 py-1.5 text-[10px] font-bold uppercase tracking-[0.3em]">
+                              {getEventTypeName(event.type)}
+                            </span>
+                            <span className="bg-white/5 backdrop-blur-xl text-white/80 border border-white/10 px-5 py-1.5 text-[10px] font-bold uppercase tracking-[0.3em]">
+                              {event.ticketPrice === 0 ? t('freeEntry') : `${event.ticketPrice?.toLocaleString(locale)} FCFA`}
+                            </span>
+                          </div>
+
+                          <div className="space-y-4">
+                            <h3 className="font-serif text-4xl md:text-6xl text-white font-light uppercase tracking-tighter group-hover:text-accent transition-colors duration-700 leading-[0.9]">
+                              {event.name}
+                            </h3>
+                            <p className="text-white/50 font-light text-sm md:text-base line-clamp-2 max-w-2xl italic group-hover:text-white/80 transition-colors">
+                              {event.description}
+                            </p>
+                          </div>
+
+                          <div className="pt-6 flex flex-wrap items-center gap-10">
+                             <div className="flex items-center gap-3">
+                                <span className={`text-[11px] font-black uppercase tracking-[0.5em] group-hover:translate-x-4 transition-all duration-500 ${isSoldOut ? 'text-red-500' : 'text-accent'}`}>
+                                  {isSoldOut ? t('soldOut') : t('reservePass')}
+                                </span>
+                             </div>
+                             <div className="h-[1px] w-12 bg-white/20 group-hover:w-20 transition-all duration-700" />
+                             <span className="text-[10px] text-white/20 font-bold uppercase tracking-widest">{event.location}</span>
+                          </div>
                         </div>
 
-                        <div className="space-y-4">
-                          <h3 className="font-serif text-4xl md:text-6xl text-white font-light uppercase tracking-tighter group-hover:text-accent transition-colors duration-700 leading-[0.9]">
-                            {event.name}
-                          </h3>
-                          <p className="text-white/50 font-light text-sm md:text-base line-clamp-2 max-w-2xl italic group-hover:text-white/80 transition-colors">
-                            {event.description}
-                          </p>
-                        </div>
-
-                        <div className="pt-6 flex flex-wrap items-center gap-10">
-                           <div className="flex items-center gap-3">
-                              <span className="text-[11px] text-accent font-black uppercase tracking-[0.5em] group-hover:translate-x-4 transition-all duration-500">
-                                {t('reservePass')}
-                              </span>
-                           </div>
-                           <div className="h-[1px] w-12 bg-white/20 group-hover:w-20 transition-all duration-700" />
-                           <span className="text-[10px] text-white/20 font-bold uppercase tracking-widest">{event.location}</span>
-                        </div>
-                      </div>
-
-                      <div className="absolute top-10 right-10 w-8 h-8 border-t border-r border-white/10 group-hover:border-accent transition-colors duration-700" />
-                    </Link>
-                  ))}
+                        <div className="absolute top-10 right-10 w-8 h-8 border-t border-r border-white/10 group-hover:border-accent transition-colors duration-700" />
+                      </Link>
+                    );
+                  })}
                 </div>
                 {totalPagesEvents > 1 && (
                   <Pagination

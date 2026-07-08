@@ -4,6 +4,7 @@ import { useCallback, useState, use } from 'react'
 import { Link } from '@/i18n/navigation'
 import { useDemoStore } from '@/lib/atelier/context/DemoStoreContext'
 import { countRoadmapFiches } from '@/lib/atelier/utils/roadmapUtils'
+import { Clock, BarChart3, BookOpen } from 'lucide-react'
 
 type SlideDirection = 'next' | 'prev'
 
@@ -93,14 +94,14 @@ export default function RoadmapDetailPage({ params }: RoadmapDetailPageProps) {
         </div>
 
         <div className="flex flex-wrap gap-2 pt-2">
-          <span className="px-3 py-1 rounded-full text-xs font-semibold bg-accent/10 text-accent border border-accent/20">
-            ⏱️ {roadmap.duration}
+          <span className="px-3 py-1 rounded-full text-xs font-semibold bg-accent/10 text-accent border border-accent/20 flex items-center gap-1">
+            <Clock className="w-3.5 h-3.5" /> {roadmap.duration}
           </span>
-          <span className="px-3 py-1 rounded-full text-xs font-semibold bg-foreground/5 text-muted-foreground border border-foreground/10">
-            📊 {roadmap.level}
+          <span className="px-3 py-1 rounded-full text-xs font-semibold bg-foreground/5 text-muted-foreground border border-foreground/10 flex items-center gap-1">
+            <BarChart3 className="w-3.5 h-3.5" /> {roadmap.level}
           </span>
-          <span className="px-3 py-1 rounded-full text-xs font-semibold bg-foreground/5 text-muted-foreground border border-foreground/10">
-            📚 {linkedCount} fiche{linkedCount > 1 ? 's' : ''} liée{linkedCount > 1 ? 's' : ''}
+          <span className="px-3 py-1 rounded-full text-xs font-semibold bg-foreground/5 text-muted-foreground border border-foreground/10 flex items-center gap-1">
+            <BookOpen className="w-3.5 h-3.5" /> {linkedCount} fiche{linkedCount > 1 ? 's' : ''} liée{linkedCount > 1 ? 's' : ''}
           </span>
         </div>
       </div>

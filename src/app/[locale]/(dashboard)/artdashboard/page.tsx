@@ -89,25 +89,13 @@ export default function ArtistDashboardPage() {
   const router = useRouter()
   const locale = useLocale()
   const t = useTranslations('Dashboard')
-  const { user, logout, refreshProfile } = useAuthStore()
+  const { user, logout } = useAuthStore()
   const { isReady } = useRequireRole('ROLE_ARTIST', '/login')
   const displayName = user?.artistName || `${user?.firstName || ''} ${user?.lastName || ''}`.trim() || 'Artiste'
   const [tab, setTab] = useState<Tab>('oeuvres')
   const [currentPage, setCurrentPage] = useState(1)
   const ITEMS_PER_PAGE = 6
-  const [isRefreshing, setIsRefreshing] = useState(false)
 
-  const handleRefresh = async () => {
-    setIsRefreshing(true)
-    try {
-      await refreshProfile()
-      toast.success("Statut actualisé")
-    } catch (err) {
-      toast.error("Échec de l'actualisation")
-    } finally {
-      setIsRefreshing(false)
-    }
-  }
 
   // Reset pagination on tab change
   useEffect(() => {
@@ -396,106 +384,7 @@ export default function ArtistDashboardPage() {
     )
   }
 
-  if (user && user.canAccessDashboard === false) {
-    let title = "Validation de votre compte"
-    let desc = "Votre demande d'inscription est en cours de traitement par nos équipes."
-    let actionText = "Veuillez patienter pendant que nous validons vos informations."
-    let showVerifyButton = false
-    let verifyUrl = user.kernelVerificationUrl || "https://kernel-core.yowyob.com"
 
-    if (user.pendingReason === "EMAIL_NOT_VERIFIED") {
-      title = "Vérification de l'adresse e-mail"
-      desc = "Vous devez vérifier votre adresse e-mail avant de pouvoir accéder à votre espace artiste."
-      actionText = "Cliquez sur le bouton ci-dessous pour ouvrir la page de vérification."
-      showVerifyButton = true
-    } else if (user.pendingReason === "ORGANIZATION_NOT_CREATED") {
-      title = "Création de l'organisation en cours"
-      desc = "Votre organisation est en cours de création sur le Kernel."
-      actionText = "Cette opération ne devrait prendre que quelques instants."
-    } else if (user.pendingReason === "ORGANIZATION_PENDING_VALIDATION") {
-      title = "Validation de l'organisation requise"
-      desc = "Votre organisation est en attente de validation par les administrateurs."
-      actionText = "Nous validons vos informations pour garantir la sécurité de la plateforme."
-    } else if (user.pendingReason === "ORGANIZATION_REJECTED") {
-      title = "Demande d'inscription refusée"
-      desc = "Malheureusement, votre demande d'inscription n'a pas été acceptée."
-      actionText = "Veuillez contacter le support pour obtenir plus d'informations."
-    } else if (user.pendingReason === "ORGANIZATION_SUSPENDED") {
-      title = "Compte artiste suspendu"
-      desc = "Votre compte artiste a été temporairement suspendu."
-      actionText = "Veuillez contacter le support pour résoudre cette situation."
-    }
-
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-background text-foreground antialiased font-sans canvas-texture canvas-grain relative overflow-hidden px-6 py-20">
-        <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden mix-blend-multiply dark:mix-blend-screen opacity-70">
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(194,109,92,0.15),transparent_60%)] dark:bg-[radial-gradient(ellipse_at_top_right,rgba(212,136,120,0.2),transparent_60%)]"></div>
-          <AnimatedBlob className="top-[10%] left-[20%] w-[35rem] h-[35rem] blur-3xl opacity-20" color="accent" />
-          <AnimatedBlob className="bottom-[10%] right-[20%] w-[30rem] h-[30rem] blur-3xl opacity-30" color="slate" />
-          <AbstractShapes />
-        </div>
-
-        <div className="w-full max-w-xl bg-background/60 backdrop-blur-xl border border-foreground/5 p-8 md:p-12 shadow-2xl relative rounded-sm text-center z-10">
-          <div className="flex justify-center mb-8">
-            <div className="relative">
-              <div className="absolute -inset-1 rounded-full bg-accent/20 blur-md animate-pulse"></div>
-              <div className="relative bg-background border border-accent/20 text-accent p-6 rounded-full shadow-inner flex items-center justify-center">
-                {isRefreshing ? (
-                  <Loader2 className="w-12 h-12 stroke-[1.5] animate-spin" />
-                ) : (
-                  <svg className="w-12 h-12 stroke-[1.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                  </svg>
-                )}
-              </div>
-            </div>
-          </div>
-
-          <h1 className="font-serif text-3xl md:text-4xl font-medium tracking-tight mb-4 text-foreground leading-snug">
-            {title}
-          </h1>
-
-          <p className="text-foreground/75 font-light leading-relaxed mb-6">
-            {desc}
-          </p>
-          
-          <p className="text-foreground/60 font-mono text-xs tracking-wider uppercase mb-8 border border-foreground/10 bg-foreground/[0.02] p-4 rounded-sm">
-            {actionText}
-          </p>
-
-          <div className="flex flex-col gap-4">
-            {showVerifyButton && (
-              <a
-                href={verifyUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full bg-accent text-white py-5 px-8 text-xs uppercase tracking-[0.4em] font-bold hover:bg-foreground hover:shadow-[0_20px_50px_rgba(var(--accent-rgb),0.3)] transition-all duration-500 shadow-xl flex items-center justify-center gap-4"
-              >
-                Ouvrir la page de vérification
-              </a>
-            )}
-            
-            {user.refreshAllowed !== false && (
-              <button
-                disabled={isRefreshing}
-                onClick={handleRefresh}
-                className="w-full bg-foreground text-background py-5 px-8 text-xs uppercase tracking-[0.4em] font-bold hover:bg-accent hover:text-white hover:shadow-[0_20px_50px_rgba(var(--accent-rgb),0.3)] transition-all duration-500 shadow-xl flex items-center justify-center gap-4 disabled:opacity-50"
-              >
-                {isRefreshing ? "Actualisation..." : "Actualiser le statut"}
-              </button>
-            )}
-
-            <button
-              onClick={() => logout()}
-              className="w-full bg-transparent border border-foreground/20 text-foreground py-4 px-8 text-xs uppercase tracking-[0.4em] font-bold hover:border-rose-500 hover:text-rose-500 transition-all duration-500 flex items-center justify-center gap-4"
-            >
-              Se déconnecter
-            </button>
-          </div>
-        </div>
-      </div>
-    )
-  }
 
   return (
     <div className="min-h-screen bg-background text-foreground antialiased font-sans canvas-texture canvas-grain relative selection:bg-accent/30">
@@ -697,7 +586,16 @@ export default function ArtistDashboardPage() {
                   date={evt.startDateTime ? new Date(evt.startDateTime).toLocaleDateString(locale === 'fr' ? 'fr-FR' : (locale === 'de' ? 'de-DE' : 'en-US'), { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : 'N/A'}
                   tickets={`🎟 ${evt.reservedCount || 0} / ${evt.maxCapacity || '∞'} billets`}
                   extra={evt.ticketPrice && evt.ticketPrice > 0 ? `${evt.ticketPrice.toLocaleString()} XAF` : t("free")}
-                  status={evt.startDateTime && new Date(evt.startDateTime) > new Date() ? 'upcoming' : 'past'}
+                  status={(() => {
+                    const now = new Date()
+                    const isFull = evt.maxCapacity && evt.reservedCount != null && evt.reservedCount >= evt.maxCapacity
+                    // "Passé" uniquement si la date de FIN est passée (ou à défaut la date de début)
+                    const endDate = evt.endDateTime ? new Date(evt.endDateTime) : (evt.startDateTime ? new Date(evt.startDateTime) : null)
+                    const isPast = endDate ? endDate < now : false
+                    if (isFull && !isPast) return 'full'
+                    if (isPast) return 'past'
+                    return 'upcoming'
+                  })()}
                   posterUrl={evt.posterUrl}
                   onEdit={() => handleEditEvent(evt)}
                   onCancel={() => handleCancelEvent(evt.id!)}

@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Link } from '@/i18n/navigation'
 import { useDemoStore } from '@/lib/atelier/context/DemoStoreContext'
 import BarreRecherche from '@/components/atelier/BarreRecherche'
+import { Sparkles, Palette, Pencil, Gem, Printer, Paintbrush, HelpCircle, User } from 'lucide-react'
 
 function FicheSwatch({ id, colors }: { id: string; colors: string[] }) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
@@ -94,7 +95,7 @@ export default function AtelierPage() {
       <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-amber-500/10 via-amber-700/5 to-transparent border border-amber-500/10 p-8 md:p-12 lg:p-16 flex flex-col md:flex-row gap-10 items-center justify-between">
         <div className="max-w-2xl space-y-6">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">
-            <span>✨</span> Espace Savoir & Techniques
+            <Sparkles className="w-3.5 h-3.5" /> Espace Savoir & Techniques
           </div>
           <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-light leading-tight">
             L'art plastique, <br />
@@ -137,9 +138,9 @@ export default function AtelierPage() {
                 // Dispatch event to open floating canvas
                 window.dispatchEvent(new CustomEvent('open-paint-canvas'))
               }}
-              className="w-full py-2 bg-foreground text-background dark:bg-background dark:text-foreground dark:hover:bg-foreground/5 hover:bg-foreground/90 transition-all rounded-lg font-bold text-xs"
+              className="w-full py-2 bg-foreground text-background dark:bg-background dark:text-foreground dark:hover:bg-foreground/5 hover:bg-foreground/90 transition-all rounded-lg font-bold text-xs flex items-center justify-center gap-2"
             >
-              🎨 Ouvrir la toile à dessin
+              <Palette className="w-3.5 h-3.5" /> Ouvrir la toile à dessin
             </button>
           </div>
         </div>
@@ -159,7 +160,7 @@ export default function AtelierPage() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
           <Link href="/atelier/fiches" className="group p-6 rounded-2xl bg-card border border-foreground/5 hover:border-accent/40 shadow-sm transition-all duration-300 flex flex-col gap-4">
-            <span className="text-3xl">🎨</span>
+            <Palette className="w-8 h-8 text-accent" />
             <div>
               <h3 className="font-bold text-base group-hover:text-accent transition-colors">Peinture</h3>
               <p className="text-xs text-muted-foreground mt-1 line-clamp-2">Huile, acrylique, aquarelle, pigments et médiums.</p>
@@ -167,7 +168,7 @@ export default function AtelierPage() {
             <span className="text-[10px] uppercase font-bold tracking-wider text-muted-foreground/60 mt-auto">84 fiches</span>
           </Link>
           <Link href="/atelier/categories" className="group p-6 rounded-2xl bg-card border border-foreground/5 hover:border-accent/40 shadow-sm transition-all duration-300 flex flex-col gap-4">
-            <span className="text-3xl">✏️</span>
+            <Pencil className="w-8 h-8 text-accent" />
             <div>
               <h3 className="font-bold text-base group-hover:text-accent transition-colors">Dessin</h3>
               <p className="text-xs text-muted-foreground mt-1 line-clamp-2">Du croquis rapide à la perspective avancée.</p>
@@ -175,7 +176,7 @@ export default function AtelierPage() {
             <span className="text-[10px] uppercase font-bold tracking-wider text-muted-foreground/60 mt-auto">52 fiches</span>
           </Link>
           <Link href="/atelier/roadmaps" className="group p-6 rounded-2xl bg-card border border-foreground/5 hover:border-accent/40 shadow-sm transition-all duration-300 flex flex-col gap-4">
-            <span className="text-3xl">🗿</span>
+            <Gem className="w-8 h-8 text-accent" />
             <div>
               <h3 className="font-bold text-base group-hover:text-accent transition-colors">Sculpture</h3>
               <p className="text-xs text-muted-foreground mt-1 line-clamp-2">Argile, plâtre, bronze, moulages et textures.</p>
@@ -183,7 +184,7 @@ export default function AtelierPage() {
             <span className="text-[10px] uppercase font-bold tracking-wider text-muted-foreground/60 mt-auto">31 fiches</span>
           </Link>
           <Link href="/atelier/fiches" className="group p-6 rounded-2xl bg-card border border-foreground/5 hover:border-accent/40 shadow-sm transition-all duration-300 flex flex-col gap-4">
-            <span className="text-3xl">🖨️</span>
+            <Printer className="w-8 h-8 text-accent" />
             <div>
               <h3 className="font-bold text-base group-hover:text-accent transition-colors">Gravure</h3>
               <p className="text-xs text-muted-foreground mt-1 line-clamp-2">Taille-douce, linogravure, lithographie.</p>
@@ -191,7 +192,7 @@ export default function AtelierPage() {
             <span className="text-[10px] uppercase font-bold tracking-wider text-muted-foreground/60 mt-auto">28 fiches</span>
           </Link>
           <Link href="/atelier/categories" className="group p-6 rounded-2xl bg-card border border-foreground/5 hover:border-accent/40 shadow-sm transition-all duration-300 flex flex-col gap-4">
-            <span className="text-3xl">🖌️</span>
+            <Paintbrush className="w-8 h-8 text-accent" />
             <div>
               <h3 className="font-bold text-base group-hover:text-accent transition-colors">Mixed Media</h3>
               <p className="text-xs text-muted-foreground mt-1 line-clamp-2">Collage, techniques mixtes et art numérique.</p>
@@ -290,7 +291,7 @@ export default function AtelierPage() {
               <div className="p-5 flex-1 flex flex-col gap-3">
                 <div className="text-[10px] uppercase font-bold tracking-wider text-muted-foreground/60">{fiche.category} · {fiche.tool}</div>
                 <h3 className="font-serif text-lg font-bold group-hover:text-accent transition-colors">{fiche.title}</h3>
-                <p className="text-xs text-muted-foreground line-clamp-2">❓ {fiche.question}</p>
+                <p className="text-xs text-muted-foreground line-clamp-2 flex items-start gap-1.5"><HelpCircle className="w-3.5 h-3.5 text-accent shrink-0 mt-0.5" /> {fiche.question}</p>
                 <div className="flex flex-wrap gap-1.5 mt-auto pt-3 border-t border-foreground/5">
                   {fiche.tags.slice(0, 3).map((tag) => (
                     <span key={tag} className="px-2 py-0.5 rounded text-[10px] bg-foreground/5 text-muted-foreground">{tag}</span>
@@ -326,7 +327,7 @@ export default function AtelierPage() {
                   return (
                     <div key={q.id} className="border-b border-foreground/5 pb-4 last:border-0 last:pb-0 space-y-2">
                       <div className="flex justify-between items-center text-xs text-muted-foreground font-mono">
-                        <span>👤 {q.authorName || 'Anonyme'}</span>
+                        <span className="flex items-center gap-1"><User className="w-3 h-3 text-muted-foreground" /> {q.authorName || 'Anonyme'}</span>
                         <span>{dateStr}</span>
                       </div>
                       <p className="text-sm font-medium leading-relaxed">{q.text}</p>

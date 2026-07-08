@@ -23,9 +23,9 @@ export function TicketReservation({ event, artistSlug, onSuccess }: TicketReserv
     const [error, setError] = useState('');
     const [paymentProcessing, setPaymentProcessing] = useState(false);
 
-    const isSoldOut = event.maxAttendees
+    const isSoldOut = event.status === 'FULL' || (event.maxAttendees
         ? event.currentAttendees >= event.maxAttendees
-        : false;
+        : false);
 
     const handleReservation = async () => {
         if (!name || !email || (event.eventType === 'PAID' && !phoneNumber)) {

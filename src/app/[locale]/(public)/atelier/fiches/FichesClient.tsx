@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { Link } from '@/i18n/navigation'
 import { useSearchParams } from 'next/navigation'
 import { useDemoStore } from '@/lib/atelier/context/DemoStoreContext'
+import { HelpCircle, Clock, BarChart3 } from 'lucide-react'
 
 const LEVEL_ORDER: Record<string, number> = {
   'Débutant': 1,
@@ -263,8 +264,8 @@ export default function FichesClient() {
                     <h3 className="font-serif text-lg font-bold group-hover:text-accent transition-colors leading-tight">
                       {fiche.title}
                     </h3>
-                    <p className="text-xs text-muted-foreground line-clamp-2">
-                      ❓ {fiche.question}
+                    <p className="text-xs text-muted-foreground line-clamp-2 flex items-start gap-1">
+                      <HelpCircle className="w-3.5 h-3.5 text-accent shrink-0 mt-0.5" /> {fiche.question}
                     </p>
                     
                     <div className="flex flex-wrap gap-1 mt-auto pt-3 border-t border-foreground/5">
@@ -276,8 +277,8 @@ export default function FichesClient() {
 
                   {/* Footer metadata */}
                   <div className="px-5 py-3 bg-foreground/[0.02] border-t border-foreground/5 flex items-center justify-between text-[10px] text-muted-foreground font-mono">
-                    <span>⏱️ {fiche.duration}</span>
-                    <span>📊 {fiche.level}</span>
+                    <span className="flex items-center gap-1"><Clock className="w-3.5 h-3.5 text-accent" /> {fiche.duration}</span>
+                    <span className="flex items-center gap-1"><BarChart3 className="w-3.5 h-3.5 text-accent" /> {fiche.level}</span>
                   </div>
                 </Link>
               ))}

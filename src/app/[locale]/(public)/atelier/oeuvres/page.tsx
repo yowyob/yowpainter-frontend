@@ -1,6 +1,7 @@
 'use client'
 
 import { Link } from '@/i18n/navigation'
+import { User } from 'lucide-react'
 
 const oeuvres = [
   { id: 1, title: 'Composition en bleu', artist: 'Marie Durand', technique: 'Huile sur toile', year: '2024', img: '/assets/img/AdobeStock_343421667.jpeg' },
@@ -60,7 +61,7 @@ export default function OeuvresPage() {
               <h3 className="font-serif text-lg font-bold truncate group-hover:text-accent transition-colors">
                 {oeuvre.title}
               </h3>
-              <p className="text-xs text-accent font-medium">👤 {oeuvre.artist}</p>
+              <p className="text-xs text-accent font-medium flex items-center gap-1.5"><User className="w-3.5 h-3.5" /> {oeuvre.artist}</p>
               <p className="text-[11px] text-muted-foreground">
                 {oeuvre.technique} &middot; {oeuvre.year}
               </p>

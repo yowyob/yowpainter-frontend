@@ -3,6 +3,7 @@
 import { useMemo, useState } from 'react'
 import { Link } from '@/i18n/navigation'
 import { useDemoStore } from '@/lib/atelier/context/DemoStoreContext'
+import { Clock, BarChart3 } from 'lucide-react'
 
 export default function RoadmapsPage() {
   const { publishedRoadmaps, isHydrated } = useDemoStore()
@@ -128,8 +129,8 @@ export default function RoadmapsPage() {
                   </div>
 
                   <div className="flex items-center justify-between text-[10px] text-muted-foreground font-semibold pt-1">
-                    <span>⏱️ {roadmap.duration}</span>
-                    <span>📊 {roadmap.level}</span>
+                    <span className="flex items-center gap-1"><Clock className="w-3.5 h-3.5 text-accent" /> {roadmap.duration}</span>
+                    <span className="flex items-center gap-1"><BarChart3 className="w-3.5 h-3.5 text-accent" /> {roadmap.level}</span>
                   </div>
                 </Link>
               ))}

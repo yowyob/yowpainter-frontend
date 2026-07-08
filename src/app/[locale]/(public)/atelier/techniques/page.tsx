@@ -2,19 +2,31 @@
 
 import { Link } from '@/i18n/navigation'
 import { useDemoStore } from '@/lib/atelier/context/DemoStoreContext'
+import { Palette, Paintbrush, Gem, Pencil, Wind, Square, Sparkles, Ruler, ChevronRight } from 'lucide-react'
+
+const TECHNIQUE_ICONS: Record<string, React.ReactNode> = {
+  glacis: <Palette className="w-5 h-5" />,
+  imprimature: <Paintbrush className="w-5 h-5" />,
+  impasto: <Gem className="w-5 h-5" />,
+  frottis: <Pencil className="w-5 h-5" />,
+  sfumato: <Wind className="w-5 h-5" />,
+  grisaille: <Square className="w-5 h-5 fill-current/10" />,
+  vernis: <Sparkles className="w-5 h-5" />,
+  preparation: <Ruler className="w-5 h-5" />
+}
 
 export default function TechniquesPage() {
   const { publishedFiches, isHydrated } = useDemoStore()
 
   const techniquesList = [
-    { name: 'Glacis', slug: 'glacis', desc: 'Couche de peinture transparente posée sur une couche sèche pour modifier la teinte sans masquer les valeurs sous-jacentes.', icon: '🎨', level: 'Intermédiaire' },
-    { name: 'Imprimature', slug: 'imprimature', desc: 'Teinte de fond qui établit une valeur moyenne et guide les ombres et les lumières dès l\'ébauche.', icon: '🖌️', level: 'Intermédiaire' },
-    { name: 'Impasto', slug: null as string | null, desc: 'Application de peinture en couches épaisses, créant relief et texture visibles — typique de la peinture à l\'huile.', icon: '🗿', level: 'Avancé' },
-    { name: 'Frottis', slug: null as string | null, desc: 'Couche très mince de peinture opaque frottée sur la toile pour créer une transition douce entre deux tons.', icon: '✏️', level: 'Intermédiaire' },
-    { name: 'Sfumato', slug: null as string | null, desc: 'Technique de flou artistique sans contours nets, popularisée par Léonard de Vinci — transition vaporeuse.', icon: '🌫️', level: 'Avancé' },
-    { name: 'Grisaille', slug: null as string | null, desc: 'Peinture monochrome en nuances de gris servant de sous-couche pour établir les valeurs avant les glacis colorés.', icon: '⬜', level: 'Intermédiaire' },
-    { name: 'Vernis à retoucher', slug: null as string | null, desc: 'Vernis temporaire appliqué sur une couche sèche pour raviver les couleurs et permettre la reprise du travail.', icon: '✨', level: 'Débutant' },
-    { name: 'Préparation du support', slug: 'gesso-acrylique', desc: 'Apprêtage avec gesso acrylique pour uniformiser l\'absorption, sécuriser le fond et améliorer l\'accroche.', icon: '📐', level: 'Débutant' },
+    { name: 'Glacis', slug: 'glacis', iconKey: 'glacis', desc: 'Couche de peinture transparente posée sur une couche sèche pour modifier la teinte sans masquer les valeurs sous-jacentes.', level: 'Intermédiaire' },
+    { name: 'Imprimature', slug: 'imprimature', iconKey: 'imprimature', desc: 'Teinte de fond qui établit une valeur moyenne et guide les ombres et les lumières dès l\'ébauche.', level: 'Intermédiaire' },
+    { name: 'Impasto', slug: null as string | null, iconKey: 'impasto', desc: 'Application de peinture en couches épaisses, créant relief et texture visibles — typique de la peinture à l\'huile.', level: 'Avancé' },
+    { name: 'Frottis', slug: null as string | null, iconKey: 'frottis', desc: 'Couche très mince de peinture opaque frottée sur la toile pour créer une transition douce entre deux tons.', level: 'Intermédiaire' },
+    { name: 'Sfumato', slug: null as string | null, iconKey: 'sfumato', desc: 'Technique de flou artistique sans contours nets, popularisée par Léonard de Vinci — transition vaporeuse.', level: 'Avancé' },
+    { name: 'Grisaille', slug: null as string | null, iconKey: 'grisaille', desc: 'Peinture monochrome en nuances de gris servant de sous-couche pour établir les valeurs avant les glacis colorés.', level: 'Intermédiaire' },
+    { name: 'Vernis à retoucher', slug: null as string | null, iconKey: 'vernis', desc: 'Vernis temporaire appliqué sur une couche sèche pour raviver les couleurs et permettre la reprise du travail.', level: 'Débutant' },
+    { name: 'Préparation du support', slug: 'gesso-acrylique', iconKey: 'preparation', desc: 'Apprêtage avec gesso acrylique pour uniformiser l\'absorption, sécuriser le fond et améliorer l\'accroche.', level: 'Débutant' },
   ]
 
   if (!isHydrated) {
@@ -30,11 +42,11 @@ export default function TechniquesPage() {
     <div className="space-y-12 py-8">
       {/* Breadcrumb & Header */}
       <div className="space-y-4">
-        <div className="flex items-center gap-2 text-xs text-muted-foreground font-mono">
-          <Link href="/atelier" className="hover:text-accent">Atelier</Link>
-          <span>/</span>
-          <span className="text-foreground">Techniques</span>
-        </div>
+        <nav className="flex items-center gap-3 text-[10px] uppercase tracking-[0.3em] font-bold text-foreground/30">
+          <Link href="/atelier" className="hover:text-accent transition-colors">Atelier</Link>
+          <ChevronRight className="w-3 h-3" />
+          <span className="text-accent">Techniques</span>
+        </nav>
         
         <div className="space-y-2 border-b border-foreground/5 pb-6">
           <span className="text-xs uppercase tracking-[0.2em] font-bold text-accent">Savoir-faire</span>
@@ -54,8 +66,8 @@ export default function TechniquesPage() {
               key={technique.name} 
               className="flex flex-col bg-card border border-foreground/5 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all duration-300 gap-4"
             >
-              <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center text-xl text-accent border border-accent/20">
-                {technique.icon}
+              <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center text-accent border border-accent/20">
+                {TECHNIQUE_ICONS[technique.iconKey]}
               </div>
               
               <div className="flex-1 space-y-2">

@@ -1,13 +1,22 @@
 'use client'
 
 import { Link } from '@/i18n/navigation'
+import { Palette, Pencil, Gem, Printer, Paintbrush } from 'lucide-react'
+
+const CATEGORY_ICONS: Record<string, React.ReactNode> = {
+  peinture: <Palette className="w-8 h-8" />,
+  dessin: <Pencil className="w-8 h-8" />,
+  sculpture: <Gem className="w-8 h-8" />,
+  gravure: <Printer className="w-8 h-8" />,
+  'mixed-media': <Paintbrush className="w-8 h-8" />
+}
 
 const categoriesList = [
-  { slug: 'peinture', icon: '🎨', name: 'Peinture', desc: 'Huile, acrylique, aquarelle, tempera — maîtrisez chaque médium avec des guides complets et des fiches pigments.', count: 84, color: 'bg-amber-700/20 text-amber-700 dark:text-amber-300 border-amber-700/20' },
-  { slug: 'dessin', icon: '✏️', name: 'Dessin', desc: 'Du croquis à la perspective avancée — fusain, graphite, sanguine et techniques mixtes sur papier.', count: 52, color: 'bg-emerald-700/20 text-emerald-700 dark:text-emerald-300 border-emerald-700/20' },
-  { slug: 'sculpture', icon: '🗿', name: 'Sculpture', desc: 'Argile, bronze, résine, pierre et matières — modelage, taille directe et moulage.', count: 31, color: 'bg-rose-700/20 text-rose-700 dark:text-rose-300 border-rose-700/20' },
-  { slug: 'gravure', icon: '🖨️', name: 'Gravure', desc: 'Taille-douce, lithographie, sérigraphie, linogravure — techniques d\'impression artistique.', count: 28, color: 'bg-blue-700/20 text-blue-700 dark:text-blue-300 border-blue-700/20' },
-  { slug: 'mixed-media', icon: '🖌️', name: 'Mixed Media', desc: 'Collage, assemblage, art numérique, installations — quand les disciplines se rencontrent.', count: 45, color: 'bg-purple-700/20 text-purple-700 dark:text-purple-300 border-purple-700/20' },
+  { slug: 'peinture', name: 'Peinture', desc: 'Huile, acrylique, aquarelle, tempera — maîtrisez chaque médium avec des guides complets et des fiches pigments.', count: 84, color: 'bg-amber-700/20 text-amber-700 dark:text-amber-300 border-amber-700/20' },
+  { slug: 'dessin', name: 'Dessin', desc: 'Du croquis à la perspective avancée — fusain, graphite, sanguine et techniques mixtes sur papier.', count: 52, color: 'bg-emerald-700/20 text-emerald-700 dark:text-emerald-300 border-emerald-700/20' },
+  { slug: 'sculpture', name: 'Sculpture', desc: 'Argile, bronze, résine, pierre et matières — modelage, taille directe et moulage.', count: 31, color: 'bg-rose-700/20 text-rose-700 dark:text-rose-300 border-rose-700/20' },
+  { slug: 'gravure', name: 'Gravure', desc: 'Taille-douce, lithographie, sérigraphie, linogravure — techniques d\'impression artistique.', count: 28, color: 'bg-blue-700/20 text-blue-700 dark:text-blue-300 border-blue-700/20' },
+  { slug: 'mixed-media', name: 'Mixed Media', desc: 'Collage, assemblage, art numérique, installations — quand les disciplines se rencontrent.', count: 45, color: 'bg-purple-700/20 text-purple-700 dark:text-purple-300 border-purple-700/20' },
 ]
 
 export default function CategoriesPage() {
@@ -37,8 +46,8 @@ export default function CategoriesPage() {
             href={`/atelier/fiches?categorie=${cat.slug}`} 
             className="group flex items-start gap-5 p-6 rounded-2xl bg-card border border-foreground/5 hover:border-accent/40 shadow-sm hover:shadow-md transition-all duration-300"
           >
-            <div className={`flex-shrink-0 w-16 h-16 rounded-xl border flex items-center justify-center text-3xl ${cat.color}`}>
-              <span>{cat.icon}</span>
+            <div className={`flex-shrink-0 w-16 h-16 rounded-xl border flex items-center justify-center ${cat.color}`}>
+              {CATEGORY_ICONS[cat.slug]}
             </div>
             
             <div className="flex-1 space-y-2">

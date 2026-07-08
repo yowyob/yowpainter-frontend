@@ -6,14 +6,15 @@ import type { PaymentResponse } from '../models/PaymentResponse';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
+
 export class PaymentsService {
     /**
-     * Point d'entrée pour les callbacks CamPay
+     * Point d'entrée pour les callbacks de paiement (Kernel — à venir)
      * @param requestBody
      * @returns string OK
      * @throws ApiError
      */
-    public static handleCampayCallback(
+    public static handlePaymentCallback(
         requestBody: Record<string, string>,
     ): CancelablePromise<string> {
         return __request(OpenAPI, {

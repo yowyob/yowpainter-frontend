@@ -88,8 +88,19 @@ export function EventGrid({ artistId }: EventGridProps) {
 
     const isLoading = isLoadingEvents || (uniqueArtistIds.length > 0 && isLoadingExtraArtists);
 
-    // Filtrage côté client par type (FREE / PAID)
-    let displayEvents = events;
+    // Filtrage côté client pour exclure les événements passés ou annulés
+    let displayEvents = events.filter((e) => {
+        // 1. Filtrer les événements passés
+        const end = e.endDateTime ?? e.startDateTime;
+        const isPast = end == null || new Date(end) <= new Date();
+        if (isPast) return false;
+
+        // 2. Filtrer les événements annulés ou terminés
+        if (e.status === 'CANCELLED' || e.status === 'COMPLETED') return false;
+
+        return true;
+    });
+
     if (filters.eventType) {
         displayEvents = displayEvents.filter(e => {
             const type = (e.ticketPrice && e.ticketPrice > 0) ? 'PAID' : 'FREE';

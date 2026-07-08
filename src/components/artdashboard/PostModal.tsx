@@ -5,7 +5,7 @@ import type { Work, Article } from './types'
 import { ArtworksService } from '@/lib/services/ArtworksService'
 import { toast } from '@/lib/toast'
 import { useQueryClient } from '@tanstack/react-query'
-import { Loader2, Edit2, ShoppingBag, ChevronDown, CheckCircle2, MessageSquare, Trash2, X } from 'lucide-react'
+import { Loader2, Edit2, ShoppingBag, MessageSquare, Trash2, X } from 'lucide-react'
 import Image from 'next/image'
 import { useAuthStore } from '@/store/authStore'
 import { useQuery } from '@tanstack/react-query'
@@ -34,8 +34,7 @@ export default function PostModal({ dataset, initialIndex, onClose, onEdit, onSe
   const touchY                = useRef(0)
   const queryClient           = useQueryClient()
   const { user }              = useAuthStore()
-  const [updatingStatus, setUpdatingStatus] = useState(false)
-  
+
   const item                  = dataset[idx] as any
   const mediaItems = [
     ...(item.imageUrls || (item.imageUrl ? [item.imageUrl] : [])).map((url: string) => ({ type: 'image' as const, url })),
@@ -106,28 +105,6 @@ export default function PostModal({ dataset, initialIndex, onClose, onEdit, onSe
     // TODO: Implement ArtworksService.addComment mutation
     toast.success("Commentaire envoyé (simulé)")
     setInput('')
-  }
-
-  const STATUS_MAP: Record<string, any> = {
-    'Brouillon': 'DRAFT',
-    'Publié': 'PUBLISHED',
-    'En Vente': 'ON_SALE',
-    'Vendu': 'SOLD',
-    'Archivé': 'ARCHIVED'
-  }
-
-  const handleStatusChange = async (label: string) => {
-    const techStatus = STATUS_MAP[label] || label
-    try {
-      setUpdatingStatus(true)
-      await ArtworksService.updateStatus(item.id, techStatus)
-      toast.success(`Statut mis à jour : ${label}`)
-      queryClient.invalidateQueries({ queryKey: ['artist-works'] })
-    } catch (err) {
-      toast.error(err, "Mise à jour du statut")
-    } finally {
-      setUpdatingStatus(false)
-    }
   }
 
   const ArrowBtn = ({ dir }: { dir: -1 | 1 }) => (
@@ -342,19 +319,21 @@ export default function PostModal({ dataset, initialIndex, onClose, onEdit, onSe
               <div className="px-6 py-5 border-t border-foreground/10 flex flex-col gap-4 shrink-0 bg-foreground/[0.02]">
                 <div className="flex items-center justify-between">
                   <label className="text-[10px] font-bold text-foreground/40 uppercase tracking-[0.2em]">Statut de l'œuvre</label>
-                  <div className="relative w-[180px]">
-                    <select 
-                      value={Object.keys(STATUS_MAP).find(k => STATUS_MAP[k] === item.status) || 'Brouillon'}
-                      disabled={updatingStatus}
-                      onChange={(e) => handleStatusChange(e.target.value)}
-                      className="w-full appearance-none bg-white border border-foreground/10 py-2 pl-4 pr-8 rounded-full text-xs font-semibold focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent/30 transition-all cursor-pointer disabled:opacity-50 shadow-sm"
-                    >
-                      {Object.keys(STATUS_MAP).map(label => (
-                        <option key={label} value={label}>{label}</option>
-                      ))}
-                    </select>
-                    <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-foreground/40" />
-                  </div>
+                  <span
+                    className={`text-[9px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full border ${
+                      item.status === 'PUBLISHED'
+                        ? 'bg-emerald-50 text-emerald-600 border-emerald-200'
+                        : item.status === 'ON_SALE'
+                        ? 'bg-indigo-50 text-indigo-600 border-indigo-200'
+                        : item.status === 'SOLD'
+                        ? 'bg-amber-50 text-amber-600 border-amber-200'
+                        : item.status === 'ARCHIVED'
+                        ? 'bg-foreground/5 text-foreground/40 border-foreground/10'
+                        : 'bg-foreground/5 text-foreground/50 border-foreground/10'
+                    }`}
+                  >
+                    {item.status || 'DRAFT'}
+                  </span>
                 </div>
                 
                 <div className="flex gap-2.5">

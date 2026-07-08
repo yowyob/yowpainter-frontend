@@ -93,9 +93,9 @@ export function EventCard({ event, variant = 'grid', artistSlug, artist }: Event
         }).format(date).toUpperCase();
     };
 
-    const isSoldOut = event.maxCapacity && event.reservedCount
+    const isSoldOut = event.status === 'FULL' || (event.maxCapacity && event.reservedCount
         ? event.reservedCount >= event.maxCapacity
-        : false;
+        : false);
 
     // Smart Linking: Utilise le slug artiste si disponible, sinon fallback sur artistId
     const tenantSlug = artist?.slug || artistSlug || event.artistId || 'gallery';
@@ -141,11 +141,19 @@ export function EventCard({ event, variant = 'grid', artistSlug, artist }: Event
                             alt={event.name || ''}
                             fill
                             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 70vw, 50vw"
-                            className="object-cover"
+                            className={`object-cover ${isSoldOut ? 'filter grayscale brightness-[0.3]' : ''}`}
                             onError={() => setImgSrc('https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=800&q=80')}
                         />
                     </div>
                     <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-85 group-hover:opacity-95 transition-opacity duration-500" />
+                    
+                    {isSoldOut && (
+                        <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none">
+                            <div className="border-4 border-red-500 text-red-500 px-8 py-3 text-2xl font-black uppercase tracking-[0.4em] rotate-[-12deg] shadow-lg bg-black/40 backdrop-blur-sm animate-pulse">
+                                COMPLET
+                            </div>
+                        </div>
+                    )}
                     
                     {/* Status Badge - Positionné en haut à droite par rapport à l'image */}
                     <div className="absolute top-8 right-8 z-20">
@@ -225,7 +233,7 @@ export function EventCard({ event, variant = 'grid', artistSlug, artist }: Event
                     alt={event.name || ''}
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    className="object-cover"
+                    className={`object-cover ${isSoldOut ? 'filter grayscale brightness-[0.3]' : ''}`}
                     onError={() => setImgSrc('https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=800&q=80')}
                 />
                 <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500" />
@@ -237,8 +245,10 @@ export function EventCard({ event, variant = 'grid', artistSlug, artist }: Event
                 </div>
 
                 {isSoldOut && (
-                    <div className="absolute inset-x-0 bottom-0 bg-red-600/90 backdrop-blur-sm text-white text-center py-2 text-[9px] uppercase tracking-[0.3em] font-bold shadow-inner z-10">
-                        COMPLET
+                    <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none">
+                        <div className="border-2 border-red-500 text-red-500 px-4 py-2 text-sm font-black uppercase tracking-[0.3em] rotate-[-12deg] shadow-md bg-black/40 backdrop-blur-sm">
+                            COMPLET
+                        </div>
                     </div>
                 )}
             </div>

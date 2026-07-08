@@ -284,29 +284,33 @@ export default function ArtworkPost({ work, artist, onClick, onDelete, onEdit, o
         </button>
 
         <div className="ml-auto flex items-center gap-2">
-          {onChangeStatus && (
-            <div className="relative mr-2 group/status">
-              <select
-                value={work.status || 'DRAFT'}
-                onChange={(e) => { e.stopPropagation(); onChangeStatus(work.id, e.target.value); }}
-                onClick={(e) => e.stopPropagation()}
-                className="appearance-none bg-transparent text-[10px] font-bold uppercase tracking-widest outline-none cursor-pointer border border-foreground/10 rounded-full px-3 py-1.5 focus:border-accent transition-colors hover:bg-foreground/5"
-                style={{
-                  color: work.status === 'PUBLISHED' ? '#10b981' : work.status === 'ON_SALE' ? '#6366f1' : 'currentColor'
-                }}
+          {work.status && (() => {
+            const statusKeyMap: Record<string, string> = {
+              DRAFT:     'status.draft',
+              PUBLISHED: 'status.published',
+              ON_SALE:   'status.onSale',
+              SOLD:      'status.sold',
+              ARCHIVED:  'status.archived',
+            }
+            const i18nKey = statusKeyMap[work.status]
+            return (
+              <span
+                className={`text-[9px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full border ${
+                  work.status === 'PUBLISHED'
+                    ? 'bg-emerald-50 text-emerald-600 border-emerald-200'
+                    : work.status === 'ON_SALE'
+                    ? 'bg-indigo-50 text-indigo-600 border-indigo-200'
+                    : work.status === 'SOLD'
+                    ? 'bg-amber-50 text-amber-600 border-amber-200'
+                    : work.status === 'ARCHIVED'
+                    ? 'bg-foreground/5 text-foreground/40 border-foreground/10'
+                    : 'bg-foreground/5 text-foreground/50 border-foreground/10'
+                }`}
               >
-                <option value="DRAFT">{t("status.draft")}</option>
-                <option value="PUBLISHED">{t("status.published")}</option>
-                <option value="ON_SALE">{t("status.onSale")}</option>
-                <option value="ARCHIVED">{t("status.archived")}</option>
-              </select>
-              <div className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-foreground/40 group-hover/status:text-accent transition-colors">
-                <svg className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-                </svg>
-              </div>
-            </div>
-          )}
+                {i18nKey ? t(i18nKey as any) : work.status}
+              </span>
+            )
+          })()}
 
           {onEdit && (
             <button 
