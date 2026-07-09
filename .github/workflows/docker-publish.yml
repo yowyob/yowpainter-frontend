@@ -30,6 +30,8 @@ jobs:
           push: true
           build-args: |
             NEXT_PUBLIC_BASE_DOMAIN=painter.yowyob.com
+            NEXT_PUBLIC_API_URL=https://painter.yowyob.com/painter-api
+            NEXT_PUBLIC_APP_URL=https://painter.yowyob.com
           tags: |
             ${{ steps.meta.outputs.image }}:${{ steps.meta.outputs.sha }}
             ${{ steps.meta.outputs.image }}:main
