@@ -89,7 +89,8 @@ export default function ArtistDashboardPage() {
   const router = useRouter()
   const locale = useLocale()
   const t = useTranslations('Dashboard')
-  const { user, logout } = useAuthStore()
+  const { user, logout, refreshProfile } = useAuthStore()
+  const [refreshing, setRefreshing] = useState(false)
   const { isReady } = useRequireRole('ROLE_ARTIST', '/login')
   const displayName = user?.artistName || `${user?.firstName || ''} ${user?.lastName || ''}`.trim() || 'Artiste'
   const [tab, setTab] = useState<Tab>('oeuvres')
@@ -380,6 +381,103 @@ export default function ArtistDashboardPage() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
         <Loader2 className="animate-spin text-accent" size={32} />
+      </div>
+    )
+  }
+
+  const showPendingScreen = false;
+
+  if (showPendingScreen) {
+    const handleRefresh = async () => {
+      setRefreshing(true)
+      try {
+        await refreshProfile()
+        toast.success("Profil synchronisé avec succès.")
+      } catch (err) {
+        toast.error("Échec de la synchronisation.")
+      } finally {
+        setRefreshing(false)
+      }
+    }
+
+    return (
+      <div className="min-h-screen bg-background text-foreground antialiased font-sans canvas-texture canvas-grain relative flex flex-col justify-between selection:bg-accent/30">
+        {/* Ambient background */}
+        <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden mix-blend-multiply dark:mix-blend-screen opacity-70">
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(194,109,92,0.15),transparent_60%)] dark:bg-[radial-gradient(ellipse_at_top_right,rgba(212,136,120,0.2),transparent_60%)]"></div>
+          <AnimatedBlob className="top-[-10%] left-[-15%] w-[60vw] h-[60vw] blur-3xl opacity-20" color="accent" />
+          <AnimatedBlob className="bottom-[10%] right-[-5%] w-[45vw] h-[45vw] blur-3xl opacity-30" color="slate" />
+          <AbstractShapes />
+        </div>
+
+        {/* Header */}
+        <header className="relative z-10 border-b border-foreground/10 bg-background/40 backdrop-blur-md">
+          <div className="max-w-[1200px] mx-auto px-6 h-20 flex items-center justify-between">
+            <span className="font-serif text-2xl font-semibold tracking-tight text-foreground">
+              Yow<span className="text-accent italic font-normal">Painter</span>
+            </span>
+            <button
+              onClick={() => logout()}
+              className="flex items-center gap-2 px-4 py-2 border border-foreground/10 rounded-full text-xs uppercase tracking-widest font-bold hover:border-accent hover:text-white hover:bg-accent transition-all"
+            >
+              <LogOut size={14} />
+              Déconnexion
+            </button>
+          </div>
+        </header>
+
+        {/* Content */}
+        <main className="relative z-10 flex-grow flex items-center justify-center px-6 py-12">
+          <div className="max-w-md w-full bg-background/40 backdrop-blur-xl border border-foreground/10 p-8 md:p-12 shadow-2xl relative rounded-2xl text-center">
+            {/* Subtle art elements */}
+            <div className="absolute top-4 right-4 w-12 h-12 text-accent/10 pointer-events-none">
+              <svg viewBox="0 0 100 100" fill="currentColor"><path d="M0 100 L100 0 L100 100 Z" /></svg>
+            </div>
+
+            <div className="flex justify-center mb-8">
+              <div className="relative">
+                <div className="absolute -inset-1 rounded-full bg-accent/20 blur-md animate-pulse"></div>
+                <div className="relative bg-background border border-accent/20 text-accent p-6 rounded-full shadow-inner flex items-center justify-center">
+                  {refreshing ? (
+                    <Loader2 className="w-12 h-12 stroke-[1.5] animate-spin" />
+                  ) : (
+                    <Loader2 className="w-12 h-12 stroke-[1.5] text-accent/80" />
+                  )}
+                </div>
+              </div>
+            </div>
+
+            <h1 className="font-serif text-3xl md:text-4xl font-medium tracking-tight mb-4 text-foreground">
+              Organisation en attente
+            </h1>
+
+            <p className="text-foreground/70 font-light leading-relaxed mb-8">
+              Votre compte artiste a bien été créé, mais votre organisation n'est pas encore activée ou validée par notre équipe sur le Kernel Core.
+            </p>
+
+            <div className="space-y-4">
+              <button
+                disabled={refreshing}
+                onClick={handleRefresh}
+                className="w-full bg-foreground text-background py-4 px-8 text-xs uppercase tracking-[0.3em] font-bold hover:bg-accent hover:text-white transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg flex items-center justify-center gap-2 rounded-xl"
+              >
+                {refreshing ? (
+                  <Loader2 size={16} className="animate-spin" />
+                ) : (
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+                  </svg>
+                )}
+                Actualiser le statut
+              </button>
+            </div>
+          </div>
+        </main>
+
+        {/* Footer */}
+        <footer className="relative z-10 py-6 border-t border-foreground/5 text-center text-[10px] text-foreground/30 uppercase tracking-[0.2em] font-mono">
+          © 2026 YowPainter. Art Without Walls.
+        </footer>
       </div>
     )
   }

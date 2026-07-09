@@ -14,13 +14,13 @@ interface EventCardProps {
 }
 
 const ScissorsIcon = ({ className }: { className?: string }) => (
-    <svg 
-        viewBox="0 0 24 24" 
-        fill="none" 
-        stroke="currentColor" 
-        strokeWidth="2" 
-        strokeLinecap="round" 
-        strokeLinejoin="round" 
+    <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
         className={className}
     >
         <circle cx="6" cy="6" r="3" />
@@ -33,12 +33,12 @@ const ScissorsIcon = ({ className }: { className?: string }) => (
 
 const DottedLine = ({ className }: { className?: string }) => (
     <svg width="100%" height="2" className={className}>
-        <line 
-            x1="0" y1="1" x2="100%" y2="1" 
-            stroke="currentColor" 
-            strokeWidth="2" 
-            strokeDasharray="1 6" 
-            strokeLinecap="round" 
+        <line
+            x1="0" y1="1" x2="100%" y2="1"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeDasharray="1 6"
+            strokeLinecap="round"
             opacity="0.3"
         />
     </svg>
@@ -108,7 +108,7 @@ export function EventCard({ event, variant = 'grid', artistSlug, artist }: Event
         WebkitMaskPosition: "left bottom, right bottom",
         WebkitMaskRepeat: "no-repeat",
     };
-    
+
     const bottomMask = {
         WebkitMaskImage: "radial-gradient(circle at top left, transparent 20px, black 21px), radial-gradient(circle at top right, transparent 20px, black 21px)",
         WebkitMaskSize: "51% 100%",
@@ -120,9 +120,9 @@ export function EventCard({ event, variant = 'grid', artistSlug, artist }: Event
         return (
             <div className="group relative flex flex-col h-full bg-transparent hover:-translate-y-2 transition-all duration-500 will-change-transform drop-shadow-[0_15px_40px_rgba(0,0,0,0.12)]">
                 {/* Main Link Overlay */}
-                <Link 
-                    href={detailLink} 
-                    className="absolute inset-0 z-10" 
+                <Link
+                    href={detailLink}
+                    className="absolute inset-0 z-10"
                     aria-label={`Voir les détails de ${event.name}`}
                 />
 
@@ -146,15 +146,21 @@ export function EventCard({ event, variant = 'grid', artistSlug, artist }: Event
                         />
                     </div>
                     <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-85 group-hover:opacity-95 transition-opacity duration-500" />
-                    
+
                     {isSoldOut && (
                         <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none">
-                            <div className="border-4 border-red-500 text-red-500 px-8 py-3 text-2xl font-black uppercase tracking-[0.4em] rotate-[-12deg] shadow-lg bg-black/40 backdrop-blur-sm animate-pulse">
-                                COMPLET
+                            <div className="relative w-48 h-48 rotate-[-12deg] drop-shadow-2xl">
+                                <Image
+                                    src="/images/sold_out.jpeg"
+                                    alt="Complet"
+                                    fill
+                                    className="object-contain"
+                                    priority
+                                />
                             </div>
                         </div>
                     )}
-                    
+
                     {/* Status Badge - Positionné en haut à droite par rapport à l'image */}
                     <div className="absolute top-8 right-8 z-20">
                         <span className="px-5 py-2 text-[11px] uppercase tracking-[0.3em] font-bold bg-accent text-white border border-accent/20 shadow-lg backdrop-blur-md">
@@ -163,11 +169,7 @@ export function EventCard({ event, variant = 'grid', artistSlug, artist }: Event
                     </div>
 
                     <div className="absolute inset-x-0 bottom-0 px-10 pb-16 pt-20 flex flex-col items-center text-center text-white z-10 transition-transform duration-500 group-hover:-translate-y-2 pointer-events-none">
-                        {isSoldOut && (
-                            <div className="mb-6 inline-block bg-red-600 text-white px-4 py-1.5 text-[11px] uppercase tracking-[0.25em] font-bold w-max shadow-lg self-center">
-                                COMPLET
-                            </div>
-                        )}
+
 
                         <h3 className="font-serif text-3xl md:text-5xl lg:text-6xl font-light mb-6 uppercase leading-[1.1] group-hover:text-accent transition-colors">
                             {event.name}
@@ -213,9 +215,9 @@ export function EventCard({ event, variant = 'grid', artistSlug, artist }: Event
     return (
         <div className="group relative flex flex-col h-full bg-transparent hover:-translate-y-2 transition-all duration-500 will-change-transform drop-shadow-[0_10px_25px_rgba(0,0,0,0.08)]">
             {/* Main Link Overlay */}
-            <Link 
-                href={detailLink} 
-                className="absolute inset-0 z-10" 
+            <Link
+                href={detailLink}
+                className="absolute inset-0 z-10"
                 aria-label={`Voir les détails de ${event.name}`}
             />
 
@@ -237,7 +239,7 @@ export function EventCard({ event, variant = 'grid', artistSlug, artist }: Event
                     onError={() => setImgSrc('https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=800&q=80')}
                 />
                 <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500" />
-                
+
                 <div className="absolute top-4 right-4 z-10">
                     <span className="px-3 py-1.5 text-[9px] uppercase tracking-widest font-bold bg-accent text-white border border-white/10 backdrop-blur-md shadow-md">
                         {event.ticketPrice && event.ticketPrice > 0 ? `${event.ticketPrice.toLocaleString()} CFA` : 'GRATUIT'}
@@ -246,8 +248,13 @@ export function EventCard({ event, variant = 'grid', artistSlug, artist }: Event
 
                 {isSoldOut && (
                     <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none">
-                        <div className="border-2 border-red-500 text-red-500 px-4 py-2 text-sm font-black uppercase tracking-[0.3em] rotate-[-12deg] shadow-md bg-black/40 backdrop-blur-sm">
-                            COMPLET
+                        <div className="relative w-36 h-36 rotate-[-12deg] drop-shadow-xl">
+                            <Image
+                                src="/images/sold_out.jpeg"
+                                alt="Complet"
+                                fill
+                                className="object-contain"
+                            />
                         </div>
                     </div>
                 )}

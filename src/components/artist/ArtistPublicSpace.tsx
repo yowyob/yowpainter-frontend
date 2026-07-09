@@ -324,8 +324,13 @@ export function ArtistPublicSpace({ artist, slug }: ArtistPublicSpaceProps) {
 
                         {isSoldOut && (
                           <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none">
-                            <div className="border-4 border-red-500 text-red-500 px-8 py-3 text-2xl font-black uppercase tracking-[0.4em] rotate-[-12deg] shadow-lg bg-black/40 backdrop-blur-sm animate-pulse">
-                              {t('soldOut').toUpperCase()}
+                            <div className="relative w-48 h-48 rotate-[-12deg] drop-shadow-2xl">
+                              <Image
+                                src="/images/sold_out.jpeg"
+                                alt="Complet"
+                                fill
+                                className="object-contain"
+                              />
                             </div>
                           </div>
                         )}

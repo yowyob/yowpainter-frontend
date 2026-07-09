@@ -81,6 +81,12 @@ export default function Navbar() {
 
   const isPublicArtistPage = pathname !== '/' && !['/login', '/register', '/galerie', '/artists', '/events', '/actualites', '/shop', '/amadashboard', '/artdashboard'].some(path => pathname?.startsWith(path));
 
+  const isGalerieActive = pathname === '/galerie' || pathname?.startsWith('/galerie/');
+  const isArtistsActive = pathname === '/artists' || pathname?.startsWith('/artists/');
+  const isEventsActive = pathname === '/events' || pathname?.startsWith('/events/');
+  const isActualitesActive = pathname === '/actualites' || pathname?.startsWith('/actualites/');
+  const isShopActive = pathname === '/shop' || pathname?.startsWith('/shop/');
+
   return (
     <header
       className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 px-6 sm:px-12 pointer-events-none 
@@ -110,25 +116,50 @@ export default function Navbar() {
         {/* Navigation Centrale (Ergonomie Maximale) */}
         <nav className="hidden lg:flex items-center gap-10">
           <div className="flex items-center gap-8 font-serif text-lg italic text-foreground/80 lowercase tracking-wide">
-            <Link href="/galerie" className="hover:text-accent transition-colors relative group">
+            <Link
+              href="/galerie"
+              className={`transition-colors relative group ${
+                isGalerieActive ? 'text-accent' : 'text-foreground/80 hover:text-accent'
+              }`}
+            >
               {t("collection")}
-              <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-accent group-hover:w-full transition-all"></span>
+              <span className={`absolute -bottom-1 left-0 h-[2px] bg-accent transition-all ${isGalerieActive ? 'w-full' : 'w-0 group-hover:w-full'}`}></span>
             </Link>
-            <Link href="/artists" className="hover:text-accent transition-colors relative group">
+            <Link
+              href="/artists"
+              className={`transition-colors relative group ${
+                isArtistsActive ? 'text-accent' : 'text-foreground/80 hover:text-accent'
+              }`}
+            >
               {t("artists")}
-              <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-accent group-hover:w-full transition-all"></span>
+              <span className={`absolute -bottom-1 left-0 h-[2px] bg-accent transition-all ${isArtistsActive ? 'w-full' : 'w-0 group-hover:w-full'}`}></span>
             </Link>
-            <Link href="/events" className="hover:text-accent transition-colors relative group">
+            <Link
+              href="/events"
+              className={`transition-colors relative group ${
+                isEventsActive ? 'text-accent' : 'text-foreground/80 hover:text-accent'
+              }`}
+            >
               {t("events")}
-              <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-accent group-hover:w-full transition-all"></span>
+              <span className={`absolute -bottom-1 left-0 h-[2px] bg-accent transition-all ${isEventsActive ? 'w-full' : 'w-0 group-hover:w-full'}`}></span>
             </Link>
-            <Link href="/actualites" className="hover:text-accent transition-colors relative group">
+            <Link
+              href="/actualites"
+              className={`transition-colors relative group ${
+                isActualitesActive ? 'text-accent' : 'text-foreground/80 hover:text-accent'
+              }`}
+            >
               {t("news")}
-              <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-accent group-hover:w-full transition-all"></span>
+              <span className={`absolute -bottom-1 left-0 h-[2px] bg-accent transition-all ${isActualitesActive ? 'w-full' : 'w-0 group-hover:w-full'}`}></span>
             </Link>
-            <Link href="/shop" className="hover:text-accent transition-colors relative group">
+            <Link
+              href="/shop"
+              className={`transition-colors relative group ${
+                isShopActive ? 'text-accent' : 'text-foreground/80 hover:text-accent'
+              }`}
+            >
               {t("shop")}
-              <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-accent group-hover:w-full transition-all"></span>
+              <span className={`absolute -bottom-1 left-0 h-[2px] bg-accent transition-all ${isShopActive ? 'w-full' : 'w-0 group-hover:w-full'}`}></span>
             </Link>
           </div>
         </nav>
