@@ -96,13 +96,6 @@ export function EditProfileModal({ onClose }: EditProfileModalProps) {
           lastName,
           bio,
         });
-        
-        // Update profile picture if it changed
-        if (avatarUrl) {
-          await BuyerProfileService.updateProfilePicture({
-            profilePictureUrl: avatarUrl,
-          });
-        }
       }
 
       // Refresh the store and close modal
