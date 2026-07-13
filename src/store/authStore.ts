@@ -12,7 +12,7 @@ import type { AdminRegisterRequest } from '@/lib/models/AdminRegisterRequest';
 /** Returns the dashboard path based on the user role */
 export function getDashboardRoute(role?: string): string {
     if (role === 'ROLE_ARTIST') return '/artdashboard';
-    if (role === 'ROLE_ADMIN') return '/admindashboard';
+    if (role === 'ROLE_ADMIN') return '/admin';
     return '/amadashboard';
 }
 
@@ -103,23 +103,38 @@ export const useAuthStore = create<AuthState>()(
 
             adminLogin: async (credentials) => {
                 const response = await AdminAuthenticationService.login1(credentials);
+                if (!response.accessToken) {
+                    throw new Error(
+                        response.message ||
+                            'Connexion admin impossible : aucun jeton reçu du serveur.',
+                    );
+                }
                 set({
                     user: response,
-                    token: response.accessToken || null,
+                    token: response.accessToken,
                     refreshToken: response.refreshToken || null,
-                    isAuthenticated: !!response.accessToken,
+                    isAuthenticated: true,
                 });
                 clearLegacyTenantStorage();
                 return response;
             },
 
             adminRegister: async (data) => {
-                const response = await AdminAuthenticationService.register1(data);
+                const response = await AdminAuthenticationService.register1({
+                    ...data,
+                    imageURL: data.imageURL ?? '',
+                });
+                if (!response.accessToken) {
+                    throw new Error(
+                        response.message ||
+                            'Inscription admin impossible : le serveur n\'a pas renvoyé de jeton d\'accès.',
+                    );
+                }
                 set({
                     user: response,
-                    token: response.accessToken || null,
+                    token: response.accessToken,
                     refreshToken: response.refreshToken || null,
-                    isAuthenticated: !!response.accessToken,
+                    isAuthenticated: true,
                 });
                 clearLegacyTenantStorage();
                 return response;

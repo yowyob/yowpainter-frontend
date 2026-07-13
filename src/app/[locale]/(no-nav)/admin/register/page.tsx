@@ -34,7 +34,12 @@ export default function AdminRegisterPage() {
       router.push(getDashboardRoute(user.role));
     } catch (err: unknown) {
       const message = getApiErrorMessage(err);
-      setError(message);
+      const isKernelConfigError = message.includes('KSM_KERNEL_BOOTSTRAP');
+      setError(
+        isKernelConfigError
+          ? `${message}\n\nL'inscription admin nécessite que le backend soit configuré avec KSM_KERNEL_BOOTSTRAP_ADMIN_USERNAME et KSM_KERNEL_BOOTSTRAP_ADMIN_PASSWORD. Utilisez un compte admin existant ou contactez l'infrastructure.`
+          : message,
+      );
       toast.error(err, t("registerTitle"));
     } finally {
       setLoading(false);
@@ -56,7 +61,7 @@ export default function AdminRegisterPage() {
 
         <form className="space-y-5" onSubmit={handleSubmit}>
           {error && (
-            <div className="p-3 bg-rose-500/10 border border-rose-500/30 text-rose-300 text-xs rounded-xl">
+            <div className="p-3 bg-rose-500/10 border border-rose-500/30 text-rose-300 text-xs rounded-xl whitespace-pre-line">
               {error}
             </div>
           )}
