@@ -11,6 +11,10 @@ export type WalletTransaction = {
     referenceId?: string;
     description?: string;
     createdAt?: string;
+    blockchainTxId?: string;
+    blockchainTxHash?: string;
+    blockchainSignature?: string;
+    blockchainBlockIndex?: number;
 };
 export namespace WalletTransaction {
     export enum type {

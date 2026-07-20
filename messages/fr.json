@@ -44,7 +44,7 @@
     "rights": "Art Without Walls."
   },
   "Gallery": {
-    "metadataTitle": "Galerie Publique | YowPainter",
+    "metadataTitle": "Galerie Publique",
     "metadataDescription": "Explorez l'ensemble des oeuvres publiees par nos artistes sur YowPainter Gallery.",
     "breadcrumb": "La Galerie",
     "titleMain": "L'Art",
@@ -140,7 +140,7 @@
     "sideLabel": "Creative Workshop"
   },
   "AllActu": {
-    "metadataTitle": "Actualites | YowPainter",
+    "metadataTitle": "Actualites",
     "metadataDescription": "Decouvrez toutes les actualites et coulisses des artistes YowPainter.",
     "breadcrumb": "Actualites",
     "titleMain": "Toutes les",
@@ -157,7 +157,7 @@
     "resetSearch": "Reinitialiser la recherche"
   },
   "Events": {
-    "metadataTitle": "Expositions & Evenements | YowPainter",
+    "metadataTitle": "Expositions & Evenements",
     "metadataDescription": "Decouvrez les vernissages, expositions et evenements artistiques pres de chez vous",
     "eyebrow": "Agenda Culturel",
     "titleStart": "Expositions &",
@@ -182,7 +182,20 @@
     "doNotCloseWindow": "Ne pas fermer cette fenêtre",
     "secureTicketSent": "Un billet sécurisé vous sera transmis instantanément",
     "namePlaceholder": "Ex: Jean Dupont",
-    "fillRequiredFields": "Veuillez remplir tous les champs obligatoires"
+    "fillRequiredFields": "Veuillez remplir tous les champs obligatoires",
+    "locationLabel": "Lieu",
+    "searchAddress": "Rechercher une adresse",
+    "searchPlaceholder": "Ex: Galerie d'Art Moderne, Yaoundé",
+    "searchButton": "Rechercher",
+    "searching": "Recherche…",
+    "noResults": "Aucun résultat",
+    "pickOnMap": "Cliquez sur la carte pour ajuster le repère",
+    "coordinates": "Coordonnées",
+    "locationOnMap": "Localisation",
+    "getDirections": "Itinéraire",
+    "viewOnGoogle": "Google Maps",
+    "viewOnOsm": "OpenStreetMap",
+    "mapLoading": "Chargement de la carte…"
   },
   "Shop": {
     "eyebrow": "YowPainter Fine Art Store",
@@ -415,7 +428,7 @@
     "locationFallback": "Cameroun"
   },
   "Actu": {
-    "metadataTitle": "Actualites | {artistName} | YowPainter",
+    "metadataTitle": "Actualites | {artistName}",
     "metadataDescription": "Suivez les dernieres actualites et coulisses de {artistName} sur YowPainter.",
     "metadataNotFoundTitle": "Artiste introuvable | YowPainter",
     "metadataNotFoundDescription": "Ce profil artiste est introuvable sur YowPainter.",
@@ -602,7 +615,10 @@
     "noSales": "Aucune commande reçue pour le moment.",
     "buyer": "Acheteur",
     "amount": "Montant",
-    "orderTitle": "Commande"
+    "orderTitle": "Commande",
+    "close": "Fermer",
+    "artistSpace": "Espace Artiste",
+    "buyerSpace": "Espace Acheteur"
   },
   "Chat": {
     "messaging": "Messagerie",
@@ -682,5 +698,76 @@
     "networkErrorDescription": "Une erreur s'est produite lors de la connexion au serveur. Veuillez réessayer.",
     "buttonLogin": "Se connecter",
     "buttonHome": "Retour à l'accueil"
+  },
+  "Faq": {
+    "eyebrow": "Questions fréquentes",
+    "title": "Tout ce qu'il faut savoir",
+    "subtitle": "Les réponses aux questions les plus courantes sur YowPainter.",
+    "items": [
+      {
+        "q": "Comment acheter une œuvre ?",
+        "a": "Parcourez la galerie, ajoutez l'œuvre au panier puis réglez en Mobile Money via notre partenaire sécurisé. Vous recevez une facture et un suivi de commande."
+      },
+      {
+        "q": "Comment devenir artiste sur YowPainter ?",
+        "a": "Créez un compte artiste, complétez votre profil et soumettez-le à validation. Une fois approuvé, vous disposez de votre boutique et de votre espace d'exposition."
+      },
+      {
+        "q": "Quels moyens de paiement sont acceptés ?",
+        "a": "Le paiement Mobile Money (MTN, Orange) est disponible au Cameroun. Le règlement par carte arrive prochainement."
+      },
+      {
+        "q": "Comment réserver un billet pour un événement ?",
+        "a": "Ouvrez la fiche de l'événement, renseignez vos informations et payez si l'événement est payant. Votre billet avec QR code est généré immédiatement."
+      },
+      {
+        "q": "Comment sont reversés les gains des artistes ?",
+        "a": "Vos ventes créditent votre portefeuille YowPainter, après déduction de la commission liée à votre abonnement. Les retraits Mobile Money seront bientôt disponibles."
+      },
+      {
+        "q": "Mes données et paiements sont-ils sécurisés ?",
+        "a": "Oui. Les paiements sont traités par un prestataire agréé et vos données personnelles ne sont jamais partagées sans votre consentement."
+      }
+    ]
+  },
+  "Testimonials": {
+    "eyebrow": "Témoignages",
+    "title": "Ils font confiance à YowPainter",
+    "subtitle": "Artistes et collectionneurs partagent leur expérience.",
+    "items": [
+      {
+        "name": "Aïcha Ndiaye",
+        "role": "Collectionneuse",
+        "initials": "AN",
+        "rating": 5,
+        "quote": "Une expérience d'achat fluide et élégante. J'ai découvert des artistes que je n'aurais jamais trouvés ailleurs."
+      },
+      {
+        "name": "Jean-Paul Mballa",
+        "role": "Artiste peintre",
+        "initials": "JM",
+        "rating": 5,
+        "quote": "Enfin une plateforme qui met en valeur notre travail. Mes ventes ont doublé en trois mois."
+      },
+      {
+        "name": "Sofia Bello",
+        "role": "Galeriste",
+        "initials": "SB",
+        "rating": 4,
+        "quote": "L'espace d'exposition est superbe et la gestion des événements très simple. Un vrai gain de temps."
+      }
+    ]
+  },
+  "Atelier": {
+    "fabLabel": "Atelier",
+    "fabAria": "Accéder à l'atelier"
+  },
+  "Seo": {
+    "defaultTitle": "YowPainter — Marketplace d’art moderne et contemporain",
+    "titleTemplate": "%s | YowPainter",
+    "description": "Découvrez, exposez et achetez des œuvres d’art moderne et contemporain. Artistes, galeries, événements et pièces uniques sur YowPainter.",
+    "keywords": "art moderne, art contemporain, galerie d’art, acheter œuvre d’art, artistes, peinture, exposition, marketplace art, Cameroun, Afrique",
+    "homeOgTitle": "YowPainter — L’art contemporain à portée de clic",
+    "homeOgDescription": "Une marketplace élégante pour découvrir des artistes et acquérir des œuvres uniques."
   }
 }

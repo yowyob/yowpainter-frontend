@@ -11,6 +11,8 @@ export type EventResponse = {
     startDateTime?: string;
     endDateTime?: string;
     location?: string;
+    latitude?: number;
+    longitude?: number;
     type?: EventResponse.type;
     maxCapacity?: number;
     reservedCount?: number;

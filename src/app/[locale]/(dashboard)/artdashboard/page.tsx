@@ -27,6 +27,7 @@ import CreateActuModal from '@/components/artdashboard/CreateActuModal'
 import ActuCard from '@/components/artdashboard/ActuCard'
 import ConfirmModal from '@/components/ui/ConfirmModal'
 import WalletTab from '@/components/artdashboard/WalletTab'
+import DashboardSidebar from '@/components/dashboard/DashboardSidebar'
 
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { ArtistsService } from '@/lib/services/ArtistsService'
@@ -585,26 +586,22 @@ export default function ArtistDashboardPage() {
         </div>
       </div>
 
-      {/* ── Tabnav Harmonisée ── */}
-      <nav className="sticky top-[80px] md:top-[88px] z-40 glass-elegant shadow-sm border-b border-foreground/10">
-        <div className="max-w-[1200px] mx-auto px-4 md:px-12 flex overflow-x-auto no-scrollbar gap-4">
-          {TABS.map(tTab => (
-            <button key={tTab.id} onClick={() => setTab(tTab.id)}
-              className={`relative flex items-center gap-2 px-6 py-4 text-xs uppercase tracking-[0.1em] transition-all whitespace-nowrap ${tab === tTab.id ? 'text-foreground font-bold' : 'text-foreground/50 hover:text-foreground'}`}>
-              {tTab.icon}{tTab.label}
-              {tab === tTab.id && <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-accent rounded-t" />}
-            </button>
-          ))}
-          <div className="ml-auto flex items-center pr-4">
+      {/* ── Layout Sidebar + Contenu ── */}
+      <div className="relative z-10 max-w-[1200px] mx-auto px-4 md:px-12 flex flex-col lg:flex-row gap-8 pt-8">
+        <DashboardSidebar
+          title={t('artistSpace')}
+          items={TABS}
+          active={tab}
+          onSelect={(id) => setTab(id as Tab)}
+        />
+
+        {/* ── Contenu ── */}
+        <div className="flex-1 min-w-0 pb-16">
+          <div className="flex justify-end mb-6 min-h-[2.5rem]">
             {tab === 'oeuvres' && <CreateBtn label={t('newArtwork')} onClick={() => { setItemToEdit(null); setIsCreateArtworkOpen(true); }} />}
             {tab === 'evenements' && <CreateBtn label={t('newEvent')} onClick={() => { setItemToEdit(null); setIsCreateEventOpen(true); }} />}
             {tab === 'actu' && <CreateBtn label={t('newActu')} onClick={() => { setItemToEdit(null); setIsCreateActuOpen(true); }} />}
           </div>
-        </div>
-      </nav>
-
-      {/* ── Contenu ── */}
-      <div className="pb-16 pt-8 relative z-10 max-w-[1200px] mx-auto px-4 md:px-12">
         {tab === 'oeuvres' && (
           <div className="space-y-10">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -757,6 +754,7 @@ export default function ArtistDashboardPage() {
           </div>
         )}
         {tab === 'portefeuille' && <WalletTab />}
+        </div>
       </div>
 
       {/* ── Modal ── */}

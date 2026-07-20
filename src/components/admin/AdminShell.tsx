@@ -18,6 +18,7 @@ const NAV_ITEMS = [
     { href: '/admin/artists', label: 'Artistes en attente', icon: Palette },
     { href: '/admin/tenants', label: 'Organisations', icon: Building2 },
     { href: '/admin/users', label: 'Utilisateurs', icon: Users },
+    { href: '/admin/blockchain', label: 'Audit Blockchain', icon: Shield },
     { href: '/admin/logs', label: 'Logs d\'audit', icon: ScrollText },
     { href: '/admin/profile', label: 'Mon profil', icon: UserCircle },
 ];

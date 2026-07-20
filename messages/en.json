@@ -44,7 +44,7 @@
     "rights": "Art Without Walls."
   },
   "Gallery": {
-    "metadataTitle": "Public Gallery | YowPainter",
+    "metadataTitle": "Public Gallery",
     "metadataDescription": "Explore all artworks published by our artists on YowPainter Gallery.",
     "breadcrumb": "The Gallery",
     "titleMain": "Art",
@@ -140,7 +140,7 @@
     "sideLabel": "Creative Workshop"
   },
   "AllActu": {
-    "metadataTitle": "News | YowPainter",
+    "metadataTitle": "News",
     "metadataDescription": "Discover all news and behind-the-scenes from YowPainter artists.",
     "breadcrumb": "News",
     "titleMain": "All",
@@ -157,7 +157,7 @@
     "resetSearch": "Reset search"
   },
   "Events": {
-    "metadataTitle": "Exhibitions & Events | YowPainter",
+    "metadataTitle": "Exhibitions & Events",
     "metadataDescription": "Discover openings, exhibitions and artistic events near you",
     "eyebrow": "Cultural Calendar",
     "titleStart": "Exhibitions &",
@@ -182,7 +182,20 @@
     "doNotCloseWindow": "Do not close this window",
     "secureTicketSent": "A secure ticket will be sent to you instantly",
     "namePlaceholder": "E.g., John Doe",
-    "fillRequiredFields": "Please fill in all required fields"
+    "fillRequiredFields": "Please fill in all required fields",
+    "locationLabel": "Location",
+    "searchAddress": "Search an address",
+    "searchPlaceholder": "e.g. Modern Art Gallery, Yaoundé",
+    "searchButton": "Search",
+    "searching": "Searching…",
+    "noResults": "No results",
+    "pickOnMap": "Click on the map to adjust the marker",
+    "coordinates": "Coordinates",
+    "locationOnMap": "Location",
+    "getDirections": "Directions",
+    "viewOnGoogle": "Google Maps",
+    "viewOnOsm": "OpenStreetMap",
+    "mapLoading": "Loading map…"
   },
   "Shop": {
     "eyebrow": "YowPainter Fine Art Store",
@@ -415,7 +428,7 @@
     "locationFallback": "Cameroon"
   },
   "Actu": {
-    "metadataTitle": "News | {artistName} | YowPainter",
+    "metadataTitle": "News | {artistName}",
     "metadataDescription": "Follow the latest news and behind-the-scenes from {artistName} on YowPainter.",
     "metadataNotFoundTitle": "Artist not found | YowPainter",
     "metadataNotFoundDescription": "This artist profile could not be found on YowPainter.",
@@ -602,7 +615,10 @@
     "noSales": "No orders received yet.",
     "buyer": "Buyer",
     "amount": "Amount",
-    "orderTitle": "Order"
+    "orderTitle": "Order",
+    "close": "Close",
+    "artistSpace": "Artist Space",
+    "buyerSpace": "Buyer Space"
   },
   "Chat": {
     "messaging": "Messaging",
@@ -682,5 +698,76 @@
     "networkErrorDescription": "A connection error occurred. Please verify your internet connection and try again.",
     "buttonLogin": "Log In",
     "buttonHome": "Back to Home"
+  },
+  "Faq": {
+    "eyebrow": "Frequently asked questions",
+    "title": "Everything you need to know",
+    "subtitle": "Answers to the most common questions about YowPainter.",
+    "items": [
+      {
+        "q": "How do I buy an artwork?",
+        "a": "Browse the gallery, add the piece to your cart, then pay via Mobile Money through our secure partner. You receive an invoice and order tracking."
+      },
+      {
+        "q": "How do I become an artist on YowPainter?",
+        "a": "Create an artist account, complete your profile and submit it for approval. Once validated, you get your own shop and exhibition space."
+      },
+      {
+        "q": "Which payment methods are accepted?",
+        "a": "Mobile Money (MTN, Orange) is available in Cameroon. Card payments are coming soon."
+      },
+      {
+        "q": "How do I book a ticket for an event?",
+        "a": "Open the event page, fill in your details and pay if the event is paid. Your QR-coded ticket is generated instantly."
+      },
+      {
+        "q": "How are artists' earnings paid out?",
+        "a": "Your sales credit your YowPainter wallet, after deducting the commission tied to your subscription. Mobile Money withdrawals are coming soon."
+      },
+      {
+        "q": "Are my data and payments secure?",
+        "a": "Yes. Payments are handled by a licensed provider and your personal data is never shared without your consent."
+      }
+    ]
+  },
+  "Testimonials": {
+    "eyebrow": "Testimonials",
+    "title": "They trust YowPainter",
+    "subtitle": "Artists and collectors share their experience.",
+    "items": [
+      {
+        "name": "Aïcha Ndiaye",
+        "role": "Collector",
+        "initials": "AN",
+        "rating": 5,
+        "quote": "A smooth and elegant buying experience. I discovered artists I would never have found elsewhere."
+      },
+      {
+        "name": "Jean-Paul Mballa",
+        "role": "Painter",
+        "initials": "JM",
+        "rating": 5,
+        "quote": "Finally a platform that showcases our work. My sales doubled in three months."
+      },
+      {
+        "name": "Sofia Bello",
+        "role": "Gallery owner",
+        "initials": "SB",
+        "rating": 4,
+        "quote": "The exhibition space is beautiful and managing events is effortless. A real time-saver."
+      }
+    ]
+  },
+  "Atelier": {
+    "fabLabel": "Studio",
+    "fabAria": "Go to the studio"
+  },
+  "Seo": {
+    "defaultTitle": "YowPainter — Modern & contemporary art marketplace",
+    "titleTemplate": "%s | YowPainter",
+    "description": "Discover, exhibit and buy modern and contemporary artworks. Artists, galleries, events and unique pieces on YowPainter.",
+    "keywords": "modern art, contemporary art, art gallery, buy artwork, artists, painting, exhibition, art marketplace, Cameroon, Africa",
+    "homeOgTitle": "YowPainter — Contemporary art at your fingertips",
+    "homeOgDescription": "An elegant marketplace to discover artists and acquire unique works."
   }
 }

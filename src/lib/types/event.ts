@@ -9,6 +9,8 @@ export interface Event {
     startDate: string;
     endDate: string;
     location: string;
+    latitude: number | null;
+    longitude: number | null;
     locationType: 'PHYSICAL' | 'VIRTUAL';
     posterUrl: string;
     eventType: EventType;

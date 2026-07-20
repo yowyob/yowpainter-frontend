@@ -30,6 +30,8 @@ async function mapEventResponseToEvent(res: EventResponse): Promise<Event> {
         startDate: res.startDateTime || new Date().toISOString(),
         endDate: res.endDateTime || new Date().toISOString(),
         location: res.location || 'Lieu non spécifié',
+        latitude: res.latitude ?? null,
+        longitude: res.longitude ?? null,
         locationType: (res.location?.toLowerCase().includes('zoom') || res.location?.toLowerCase().includes('ligne')) ? 'VIRTUAL' : 'PHYSICAL',
         posterUrl: res.posterUrl || 'https://images.unsplash.com/photo-1579710838505-4cfa69f0bd2c?w=800&q=80',
         eventType: (res.ticketPrice && res.ticketPrice > 0) ? 'PAID' : 'FREE',

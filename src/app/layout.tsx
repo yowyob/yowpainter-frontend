@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Playfair_Display } from "next/font/google";
+import { SITE_URL, SITE_NAME } from "@/lib/seo";
 import "./globals.css";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { QueryProvider } from "@/components/providers/QueryProvider";
@@ -19,14 +20,17 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'),
-  title: "YowPainter | Marketplace d'Art Moderne",
-  description: "Découvrez des pépites artistiques et des chefs-d'œuvre contemporains.",
+  // Base pour résoudre toutes les URLs relatives (canonical, OG, sitemap).
+  metadataBase: new URL(SITE_URL),
+  // Fallback minimal ; titre/description localisés fournis par [locale]/generateMetadata.
+  // Pas de `title.template` ici : il envelopperait le titre de la locale (doublon).
+  title: SITE_NAME,
   icons: {
     icon: "/images/logo.png",
     shortcut: "/images/logo.png",
     apple: "/images/logo.png",
   },
+  manifest: "/manifest.webmanifest",
 };
 
 export default function RootLayout({

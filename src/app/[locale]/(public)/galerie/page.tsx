@@ -4,6 +4,7 @@ import GalerieClient from "./GalerieClient";
 import { ArtworksService } from "@/lib/services/ArtworksService";
 import { configureServerApi } from "@/lib/serverApiInit";
 import { getTranslations } from "next-intl/server";
+import { pageMetadata } from "@/lib/seo";
 
 export const generateMetadata = async ({
     params,
@@ -13,15 +14,12 @@ export const generateMetadata = async ({
     const { locale } = await params;
     const t = await getTranslations({ locale, namespace: "Gallery" });
 
-    return {
+    return pageMetadata({
+        locale,
+        path: "/galerie",
         title: t("metadataTitle"),
         description: t("metadataDescription"),
-        openGraph: {
-            title: t("metadataTitle"),
-            description: t("metadataDescription"),
-            images: ["/images/og-gallery.png"],
-        },
-    };
+    });
 };
 
 export default async function GaleriePage(

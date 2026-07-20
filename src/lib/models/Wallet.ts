@@ -9,5 +9,8 @@ export type Wallet = {
     balance?: number;
     currency?: string;
     lastUpdatedAt?: string;
+    blockchainWalletId?: string;
+    blockchainFingerprint?: string;
+    blockchainPublicKey?: string;
 };
 

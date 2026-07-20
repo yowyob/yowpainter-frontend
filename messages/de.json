@@ -44,7 +44,7 @@
     "rights": "Art Without Walls."
   },
   "Gallery": {
-    "metadataTitle": "Oeffentliche Galerie | YowPainter",
+    "metadataTitle": "Oeffentliche Galerie",
     "metadataDescription": "Entdecken Sie alle Werke, die unsere Kuenstler in der YowPainter Gallery veroeffentlicht haben.",
     "breadcrumb": "Die Galerie",
     "titleMain": "Kunst",
@@ -140,7 +140,7 @@
     "sideLabel": "Creative Workshop"
   },
   "AllActu": {
-    "metadataTitle": "Neuigkeiten | YowPainter",
+    "metadataTitle": "Neuigkeiten",
     "metadataDescription": "Entdecken Sie alle Neuigkeiten und Hintergruende der YowPainter-Kuenstler.",
     "breadcrumb": "Neuigkeiten",
     "titleMain": "Alle",
@@ -157,7 +157,7 @@
     "resetSearch": "Suche zuruecksetzen"
   },
   "Events": {
-    "metadataTitle": "Ausstellungen & Events | YowPainter",
+    "metadataTitle": "Ausstellungen & Events",
     "metadataDescription": "Entdecken Sie Vernissagen, Ausstellungen und Kunstveranstaltungen in Ihrer Naehe",
     "eyebrow": "Kulturkalender",
     "titleStart": "Ausstellungen &",
@@ -182,7 +182,20 @@
     "doNotCloseWindow": "Schließen Sie dieses Fenster nicht",
     "secureTicketSent": "Ein sicheres Ticket wird Ihnen sofort zugesandt",
     "namePlaceholder": "Z. B. Max Mustermann",
-    "fillRequiredFields": "Bitte füllen Sie alle Pflichtfelder aus"
+    "fillRequiredFields": "Bitte füllen Sie alle Pflichtfelder aus",
+    "locationLabel": "Ort",
+    "searchAddress": "Adresse suchen",
+    "searchPlaceholder": "z. B. Galerie für moderne Kunst, Yaoundé",
+    "searchButton": "Suchen",
+    "searching": "Suche läuft…",
+    "noResults": "Keine Ergebnisse",
+    "pickOnMap": "Auf die Karte klicken, um die Markierung anzupassen",
+    "coordinates": "Koordinaten",
+    "locationOnMap": "Standort",
+    "getDirections": "Route",
+    "viewOnGoogle": "Google Maps",
+    "viewOnOsm": "OpenStreetMap",
+    "mapLoading": "Karte wird geladen…"
   },
   "Shop": {
     "eyebrow": "YowPainter Fine Art Store",
@@ -415,7 +428,7 @@
     "locationFallback": "Kamerun"
   },
   "Actu": {
-    "metadataTitle": "Aktuelles | {artistName} | YowPainter",
+    "metadataTitle": "Aktuelles | {artistName}",
     "metadataDescription": "Folgen Sie den neuesten Nachrichten und Hintergruenden von {artistName} auf YowPainter.",
     "metadataNotFoundTitle": "Kuenstler nicht gefunden | YowPainter",
     "metadataNotFoundDescription": "Dieses Kuenstlerprofil wurde auf YowPainter nicht gefunden.",
@@ -602,7 +615,10 @@
     "buyer": "Käufer",
     "amount": "Betrag",
     "orderTitle": "Bestellung",
-    "sold": "Sold"
+    "sold": "Sold",
+    "close": "Schließen",
+    "artistSpace": "Künstlerbereich",
+    "buyerSpace": "Käuferbereich"
   },
   "Chat": {
     "messaging": "Nachrichten",
@@ -682,5 +698,76 @@
     "networkErrorDescription": "Ein Verbindungsfehler ist aufgetreten. Bitte überprüfen Sie Ihre Internetverbindung und versuchen Sie es erneut.",
     "buttonLogin": "Anmelden",
     "buttonHome": "Zurück zur Startseite"
+  },
+  "Faq": {
+    "eyebrow": "Häufig gestellte Fragen",
+    "title": "Alles, was Sie wissen müssen",
+    "subtitle": "Antworten auf die häufigsten Fragen zu YowPainter.",
+    "items": [
+      {
+        "q": "Wie kaufe ich ein Kunstwerk?",
+        "a": "Durchstöbern Sie die Galerie, legen Sie das Werk in den Warenkorb und zahlen Sie per Mobile Money über unseren sicheren Partner. Sie erhalten eine Rechnung und eine Bestellverfolgung."
+      },
+      {
+        "q": "Wie werde ich Künstler auf YowPainter?",
+        "a": "Erstellen Sie ein Künstlerkonto, vervollständigen Sie Ihr Profil und reichen Sie es zur Freigabe ein. Nach der Bestätigung erhalten Sie Ihren eigenen Shop und Ausstellungsbereich."
+      },
+      {
+        "q": "Welche Zahlungsmethoden werden akzeptiert?",
+        "a": "Mobile Money (MTN, Orange) ist in Kamerun verfügbar. Kartenzahlung folgt in Kürze."
+      },
+      {
+        "q": "Wie buche ich ein Ticket für eine Veranstaltung?",
+        "a": "Öffnen Sie die Veranstaltungsseite, geben Sie Ihre Daten ein und zahlen Sie, falls die Veranstaltung kostenpflichtig ist. Ihr Ticket mit QR-Code wird sofort erstellt."
+      },
+      {
+        "q": "Wie werden die Einnahmen der Künstler ausgezahlt?",
+        "a": "Ihre Verkäufe werden Ihrem YowPainter-Wallet gutgeschrieben, abzüglich der an Ihr Abonnement gebundenen Provision. Mobile-Money-Auszahlungen folgen in Kürze."
+      },
+      {
+        "q": "Sind meine Daten und Zahlungen sicher?",
+        "a": "Ja. Zahlungen werden von einem lizenzierten Anbieter abgewickelt und Ihre persönlichen Daten werden niemals ohne Ihre Zustimmung weitergegeben."
+      }
+    ]
+  },
+  "Testimonials": {
+    "eyebrow": "Erfahrungsberichte",
+    "title": "Sie vertrauen YowPainter",
+    "subtitle": "Künstler und Sammler teilen ihre Erfahrung.",
+    "items": [
+      {
+        "name": "Aïcha Ndiaye",
+        "role": "Sammlerin",
+        "initials": "AN",
+        "rating": 5,
+        "quote": "Ein reibungsloses und elegantes Kauferlebnis. Ich habe Künstler entdeckt, die ich nirgendwo sonst gefunden hätte."
+      },
+      {
+        "name": "Jean-Paul Mballa",
+        "role": "Kunstmaler",
+        "initials": "JM",
+        "rating": 5,
+        "quote": "Endlich eine Plattform, die unsere Arbeit zur Geltung bringt. Meine Verkäufe haben sich in drei Monaten verdoppelt."
+      },
+      {
+        "name": "Sofia Bello",
+        "role": "Galeristin",
+        "initials": "SB",
+        "rating": 4,
+        "quote": "Der Ausstellungsbereich ist wunderschön und die Verwaltung von Veranstaltungen ist mühelos. Eine echte Zeitersparnis."
+      }
+    ]
+  },
+  "Atelier": {
+    "fabLabel": "Atelier",
+    "fabAria": "Zum Atelier"
+  },
+  "Seo": {
+    "defaultTitle": "YowPainter — Marktplatz für moderne & zeitgenössische Kunst",
+    "titleTemplate": "%s | YowPainter",
+    "description": "Entdecken, ausstellen und kaufen Sie moderne und zeitgenössische Kunstwerke. Künstler, Galerien, Veranstaltungen und Unikate auf YowPainter.",
+    "keywords": "moderne Kunst, zeitgenössische Kunst, Kunstgalerie, Kunstwerk kaufen, Künstler, Malerei, Ausstellung, Kunstmarktplatz, Kamerun, Afrika",
+    "homeOgTitle": "YowPainter — Zeitgenössische Kunst per Klick",
+    "homeOgDescription": "Ein eleganter Marktplatz, um Künstler zu entdecken und einzigartige Werke zu erwerben."
   }
 }

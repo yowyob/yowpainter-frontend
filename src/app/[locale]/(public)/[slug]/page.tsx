@@ -3,6 +3,8 @@ import { ArtistsService } from '@/lib/services/ArtistsService'
 import ArtistSpaceContent from './ArtistSpaceContent'
 import { configureServerApi } from '@/lib/serverApiInit'
 import { getTranslations } from 'next-intl/server'
+import { pageMetadata, personLd, localizedUrl } from '@/lib/seo'
+import JsonLd from '@/components/seo/JsonLd'
 
 configureServerApi()
 
@@ -35,39 +37,22 @@ export async function generateMetadata({ params }: ArtistPageProps): Promise<Met
     return {
       title: t('metadataNotFoundTitle'),
       description: t('metadataNotFoundDescription'),
+      robots: { index: false, follow: true },
     }
   }
 
   const displayName = artist.artistName || `${artist.firstName ?? ''} ${artist.lastName ?? ''}`.trim()
   const bio = artist.bio || t('metadataFallbackBio', { name: displayName })
-  const imageUrl = artist.profilePictureUrl || `${process.env.NEXT_PUBLIC_APP_URL || 'https://yowpainter.com'}/images/og-default.png`
-  const pageUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'https://yowpainter.com'}/${slug}`
+  const description = bio.length > 160 ? bio.substring(0, 157) + '...' : bio
 
-  return {
-    title: `${displayName} | YowPainter`,
-    description: bio.length > 160 ? bio.substring(0, 157) + '...' : bio,
-    openGraph: {
-      type: 'profile',
-      title: t('metadataArtistTitle', { name: displayName }),
-      description: bio.length > 160 ? bio.substring(0, 157) + '...' : bio,
-      url: pageUrl,
-      images: [
-        {
-          url: imageUrl,
-          width: 1200,
-          height: 630,
-          alt: t('metadataProfileAlt', { name: displayName }),
-        },
-      ],
-      siteName: 'YowPainter',
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: t('metadataArtistTitle', { name: displayName }),
-      description: bio.length > 160 ? bio.substring(0, 157) + '...' : bio,
-      images: [imageUrl],
-    },
-  }
+  return pageMetadata({
+    locale,
+    path: `/${slug}`,
+    title: displayName,
+    description,
+    type: 'profile',
+    images: artist.profilePictureUrl ? [artist.profilePictureUrl] : undefined,
+  })
 }
 
 /**
@@ -76,8 +61,26 @@ export async function generateMetadata({ params }: ArtistPageProps): Promise<Met
  * can render immediately without an extra loading state.
  */
 export default async function ArtistSlugPage({ params }: ArtistPageProps) {
-  const { slug } = await params
+  const { locale, slug } = await params
   const artist = await getArtist(slug)
 
-  return <ArtistSpaceContent slug={slug} initialArtist={artist} />
+  const displayName = artist
+    ? artist.artistName || `${artist.firstName ?? ''} ${artist.lastName ?? ''}`.trim()
+    : ''
+
+  return (
+    <>
+      {artist && (
+        <JsonLd
+          data={personLd({
+            name: displayName,
+            description: artist.bio || undefined,
+            image: artist.profilePictureUrl || undefined,
+            url: localizedUrl(locale, `/${slug}`),
+          })}
+        />
+      )}
+      <ArtistSpaceContent slug={slug} initialArtist={artist} />
+    </>
+  )
 }

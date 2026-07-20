@@ -5,35 +5,57 @@ import Link from 'next/link';
 import { Calendar, MapPin, Users, User, ArrowLeft, Clock, Share2 } from 'lucide-react';
 import { getEventById } from '@/lib/api/events';
 import { TicketReservation } from '@/components/events/TicketReservation';
+import EventLocationMap from '@/components/events/EventLocationMap';
 import { MyTickets } from '@/components/events/MyTickets';
 import { AnimatedBlob } from '@/components/ui/AnimatedBlob';
 import type { Metadata } from 'next';
+import { pageMetadata, eventLd, localizedUrl } from '@/lib/seo';
+import JsonLd from '@/components/seo/JsonLd';
 
 interface EventPageProps {
-    params: Promise<{ id: string }>;
+    params: Promise<{ locale: string; id: string }>;
 }
 
 export async function generateMetadata({ params }: EventPageProps): Promise<Metadata> {
-    const { id } = await params;
+    const { locale, id } = await params;
     const event = await getEventById(id).catch(() => null);
 
     if (!event) {
-        return { title: 'Événement non trouvé' };
+        return { title: 'Événement non trouvé', robots: { index: false, follow: true } };
     }
 
-    return {
-        title: `${event.title} | YowPainter`,
-        description: event.description.slice(0, 160),
-    };
+    return pageMetadata({
+        locale,
+        path: `/events/${id}`,
+        title: event.title,
+        description: (event.description || '').slice(0, 160),
+        type: 'article',
+        images: event.posterUrl ? [event.posterUrl] : undefined,
+    });
 }
 
 export default async function EventDetailPage({ params }: EventPageProps) {
-    const { id } = await params;
+    const { locale, id } = await params;
     const event = await getEventById(id).catch(() => null);
 
     if (!event) {
         notFound();
     }
+
+    const eventJsonLd = eventLd({
+        name: event.title,
+        description: event.description,
+        startDate: event.startDate,
+        endDate: event.endDate,
+        locationName: event.location,
+        latitude: event.latitude,
+        longitude: event.longitude,
+        image: event.posterUrl,
+        url: localizedUrl(locale, `/events/${id}`),
+        price: event.eventType === 'PAID' ? event.price : null,
+        currency: 'XAF',
+        organizer: event.artistName,
+    });
 
     const formatDateRange = () => {
         const start = new Date(event.startDate);
@@ -55,7 +77,8 @@ export default async function EventDetailPage({ params }: EventPageProps) {
 
     return (
         <div className="relative min-h-screen canvas-texture canvas-grain selection:bg-accent selection:text-white pb-32">
-            
+            <JsonLd data={eventJsonLd} />
+
             {/* BACKGROUND ARTISTIC ELEMENTS */}
             <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
                 <AnimatedBlob className="top-[-10%] right-[-10%] w-[60vw] h-[60vw]" opacity={0.05} />
@@ -172,6 +195,10 @@ export default async function EventDetailPage({ params }: EventPageProps) {
                                                 <p className="text-sm text-foreground/50 italic mt-1">{event.locationType === 'VIRTUAL' ? 'Salon Virtuel YP' : 'Galerie Physique'}</p>
                                             </div>
                                         </div>
+
+                                        {event.latitude != null && event.longitude != null && (
+                                            <EventLocationMap latitude={event.latitude} longitude={event.longitude} label={event.location} />
+                                        )}
 
                                         <div className="flex gap-6">
                                             <div className="w-14 h-14 rounded-2xl bg-foreground/5 flex items-center justify-center flex-shrink-0">

@@ -4,6 +4,7 @@ import { EventGrid } from '@/components/events/EventGrid';
 import { Suspense } from 'react';
 import { AnimatedBlob } from '@/components/ui/AnimatedBlob';
 import { getTranslations } from 'next-intl/server';
+import { pageMetadata } from '@/lib/seo';
 
 export const generateMetadata = async ({
     params,
@@ -13,10 +14,12 @@ export const generateMetadata = async ({
     const { locale } = await params;
     const t = await getTranslations({ locale, namespace: 'Events' });
 
-    return {
+    return pageMetadata({
+        locale,
+        path: '/events',
         title: t('metadataTitle'),
         description: t('metadataDescription'),
-    };
+    });
 };
 
 export default async function EventsPage({

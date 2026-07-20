@@ -7,6 +7,7 @@ import { Camera, X, Loader2, Plus, Calendar, MapPin, Users, Tag } from "lucide-r
 import { EventsService } from "@/lib/services/EventsService";
 import { EventCreateRequest } from "@/lib/models/EventCreateRequest";
 import { FilesService } from "@/lib/services/FilesService";
+import LocationPicker, { LocationValue } from "@/components/events/LocationPicker";
 import { getApiErrorMessage } from "@/lib/api-error-handler";
 import { toast } from "@/lib/toast";
 import { useQueryClient } from "@tanstack/react-query";
@@ -30,7 +31,11 @@ export default function CreateEventModal({ onClose, eventToEdit }: CreateEventMo
   
   const [name, setName] = useState(eventToEdit?.name || "");
   const [description, setDescription] = useState(eventToEdit?.description || "");
-  const [location, setLocation] = useState(eventToEdit?.location || "");
+  const [locationValue, setLocationValue] = useState<LocationValue>({
+    address: eventToEdit?.location || "",
+    latitude: eventToEdit?.latitude ?? null,
+    longitude: eventToEdit?.longitude ?? null,
+  });
   const [type, setType] = useState<EventCreateRequest.type>(
     eventToEdit?.type || "EXHIBITION"
   );
@@ -115,7 +120,9 @@ export default function CreateEventModal({ onClose, eventToEdit }: CreateEventMo
         startDateTime: isoStart,
         endDateTime: isoEnd,
         description: description.trim() || undefined,
-        location: location.trim() || undefined,
+        location: locationValue.address.trim() || undefined,
+        latitude: locationValue.latitude ?? undefined,
+        longitude: locationValue.longitude ?? undefined,
         posterUrl: finalImageUrl || undefined,
         maxCapacity: maxCapacity !== "" ? Number(maxCapacity) : 0,
         ticketPrice: ticketPrice !== "" ? Number(ticketPrice) : 0,
@@ -252,16 +259,9 @@ export default function CreateEventModal({ onClose, eventToEdit }: CreateEventMo
               </div>
             </div>
 
-            <div className="space-y-1">
+            <div className="space-y-2">
               <label className="text-[10px] font-bold text-foreground/40 uppercase tracking-[0.2em] flex items-center gap-2"><MapPin size={12}/> Lieu</label>
-              <input 
-                required
-                type="text" 
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
-                className="w-full bg-transparent border-b border-foreground/10 py-2 outline-none focus:border-accent transition-colors text-sm"
-                placeholder="Ex: Galerie d'Art Moderne, Yaoundé"
-              />
+              <LocationPicker value={locationValue} onChange={setLocationValue} />
             </div>
 
             <div className="grid grid-cols-2 gap-4">

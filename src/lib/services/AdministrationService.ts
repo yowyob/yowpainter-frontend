@@ -100,4 +100,38 @@ export class AdministrationService {
             },
         });
     }
+
+    /**
+     * Lister les transactions de la blockchain pour un tenant
+     */
+    public static getBlockchainTransactions(
+        organizationId: string,
+        chainCode: string = 'COMOPS_MAIN',
+    ): CancelablePromise<Array<Record<string, any>>> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/admin/blockchain/transactions',
+            query: {
+                'organizationId': organizationId,
+                'chainCode': chainCode,
+            },
+        });
+    }
+
+    /**
+     * Valider l'intégrité de la chaine de blocs d'un tenant
+     */
+    public static validateBlockchainChain(
+        organizationId: string,
+        chainCode: string = 'COMOPS_MAIN',
+    ): CancelablePromise<Record<string, any>> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/admin/blockchain/validate',
+            query: {
+                'organizationId': organizationId,
+                'chainCode': chainCode,
+            },
+        });
+    }
 }

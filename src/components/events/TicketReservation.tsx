@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/authStore';
 import { reserveTicket } from '@/lib/api/events';
+import { PaymentsService } from '@/lib/services/PaymentsService';
 import type { Event } from '@/lib/types/event';
 
 interface TicketReservationProps {
@@ -27,10 +28,70 @@ export function TicketReservation({ event, artistSlug, onSuccess }: TicketReserv
         ? event.currentAttendees >= event.maxAttendees
         : false);
 
+    /**
+     * Interroge le backend (qui rafraîchit auprès du Kernel) jusqu'à ce que le
+     * paiement soit confirmé, puis redirige vers le billet. Le paiement lui-même
+     * se déroule dans la fenêtre `paymentWindow` (page hébergée MyCoolPay).
+     */
+    const pollPaymentStatus = (reservationId: string, paymentWindow: Window | null) => {
+        setPaymentProcessing(true);
+        let attempts = 0;
+        const maxAttempts = 100; // ~5 min à 3 s
+
+        const timer = setInterval(async () => {
+            attempts += 1;
+
+            // Le payeur a fermé la fenêtre sans finir : on arrête d'attendre.
+            if (paymentWindow && paymentWindow.closed && attempts > 2) {
+                clearInterval(timer);
+                setPaymentProcessing(false);
+                setLoading(false);
+                setError("Fenêtre de paiement fermée. Si vous avez déjà payé, votre billet sera validé sous peu.");
+                return;
+            }
+
+            try {
+                const res = await PaymentsService.getPaymentStatus(reservationId);
+                if (res.status === 'SUCCEEDED') {
+                    clearInterval(timer);
+                    try { paymentWindow?.close(); } catch { /* ignore */ }
+                    if (onSuccess) onSuccess();
+                    router.push(`/tickets/${reservationId}`);
+                    return;
+                }
+                if (res.status === 'FAILED') {
+                    clearInterval(timer);
+                    try { paymentWindow?.close(); } catch { /* ignore */ }
+                    setPaymentProcessing(false);
+                    setLoading(false);
+                    setError("Le paiement a échoué ou a été annulé. Aucun montant n'a été débité.");
+                    return;
+                }
+            } catch {
+                // Erreur réseau ponctuelle : on continue de poller.
+            }
+
+            if (attempts >= maxAttempts) {
+                clearInterval(timer);
+                setPaymentProcessing(false);
+                setLoading(false);
+                setError("Délai de confirmation dépassé. Si vous avez payé, votre billet sera validé sous peu (consultez « Mes billets »).");
+            }
+        }, 3000);
+    };
+
     const handleReservation = async () => {
         if (!name || !email || (event.eventType === 'PAID' && !phoneNumber)) {
             setError('Veuillez remplir tous les champs obligatoires');
             return;
+        }
+
+        // Pour un événement payant, on ouvre la fenêtre de paiement SYNCHRONEMENT
+        // (dans le handler du clic) afin d'éviter le blocage des popups : les
+        // navigateurs bloquent window.open appelé après un await.
+        let paymentWindow: Window | null = null;
+        if (event.eventType === 'PAID') {
+            paymentWindow = window.open('', 'yowpainter_payment', 'width=480,height=760');
         }
 
         setLoading(true);
@@ -54,15 +115,44 @@ export function TicketReservation({ event, artistSlug, onSuccess }: TicketReserv
                 purchasedAt: new Date().toISOString()
             };
             localStorage.setItem(`ticket_${reservation.id}`, JSON.stringify(enrichedTicket));
-            
+
+            // Événement payant : le paiement Mobile Money se finalise sur la page
+            // hébergée du PSP. Le backend renvoie une redirectUrl (MyCoolPay) qu'il
+            // faut charger dans la fenêtre de paiement, puis on POLL le statut pour
+            // rediriger vers le billet dès que le Kernel confirme l'encaissement
+            // (c'est aussi ce qui crédite le portefeuille de l'artiste).
+            if (event.eventType === 'PAID') {
+                const redirectUrl = (reservation as { checkout?: { redirectUrl?: string } })?.checkout?.redirectUrl;
+                if (redirectUrl) {
+                    if (paymentWindow) {
+                        paymentWindow.location.href = redirectUrl;
+                    } else {
+                        // Popup bloqué : repli sur la fenêtre courante. Au retour,
+                        // la page /payment/return vérifiera le statut.
+                        window.location.href = redirectUrl;
+                        return;
+                    }
+                    pollPaymentStatus(reservation.id, paymentWindow);
+                    return;
+                }
+                // Pas de redirectUrl → le PSP a refusé d'initier l'encaissement
+                // (montant trop bas ou numéro Mobile Money invalide).
+                try { paymentWindow?.close(); } catch { /* ignore */ }
+                setError("Le paiement n'a pas pu être initié. Vérifiez votre numéro Mobile Money (MTN/Orange) et un montant d'au moins 100 FCFA.");
+                setLoading(false);
+                setPaymentProcessing(false);
+                return;
+            }
+
             if (onSuccess) onSuccess();
 
-            // Rediriger vers la page de téléchargement du billet
+            // Événement gratuit → billet immédiat.
             router.push(`/tickets/${reservation.id}`);
-            
+            setLoading(false);
+
         } catch (err: any) {
+            try { paymentWindow?.close(); } catch { /* ignore */ }
             setError(err.message || 'Erreur lors de la réservation');
-        } finally {
             setLoading(false);
             setPaymentProcessing(false);
         }

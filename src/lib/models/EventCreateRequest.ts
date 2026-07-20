@@ -9,6 +9,8 @@ export type EventCreateRequest = {
     startDateTime: string;
     endDateTime: string;
     location?: string;
+    latitude?: number;
+    longitude?: number;
     type: EventCreateRequest.type;
     maxCapacity?: number;
     ticketPrice?: number;

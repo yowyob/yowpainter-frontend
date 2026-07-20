@@ -35,4 +35,22 @@ export class PaymentsService {
             url: '/api/payment/history',
         });
     }
+    /**
+     * Statut d'un paiement, rafraîchi auprès du Kernel.
+     * Utilisé par le polling après redirection vers la page de paiement du PSP.
+     * @param referenceId identifiant métier (réservation / commande)
+     * @returns { referenceId, status } — status ∈ PENDING | SUCCEEDED | FAILED
+     * @throws ApiError
+     */
+    public static getPaymentStatus(
+        referenceId: string,
+    ): CancelablePromise<{ referenceId: string; status: 'PENDING' | 'SUCCEEDED' | 'FAILED' | 'REFUNDED' }> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/payment/status/{referenceId}',
+            path: {
+                'referenceId': referenceId,
+            },
+        });
+    }
 }

@@ -4,6 +4,8 @@ import { LandingArtists } from "@/components/layout/LandingArtists";
 import { LandingNews } from "@/components/layout/LandingNews";
 import { LandingAcquisitions } from "@/components/layout/LandingAcquisitions";
 import { LandingAtelier } from "@/components/layout/LandingAtelier";
+import { FaqSection } from "@/components/layout/FaqSection";
+import { Testimonials } from "@/components/layout/Testimonials";
 import { useTranslations } from "next-intl";
 
 export default function Home() {
@@ -146,6 +148,12 @@ export default function Home() {
 
         <LandingArtists />
       </section>
+
+      {/* TÉMOIGNAGES : preuve sociale */}
+      <Testimonials />
+
+      {/* FAQ : réponses aux questions fréquentes */}
+      <FaqSection />
 
     </div>
   );

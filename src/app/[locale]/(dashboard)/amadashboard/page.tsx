@@ -10,12 +10,14 @@ import { BuyerProfileService } from '@/lib/services/BuyerProfileService'
 import { ShopOrdersService } from '@/lib/services/ShopOrdersService'
 import { getMyTickets } from '@/lib/api/events'
 import Link from 'next/link'
-import { LogOut, User, Loader2 } from 'lucide-react'
+import { LogOut, User, Loader2, Download, FileText } from 'lucide-react'
+import { InvoicesService } from '@/lib/services/InvoicesService'
 import { useRequireRole } from '@/hooks/useRequireRole'
 import Navbar from '@/components/layout/Navbar'
 import { Skeleton, SkeletonCircle } from '@/components/ui/Skeleton'
 import { formatPrice } from '@/lib/utils'
 import { useLocale, useTranslations } from 'next-intl'
+import DashboardSidebar from '@/components/dashboard/DashboardSidebar'
 
 /* ─────────────────────────────────────────────
    TYPES
@@ -189,7 +191,7 @@ function ArticleCard({ item, onClick }: { item: LikedItem; onClick: () => void }
 /* ─────────────────────────────────────────────
    PURCHASES TAB
  ───────────────────────────────────────────── */
-function PurchasesTab({ purchases }: { purchases: Purchase[] }) {
+function PurchasesTab({ purchases, invoices }: { purchases: Purchase[], invoices?: any[] }) {
   const t = useTranslations('Dashboard')
   if (purchases.length === 0)
     return <EmptyState
@@ -201,31 +203,60 @@ function PurchasesTab({ purchases }: { purchases: Purchase[] }) {
 
   return (
     <div className="flex flex-col gap-3">
-      {purchases.map(p => (
-        <div key={p.id} className="flex items-center gap-4 p-4 rounded-xl border border-black/[0.07] bg-cream hover:border-black/[0.15] transition-colors">
-          {/* mini sac */}
-          <div className="shrink-0 w-16">
-            <svg className="block mx-auto w-[60%]" viewBox="0 0 80 28" fill="none">
-              <path d="M10 26 Q10 4 40 4 Q70 4 70 26" stroke={p.handleColor} strokeWidth="6" strokeLinecap="round" />
-            </svg>
-            <div className="relative rounded-lg -mt-0.5 overflow-hidden shadow-sm">
-              <div className="w-full aspect-square" style={{ background: p.bg }} />
-              <div className="bg-ink h-3" />
+      {purchases.map(p => {
+        const inv = invoices?.find(i => i.order?.id === p.id);
+        const pdfUrl = inv ? InvoicesService.getInvoicePdfUrl(inv.invoiceNumber) : null;
+        
+        return (
+          <div key={p.id} className="flex flex-col gap-3 p-4 rounded-xl border border-black/[0.07] bg-cream hover:border-black/[0.15] transition-colors">
+            <div className="flex items-center gap-4">
+              {/* mini sac */}
+              <div className="shrink-0 w-16">
+                <svg className="block mx-auto w-[60%]" viewBox="0 0 80 28" fill="none">
+                  <path d="M10 26 Q10 4 40 4 Q70 4 70 26" stroke={p.handleColor} strokeWidth="6" strokeLinecap="round" />
+                </svg>
+                <div className="relative rounded-lg -mt-0.5 overflow-hidden shadow-sm">
+                  <div className="w-full aspect-square" style={{ background: p.bg }} />
+                  <div className="bg-ink h-3" />
+                </div>
+              </div>
+              {/* infos */}
+              <div className="flex-1 min-w-0">
+                <div className="font-display text-base font-semibold truncate">{p.title}</div>
+                <div className="text-[12px] text-muted mt-0.5">{p.articleType} · {p.artist}</div>
+                <div className="text-[11px] text-muted mt-1">{t("orderTitle")} {p.purchasedAt}</div>
+              </div>
+              {/* prix + statut */}
+              <div className="shrink-0 flex flex-col items-end gap-1.5">
+                <span className="font-display text-base font-semibold text-accent">{p.price}</span>
+                <StatusBadge status={p.status} />
+              </div>
             </div>
+            {inv && (
+              <div className="pt-3 border-t border-black/[0.05] flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs bg-black/[0.01] px-4 py-2.5 rounded-lg">
+                <div className="flex items-center gap-2 text-muted">
+                  <FileText size={14} className="text-accent" />
+                  <span>Facture: <span className="font-bold text-ink">{inv.invoiceNumber}</span></span>
+                  <span className="text-[10px] px-2 py-0.5 rounded bg-black/[0.05] uppercase tracking-wider font-bold">
+                    {inv.status}
+                  </span>
+                </div>
+                {pdfUrl && (
+                  <a
+                    href={pdfUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-ink text-cream hover:bg-accent hover:text-white rounded-lg text-[10px] font-bold uppercase tracking-wider transition-colors shadow-sm"
+                  >
+                    <Download size={12} />
+                    Télécharger PDF
+                  </a>
+                )}
+              </div>
+            )}
           </div>
-          {/* infos */}
-          <div className="flex-1 min-w-0">
-            <div className="font-display text-base font-semibold truncate">{p.title}</div>
-            <div className="text-[12px] text-muted mt-0.5">{p.articleType} · {p.artist}</div>
-            <div className="text-[11px] text-muted mt-1">{t("orderTitle")} {p.purchasedAt}</div>
-          </div>
-          {/* prix + statut */}
-          <div className="shrink-0 flex flex-col items-end gap-1.5">
-            <span className="font-display text-base font-semibold text-accent">{p.price}</span>
-            <StatusBadge status={p.status} />
-          </div>
-        </div>
-      ))}
+        );
+      })}
     </div>
   )
 }
@@ -548,6 +579,13 @@ export default function AmateurDashboardPage() {
     enabled: !!user,
   })
 
+  // 2b. Factures
+  const { data: invoicesData } = useQuery({
+    queryKey: ['buyer-invoices'],
+    queryFn: () => InvoicesService.getMyPurchases(),
+    enabled: !!user,
+  })
+
   // 3. Billets
   const { data: ticketsData, isLoading: isTicketsLoading } = useQuery({
     queryKey: ['buyer-tickets'],
@@ -696,25 +734,22 @@ export default function AmateurDashboardPage() {
         </div>
       </div>
 
-      {/* Tabnav Harmonisé */}
-      <nav className="sticky top-[80px] md:top-[88px] z-40 glass-elegant shadow-sm border-b border-foreground/10">
-        <div className="max-w-[1200px] mx-auto px-4 md:px-12 flex overflow-x-auto no-scrollbar gap-4">
-          {TABS.map(tTab => (
-            <button key={tTab.id} onClick={() => setTab(tTab.id)}
-              className={`relative flex items-center gap-2 px-6 py-4 text-xs uppercase tracking-[0.1em] transition-all whitespace-nowrap ${tab === tTab.id ? 'text-foreground font-bold' : 'text-foreground/50 hover:text-foreground'}`}>
-              {tTab.icon}
-              {tTab.label}
-              <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium transition-colors ${tab === tTab.id ? 'bg-foreground text-background' : 'bg-foreground/5 text-foreground/60'}`}>
-                {(tTab.id === 'likes' && false) || (tTab.id === 'achats' && isPurchasesLoading) || (tTab.id === 'billets' && isTicketsLoading) ? '…' : tTab.count}
-              </span>
-              {tab === tTab.id && <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-accent rounded-t" />}
-            </button>
-          ))}
-        </div>
-      </nav>
+      {/* Layout Sidebar + Contenu */}
+      <div className="relative z-10 max-w-[1200px] mx-auto px-4 md:px-12 flex flex-col lg:flex-row gap-8 pt-8">
+        <DashboardSidebar
+          title={t('buyerSpace')}
+          items={TABS.map(tTab => ({
+            id: tTab.id,
+            label: tTab.label,
+            icon: tTab.icon,
+            badge: (tTab.id === 'achats' && isPurchasesLoading) || (tTab.id === 'billets' && isTicketsLoading) ? '…' : tTab.count,
+          }))}
+          active={tab}
+          onSelect={(id) => setTab(id as Tab)}
+        />
 
-      {/* Contenu */}
-      <div className="pb-16 pt-8 relative z-10 max-w-[1200px] mx-auto px-4 md:px-12">
+        {/* Contenu */}
+        <div className="flex-1 min-w-0 pb-16">
 
         {tab === 'likes' && (
           <LikedGrid items={LIKED} onOpen={i => setModal({ index: i })} />
@@ -724,7 +759,7 @@ export default function AmateurDashboardPage() {
             <div className="flex flex-col gap-3">
               {Array.from({ length: 3 }).map((_, i) => <Skeleton key={i} className="h-20 w-full rounded-xl" />)}
             </div>
-          ) : <PurchasesTab purchases={PURCHASES} />
+          ) : <PurchasesTab purchases={PURCHASES} invoices={invoicesData} />
         )}
         {tab === 'billets' && (
           isTicketsLoading ? (
@@ -734,6 +769,7 @@ export default function AmateurDashboardPage() {
           ) : <TicketsTab tickets={MY_TICKETS} />
         )}
 
+        </div>
       </div>
 
       {/* Modal Lecture */}

@@ -249,7 +249,7 @@ Le backend proxy l’inscription admin vers le kernel (sign-up + rôle `TENANT_A
 1. Artiste crée un produit → `POST /api/shop/products` OK (header `X-Organization-Id` présent dans Network tab)
 2. Catalogue public → produits visibles sur `/shop` et `/[slug]`
 3. Acheteur passe commande → checkout OK
-4. Paiement CamPay → statut commande mis à jour
+4. Paiement via le Kernel (MyCoolPay / Stripe) → statut commande mis à jour
 
 ### Régression
 

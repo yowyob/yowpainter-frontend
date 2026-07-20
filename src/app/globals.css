@@ -8,6 +8,7 @@
 
   /* Couleur d'accentuation élégante (Terracotta / Or brossé) */
   --accent: #C26D5C;
+  --accent-rgb: 194, 109, 92;
   --accent-light: #E8B4A8;
 
   --muted: #9A8880;
@@ -43,6 +44,7 @@
     --background: #121211;
     --foreground: #F5F4F0;
     --accent: #D48878;
+    --accent-rgb: 212, 136, 120;
     --accent-light: #8A4B3D;
     --card-surface: #1A1918;
     --card-surface-fg: #E3E0DA;
@@ -57,6 +59,7 @@ html.dark {
   --background: #121211;
   --foreground: #F5F4F0;
   --accent: #D48878;
+  --accent-rgb: 212, 136, 120;
   --accent-light: #8A4B3D;
   --card-surface: #1A1918;
   --card-surface-fg: #E3E0DA;
@@ -69,6 +72,7 @@ html.light {
   --background: #F2EFE9;
   --foreground: #141210;
   --accent: #C26D5C;
+  --accent-rgb: 194, 109, 92;
   --accent-light: #E8B4A8;
   --card-surface: #1E1C1A;
   --card-surface-fg: #F0EDE8;

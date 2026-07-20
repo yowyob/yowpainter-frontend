@@ -8,6 +8,7 @@ import { Skeleton } from '@/components/ui/Skeleton'
 import { Calendar, ChevronLeft, MapPin, Users, Share2, Clock } from 'lucide-react'
 import { getEventById } from '@/lib/api/events'
 import { TicketReservation } from '@/components/events/TicketReservation'
+import EventLocationMap from '@/components/events/EventLocationMap'
 
 export default function EventDetailPage() {
   const { slug, id } = useParams() as { slug: string; id: string }
@@ -232,6 +233,11 @@ export default function EventDetailPage() {
                         <p className="text-xs text-foreground/40 font-mono mt-2 uppercase tracking-widest border-l border-amber-500/30 pl-3">
                           {event.locationType === 'VIRTUAL' ? 'Salon Virtuel YP' : 'Galerie Physique'}
                         </p>
+                        {event.latitude != null && event.longitude != null && (
+                          <div className="mt-5 max-w-xl">
+                            <EventLocationMap latitude={event.latitude} longitude={event.longitude} label={event.location} />
+                          </div>
+                        )}
                       </div>
                     </div>
 

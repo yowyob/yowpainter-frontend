@@ -105,6 +105,18 @@ export default function WalletTab() {
               {formatPrice(balance?.balance || 0)}
             </h2>
           )}
+          {balance?.blockchainWalletId && (
+            <div className="mt-4 pt-4 border-t border-foreground/10 space-y-1.5 text-[10px] font-mono text-foreground/50 text-left">
+              <div className="flex items-center justify-between">
+                <span>Fingerprint:</span>
+                <span className="font-bold">{balance.blockchainFingerprint ? `${balance.blockchainFingerprint.substring(0, 12)}...` : 'N/A'}</span>
+              </div>
+              <div className="flex items-center justify-between font-sans text-[9px] uppercase tracking-wider text-emerald-600 bg-emerald-500/5 px-2 py-0.5 rounded">
+                <span>Grand Ledger Actif</span>
+                <TrendingUp size={10} />
+              </div>
+            </div>
+          )}
           <p className="text-[10px] text-foreground/40 mt-6 font-bold uppercase tracking-widest flex items-center gap-2">
             <CheckCircle2 size={12} className="text-emerald-500" />
             {t("accountVerified")}
@@ -168,29 +180,37 @@ export default function WalletTab() {
               </div>
             ) : (
               transactions.map((tx) => (
-                <div key={tx.id} className="glass-elegant hover:bg-foreground/[0.02] transition-all rounded-[2rem] p-5 flex items-center gap-6 border border-foreground/5 group">
-                  <div className={`w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 ${
-                    tx.type === 'SALE' ? 'bg-emerald-500/10 text-emerald-600' : 
-                    tx.type === 'WITHDRAWAL' ? 'bg-amber-500/10 text-amber-600' : 'bg-foreground/5 text-foreground/40'
-                  }`}>
-                    {tx.type === 'SALE' ? <ArrowDownLeft size={24} /> : <ArrowUpRight size={24} />}
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex items-center justify-between mb-1">
-                      <h4 className="font-bold text-sm">{tx.description || (tx.type === 'SALE' ? t('artworkSale') : t('fundWithdrawal'))}</h4>
-                      <span className={`font-mono text-sm font-bold ${tx.type === 'SALE' ? 'text-emerald-600' : 'text-amber-600'}`}>
-                        {tx.type === 'SALE' ? '+' : '-'}{formatPrice(tx.amount || 0)}
-                      </span>
+                <div key={tx.id} className="glass-elegant hover:bg-foreground/[0.02] transition-all rounded-[2rem] p-5 flex flex-col gap-3 border border-foreground/5 group">
+                  <div className="flex items-center gap-6 w-full">
+                    <div className={`w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 ${
+                      tx.type === 'SALE' ? 'bg-emerald-500/10 text-emerald-600' : 
+                      tx.type === 'WITHDRAWAL' ? 'bg-amber-500/10 text-amber-600' : 'bg-foreground/5 text-foreground/40'
+                    }`}>
+                      {tx.type === 'SALE' ? <ArrowDownLeft size={24} /> : <ArrowUpRight size={24} />}
                     </div>
-                    <div className="flex items-center gap-4 text-[10px] text-foreground/30 font-bold uppercase tracking-widest">
-                      <span>{new Date(tx.createdAt!).toLocaleDateString(locale === 'fr' ? 'fr-FR' : (locale === 'de' ? 'de-DE' : 'en-US'), { day: 'numeric', month: 'long' })}</span>
-                      <span className="w-1 h-1 rounded-full bg-foreground/10"></span>
-                      <span>Ref: {tx.id?.slice(0, 8)}</span>
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between mb-1">
+                        <h4 className="font-bold text-sm">{tx.description || (tx.type === 'SALE' ? t('artworkSale') : t('fundWithdrawal'))}</h4>
+                        <span className={`font-mono text-sm font-bold ${tx.type === 'SALE' ? 'text-emerald-600' : 'text-amber-600'}`}>
+                          {tx.type === 'SALE' ? '+' : '-'}{formatPrice(tx.amount || 0)}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-4 text-[10px] text-foreground/30 font-bold uppercase tracking-widest">
+                        <span>{new Date(tx.createdAt!).toLocaleDateString(locale === 'fr' ? 'fr-FR' : (locale === 'de' ? 'de-DE' : 'en-US'), { day: 'numeric', month: 'long' })}</span>
+                        <span className="w-1 h-1 rounded-full bg-foreground/10"></span>
+                        <span>Ref: {tx.id?.slice(0, 8)}</span>
+                      </div>
+                    </div>
+                    <div className="opacity-0 group-hover:opacity-100 transition-opacity">
+                      <ChevronRight size={16} className="text-foreground/20" />
                     </div>
                   </div>
-                  <div className="opacity-0 group-hover:opacity-100 transition-opacity">
-                    <ChevronRight size={16} className="text-foreground/20" />
-                  </div>
+                  {tx.blockchainTxHash && (
+                    <div className="pt-2.5 border-t border-foreground/5 flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 text-[9px] font-mono text-foreground/40 bg-foreground/[0.01] px-4 py-2 rounded-xl">
+                      <span className="font-bold text-accent">BLOC #{tx.blockchainBlockIndex || '1'}</span>
+                      <span className="truncate">HASH: {tx.blockchainTxHash}</span>
+                    </div>
+                  )}
                 </div>
               ))
             )}
