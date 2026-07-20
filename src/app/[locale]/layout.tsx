@@ -42,6 +42,10 @@ export async function generateMetadata({
     description: t("description"),
     keywords: t("keywords"),
     applicationName: SITE_NAME,
+    // Vérification de propriété Google Search Console (balise générée par Next).
+    verification: {
+      google: "YvTrsAM1wSOoaeYyC_S7IpPzi2HvZRkK6puseZ31-Q0",
+    },
     alternates: buildAlternates(safeLocale, ""),
     openGraph: {
       type: "website",
