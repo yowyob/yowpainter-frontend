@@ -15,7 +15,7 @@ export function ArtistPublicHero({ artist, isLoading }: ArtistPublicHeroProps) {
   const displayName = artist?.artistName || (artist ? `${artist.firstName} ${artist.lastName}` : t('artistFallback'))
 
   return (
-    <section className="relative w-full pt-0 pb-8 sm:pb-12 z-0 overflow-x-hidden">
+    <section className="relative w-full pt-0 pb-8 sm:pb-12 overflow-x-hidden">
       
       {/* ── FULL-WIDTH COVER IMAGE ── */}
       <div className="absolute top-0 left-0 w-full h-[240px] sm:h-[320px] md:h-[450px] -z-10">

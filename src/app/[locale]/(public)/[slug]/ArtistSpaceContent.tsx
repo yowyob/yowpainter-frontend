@@ -15,7 +15,7 @@ interface ArtistSpaceContentProps {
 
 function ArtistPageSkeleton() {
   return (
-    <div className="min-h-screen canvas-texture canvas-grain overflow-x-hidden">
+    <div className="min-h-screen overflow-x-hidden">
       <section className="relative w-full pt-32 pb-16 px-6 sm:px-12 max-w-[1400px] mx-auto">
         <div className="flex flex-col lg:flex-row items-center lg:items-end gap-12 lg:gap-20">
           <div className="relative shrink-0">
@@ -88,7 +88,7 @@ export default function ArtistSpaceContent({ slug, initialArtist }: ArtistSpaceC
   }
 
   return (
-    <main className="min-h-screen canvas-texture canvas-grain overflow-x-hidden">
+    <main className="min-h-screen overflow-x-hidden relative z-[1]">
       <ArtistPublicSpace artist={artist} slug={slug} />
     </main>
   )
