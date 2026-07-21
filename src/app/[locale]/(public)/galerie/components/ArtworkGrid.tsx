@@ -122,7 +122,8 @@ export default function ArtworkGrid({ artworks, isLoading }: ArtworkGridProps) {
                         videoUrls: artwork.videoUrls || [],
                     };
                 });
-                setModal({ dataset, index: e.detail.index });
+                const work = dataset[e.detail.index];
+                if (work) setModal({ dataset: [work], index: 0 });
             }
         };
         window.addEventListener('open-artwork-modal', handleOpenModal);

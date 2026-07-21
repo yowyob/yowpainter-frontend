@@ -185,7 +185,7 @@ export function ArtistPublicSpace({ artist, slug }: ArtistPublicSpaceProps) {
                         username: artist.email?.split('@')[0],
                         slug: artist.slug
                       }}
-                      onClick={() => setModal({ dataset: WORKS, index: (currentPage - 1) * ITEMS_PER_PAGE + i })}
+                      onClick={() => setModal({ dataset: [work], index: 0 })}
                     />
                   ))}
                 </div>
@@ -243,11 +243,10 @@ export function ArtistPublicSpace({ artist, slug }: ArtistPublicSpaceProps) {
                         hideArtistHeader // On cache car on est sur son profil
                         onClickImage={() => {
                           if (associatedArtwork) {
-                            const index = WORKS.findIndex(w => w.id === associatedArtwork.id);
-                            if (index !== -1) {
-                              setModal({ dataset: WORKS, index });
+                            const work = WORKS.find(w => w.id === associatedArtwork.id)
+                            if (work) {
+                              setModal({ dataset: [work], index: 0 })
                             } else {
-                              // Fallback if not found in WORKS for some reason
                               const tempWork: Work = {
                                 id: associatedArtwork.id!,
                                 title: associatedArtwork.title!,
@@ -260,8 +259,8 @@ export function ArtistPublicSpace({ artist, slug }: ArtistPublicSpaceProps) {
                                 desc: associatedArtwork.description || '',
                                 tags: associatedArtwork.tags || [],
                                 imageUrls: associatedArtwork.imageUrls || [],
-                              };
-                              setModal({ dataset: [tempWork], index: 0 });
+                              }
+                              setModal({ dataset: [tempWork], index: 0 })
                             }
                           }
                         }}

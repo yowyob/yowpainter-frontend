@@ -63,20 +63,8 @@ export default function PostModal({ dataset, initialIndex, onClose, onEdit, onSe
   useEffect(() => {
     const fn = (e: KeyboardEvent) => {
       if (e.key === 'Escape')     onClose()
-      if (e.key === 'ArrowLeft') {
-        if (mediaItems.length > 1 && currentImgIdx > 0) {
-          setCurrentImgIdx(p => p - 1)
-        } else {
-          go(-1)
-        }
-      }
-      if (e.key === 'ArrowRight') {
-        if (mediaItems.length > 1 && currentImgIdx < mediaItems.length - 1) {
-          setCurrentImgIdx(p => p + 1)
-        } else {
-          go(1)
-        }
-      }
+      if (e.key === 'ArrowLeft')  navigatePrimary(-1)
+      if (e.key === 'ArrowRight') navigatePrimary(1)
     }
     window.addEventListener('keydown', fn)
     return () => window.removeEventListener('keydown', fn)
@@ -96,6 +84,29 @@ export default function PostModal({ dataset, initialIndex, onClose, onEdit, onSe
     if (n >= 0 && n < mediaItems.length) setCurrentImgIdx(n)
   }
 
+  /** Flèches principales : d'abord les médias de l'œuvre, puis l'œuvre suivante/précédente. */
+  const navigatePrimary = (dir: -1 | 1) => {
+    if (mediaItems.length > 1) {
+      const nextImg = currentImgIdx + dir
+      if (nextImg >= 0 && nextImg < mediaItems.length) {
+        setCurrentImgIdx(nextImg)
+        return
+      }
+    }
+    // Mode carousel (vue publique) : uniquement les médias de l'œuvre ouverte
+    if (mode === 'carousel') return
+    go(dir)
+  }
+
+  const canNavigatePrimary = (dir: -1 | 1) => {
+    if (mediaItems.length > 1) {
+      const nextImg = currentImgIdx + dir
+      return nextImg >= 0 && nextImg < mediaItems.length
+    }
+    if (mode === 'carousel') return false
+    return dir === -1 ? idx > 0 : idx < dataset.length - 1
+  }
+
   const toggleLike = () => {
     setLiked(p => { setLikes(l => l + (p ? -1 : 1)); return !p })
   }
@@ -109,8 +120,8 @@ export default function PostModal({ dataset, initialIndex, onClose, onEdit, onSe
 
   const ArrowBtn = ({ dir }: { dir: -1 | 1 }) => (
     <button
-      onClick={() => go(dir)}
-      disabled={dir === -1 ? idx === 0 : idx === dataset.length - 1}
+      onClick={() => navigatePrimary(dir)}
+      disabled={!canNavigatePrimary(dir)}
       className="hidden md:flex items-center justify-center w-10 h-10 rounded-full bg-white border border-black/10 shadow-sm hover:bg-cream transition-colors disabled:opacity-0 shrink-0"
     >
       <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
@@ -146,12 +157,14 @@ export default function PostModal({ dataset, initialIndex, onClose, onEdit, onSe
               const dy = e.changedTouches[0].clientY - touchY.current;
               
               if (Math.abs(dx) > 50) {
-                // Horizontal swipe -> scroll media of the SAME artwork
+                // Horizontal swipe -> médias de la même œuvre
                 if (mediaItems.length > 1) {
                   goImg(dx > 0 ? -1 : 1)
+                } else if (mode !== 'carousel') {
+                  go(dx > 0 ? -1 : 1)
                 }
-              } else if (Math.abs(dy) > 50) {
-                // Vertical swipe -> change artwork
+              } else if (Math.abs(dy) > 50 && mode !== 'carousel') {
+                // Vertical swipe -> autre œuvre (dashboard uniquement)
                 go(dy > 0 ? -1 : 1)
               }
             }}
@@ -205,14 +218,14 @@ export default function PostModal({ dataset, initialIndex, onClose, onEdit, onSe
                     <button 
                       onClick={(e) => { e.stopPropagation(); goImg(-1); }}
                       disabled={currentImgIdx === 0}
-                      className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white opacity-0 group-hover/img:opacity-100 transition-all hover:bg-white/20 disabled:hidden z-30"
+                      className={`absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white transition-all hover:bg-white/20 disabled:hidden z-30 ${mode === 'carousel' ? 'opacity-100' : 'opacity-0 group-hover/img:opacity-100'}`}
                     >
                       <svg viewBox="0 0 24 24" className="w-5 h-5"><polyline points="15 18 9 12 15 6" fill="none" stroke="currentColor" strokeWidth={2.5} /></svg>
                     </button>
                     <button 
                       onClick={(e) => { e.stopPropagation(); goImg(1); }}
                       disabled={currentImgIdx === mediaItems.length - 1}
-                      className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white opacity-0 group-hover/img:opacity-100 transition-all hover:bg-white/20 disabled:hidden z-30"
+                      className={`absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white transition-all hover:bg-white/20 disabled:hidden z-30 ${mode === 'carousel' ? 'opacity-100' : 'opacity-0 group-hover/img:opacity-100'}`}
                     >
                       <svg viewBox="0 0 24 24" className="w-5 h-5"><polyline points="9 6 15 12 9 18" fill="none" stroke="currentColor" strokeWidth={2.5} /></svg>
                     </button>
