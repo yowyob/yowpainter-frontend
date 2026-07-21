@@ -19,25 +19,24 @@ export function LandingArtists() {
   return (
     <div className="max-w-[1400px] mx-auto flex flex-col relative z-10">
       
-      <div className="flex flex-col md:flex-row justify-between items-end mb-16 border-b border-background/20 pb-8 gap-8">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 sm:mb-16 border-b border-background/20 pb-6 sm:pb-8 gap-6 sm:gap-8">
         <div className="w-full md:w-1/2">
-          <span className="w-12 h-[1px] bg-accent block mb-6"></span>
-          <h2 className="font-serif text-4xl md:text-6xl font-medium mb-4">{t('title')}</h2>
-          <p className="text-background/60 font-light text-lg">
+          <span className="w-10 sm:w-12 h-[1px] bg-accent block mb-4 sm:mb-6"></span>
+          <h2 className="font-serif text-3xl sm:text-4xl md:text-6xl font-medium mb-3 sm:mb-4">{t('title')}</h2>
+          <p className="text-background/60 font-light text-base sm:text-lg">
             {t('description')}
           </p>
         </div>
         
-        {/* Bouton de navigation directe (plus compact sur mobile) */}
         <Link 
           href="/artists" 
-          className="text-xs uppercase tracking-[0.4em] font-bold text-accent border border-accent/30 px-8 py-3 hover:bg-accent hover:text-white transition-all whitespace-nowrap mb-2"
+          className="text-[10px] sm:text-xs uppercase tracking-[0.3em] sm:tracking-[0.4em] font-bold text-accent border border-accent/30 px-6 sm:px-8 py-3 hover:bg-accent hover:text-white transition-all whitespace-nowrap"
         >
           {t('cta')}
         </Link>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-16 w-full mb-16">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 sm:gap-16 w-full mb-12 sm:mb-16">
         {isLoading ? (
           <>
             <ArtistCardSkeleton index={0} />

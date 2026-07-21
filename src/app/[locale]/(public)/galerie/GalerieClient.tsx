@@ -60,7 +60,7 @@ export default function GalerieClient({ initialFilters }: GalerieClientProps) {
     };
 
     return (
-        <div className="w-full pt-32 pb-24 px-6 sm:px-12 max-w-[1400px] mx-auto min-h-screen canvas-texture canvas-grain relative">
+        <div className="w-full pt-24 sm:pt-32 pb-16 sm:pb-24 px-4 sm:px-6 md:px-12 max-w-[1400px] mx-auto min-h-screen canvas-texture canvas-grain relative">
             
             {/* Éléments de Décoration SVGs (Style Kandinsky/Miro) */}
             <div className="absolute inset-0 z-[-5] pointer-events-none overflow-hidden">
@@ -76,32 +76,32 @@ export default function GalerieClient({ initialFilters }: GalerieClientProps) {
             </div>
 
             {/* Fil d'Ariane & Titre */}
-            <div className="flex flex-col gap-6 mb-16 reveal relative z-10">
+            <div className="flex flex-col gap-4 sm:gap-6 mb-10 sm:mb-16 reveal relative z-10">
                 <nav className="flex items-center gap-3 text-[10px] uppercase tracking-[0.3em] font-bold text-foreground/30">
                     <Link href="/" className="hover:text-accent transition-colors">YowPainter</Link>
                     <ChevronRight className="w-3 h-3" />
                     <span className="text-accent">{t("breadcrumb")}</span>
                 </nav>
 
-                <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
+                <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-8">
                     <div className="relative">
-                        <h1 className="font-serif text-6xl md:text-8xl font-light tracking-tighter text-foreground">
+                        <h1 className="font-serif text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-light tracking-tighter text-foreground">
                             {t("titleMain")} <span className="italic font-normal">{t("titleAccent")}</span>
                         </h1>
-                        <div className="absolute -bottom-2 left-0 w-32 h-[1px] bg-accent"></div>
+                        <div className="absolute -bottom-2 left-0 w-20 sm:w-32 h-[1px] bg-accent"></div>
                     </div>
-                    <p className="text-foreground/40 max-w-sm font-light italic text-lg leading-tight">
+                    <p className="text-foreground/40 max-w-sm font-light italic text-base sm:text-lg leading-tight">
                         {t("intro")}
                     </p>
                 </div>
             </div>
 
             {/* Barre de Recherche (Flottante ou Fixe) */}
-            <div className="mb-16 reveal reveal-delay-1">
+            <div className="mb-10 sm:mb-16 reveal reveal-delay-1">
                 <SearchBar initialValue={filters.search || ""} onSearch={handleSearch} />
             </div>
 
-            <div className="flex flex-col lg:flex-row gap-16 relative">
+            <div className="flex flex-col lg:flex-row gap-8 lg:gap-16 relative">
 
                 {/* Bouton Filtres Mobile */}
                 <button

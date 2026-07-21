@@ -7,7 +7,7 @@ import { useAuthStore, getDashboardRoute } from "@/store/authStore";
 import { AuthenticationService } from "@/lib/services/AuthenticationService";
 import { RegisterRequest } from "@/lib/models/RegisterRequest";
 import { slugify } from "@/lib/utils";
-import { Eye, EyeOff, Loader2, Camera, X } from "lucide-react";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { getApiErrorMessage } from "@/lib/api-error-handler";
 import { toast } from "@/lib/toast";
 import { Link, useRouter } from "@/i18n/navigation";
@@ -121,11 +121,10 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="flex min-h-screen w-full canvas-texture canvas-grain overflow-hidden">
+    <div className="flex min-h-[calc(100vh-5rem)] w-full canvas-texture canvas-grain overflow-x-hidden">
 
       {/* Côté Gauche: Visuel Artistique */}
-      <div className="hidden lg:flex relative w-1/2 flex-col p-12 overflow-hidden bg-accent">
-        {/* L'Image d'Art en arrière-plan */}
+      <div className="hidden lg:flex relative w-1/2 flex-col p-8 xl:p-12 overflow-hidden bg-accent">
         <div className="absolute inset-0 z-0">
           <Image
             src="/images/african-art-v2.png"
@@ -139,115 +138,115 @@ export default function RegisterPage() {
 
         <AnimatedBlob className="top-[-10%] right-[-10%] w-[45vw] h-[45vw]" color="slate" opacity={0.2} />
 
-        <div className="relative z-10 mt-32">
-          <h2 className="font-serif text-6xl font-light leading-[1.1] tracking-tight mb-6 text-white">
+        <div className="relative z-10 mt-24 xl:mt-32">
+          <h2 className="font-serif text-4xl xl:text-6xl font-light leading-[1.1] tracking-tight mb-6 text-white">
             {t("visualTitleStart")} <br />
             <span className="italic font-normal">{t("visualTitleAccent")}</span>
           </h2>
-          <p className="text-xl text-white/70 max-w-md font-light leading-relaxed border-l border-white/30 pl-6 py-2">
+          <p className="text-base xl:text-xl text-white/70 max-w-md font-light leading-relaxed border-l border-white/30 pl-6 py-2">
             {t("visualDescription")}
           </p>
         </div>
 
-        <div className="relative z-10 mt-auto flex justify-between items-end border-t border-white/10 pt-8">
-          <div className="flex flex-col gap-1">
+        <div className="relative z-10 mt-auto flex justify-between items-end border-t border-white/10 pt-8 gap-4">
+          <div className="flex flex-col gap-1 min-w-0">
             <span className="text-[10px] uppercase tracking-[0.4em] font-bold text-white/40">{t("currentStatus")}</span>
             <span className="text-sm font-serif italic text-white/90">
               {role === "COLLECTOR" ? t("collectorStatus") : t("artistStatus")}
             </span>
           </div>
-          <p className="text-[10px] uppercase tracking-[0.4em] font-bold text-white/20">© 2024 {t("rights")}</p>
+          <p className="text-[10px] uppercase tracking-[0.4em] font-bold text-white/20 shrink-0">© 2024 {t("rights")}</p>
         </div>
       </div>
 
       {/* Côté Droit: Formulaire d'inscription */}
-      <div className="flex-1 flex flex-col justify-center items-center px-6 sm:px-12 lg:px-20 relative py-20 overflow-y-auto">
-        <div className="absolute top-0 right-0 w-64 h-64 text-accent/5 pointer-events-none -z-10">
+      <div className="flex-1 flex flex-col justify-center items-center px-4 sm:px-8 md:px-12 lg:px-16 xl:px-20 relative py-12 sm:py-16 lg:py-20 overflow-y-auto">
+        <div className="absolute top-0 right-0 w-40 sm:w-64 h-40 sm:h-64 text-accent/5 pointer-events-none -z-10">
           <svg viewBox="0 0 100 100" fill="currentColor"><circle cx="100" cy="0" r="100" /></svg>
         </div>
-        <div className="absolute bottom-10 right-10 w-24 h-24 border border-accent/20 rounded-full animate-spin-slow pointer-events-none"></div>
+        <div className="absolute bottom-10 right-10 w-16 sm:w-24 h-16 sm:h-24 border border-accent/20 rounded-full animate-spin-slow pointer-events-none hidden sm:block"></div>
 
         <div className="w-full max-w-md my-auto">
-          <div className="mb-12">
-            <h1 className="font-serif text-5xl font-medium mb-3 tracking-tight">{t("title")}</h1>
-            <p className="text-foreground/50 font-light italic">{t("subtitle")}</p>
+          <div className="mb-8 sm:mb-12">
+            <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl font-medium mb-3 tracking-tight">{t("title")}</h1>
+            <p className="text-foreground/50 font-light italic text-sm sm:text-base">{t("subtitle")}</p>
           </div>
 
-          <div className="flex gap-4 mb-12 p-1 bg-foreground/5 rounded-full">
+          <div className="flex gap-2 sm:gap-4 mb-8 sm:mb-12 p-1 bg-foreground/5 rounded-full">
             <button
+              type="button"
               onClick={() => setRole("COLLECTOR")}
-              className={`flex-1 py-3 px-6 rounded-full text-[10px] uppercase tracking-[0.2em] font-bold transition-all duration-500 ${role === "COLLECTOR" ? "bg-foreground text-background shadow-lg" : "text-foreground/40 hover:text-foreground"}`}
+              className={`flex-1 py-2.5 sm:py-3 px-3 sm:px-6 rounded-full text-[9px] sm:text-[10px] uppercase tracking-[0.15em] sm:tracking-[0.2em] font-bold transition-all duration-500 ${role === "COLLECTOR" ? "bg-foreground text-background shadow-lg" : "text-foreground/40 hover:text-foreground"}`}
             >
               {t("collector")}
             </button>
             <button
+              type="button"
               onClick={() => setRole("ARTIST")}
-              className={`flex-1 py-3 px-6 rounded-full text-[10px] uppercase tracking-[0.2em] font-bold transition-all duration-500 ${role === "ARTIST" ? "bg-accent text-white shadow-lg" : "text-foreground/40 hover:text-foreground"}`}
+              className={`flex-1 py-2.5 sm:py-3 px-3 sm:px-6 rounded-full text-[9px] sm:text-[10px] uppercase tracking-[0.15em] sm:tracking-[0.2em] font-bold transition-all duration-500 ${role === "ARTIST" ? "bg-accent text-white shadow-lg" : "text-foreground/40 hover:text-foreground"}`}
             >
               {t("artist")}
             </button>
           </div>
 
-          <form className="space-y-6" onSubmit={handleSubmit}>
+          <form className="space-y-5 sm:space-y-6" onSubmit={handleSubmit}>
             {error && (
-              <div className="p-4 bg-rose-500/10 border border-rose-500/20 text-rose-500 text-xs uppercase tracking-widest font-bold">
+              <div className="p-3 sm:p-4 bg-rose-500/10 border border-rose-500/20 text-rose-500 text-[10px] sm:text-xs uppercase tracking-widest font-bold break-words">
                 {error}
               </div>
             )}
 
-           
-
-            <div className="grid grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6">
               <div className="space-y-2 group">
-                <label className="text-[10px] uppercase tracking-[0.3em] font-bold text-foreground/40 group-focus-within:text-accent transition-colors px-4">{t("firstName")}</label>
+                <label className="text-[10px] uppercase tracking-[0.3em] font-bold text-foreground/40 group-focus-within:text-accent transition-colors px-2 sm:px-4">{t("firstName")}</label>
                 <input
                   type="text"
                   required
                   value={formData.firstName}
                   onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
-                  className="w-full bg-transparent border-b border-foreground/10 py-3 px-4 outline-none focus:border-accent transition-all text-lg font-light tracking-tight"
+                  className="w-full bg-transparent border-b border-foreground/10 py-3 px-2 sm:px-4 outline-none focus:border-accent transition-all text-base sm:text-lg font-light tracking-tight"
                 />
               </div>
               <div className="space-y-2 group">
-                <label className="text-[10px] uppercase tracking-[0.3em] font-bold text-foreground/40 group-focus-within:text-accent transition-colors px-4">{t("lastName")}</label>
+                <label className="text-[10px] uppercase tracking-[0.3em] font-bold text-foreground/40 group-focus-within:text-accent transition-colors px-2 sm:px-4">{t("lastName")}</label>
                 <input
                   type="text"
                   required
                   value={formData.lastName}
                   onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
-                  className="w-full bg-transparent border-b border-foreground/10 py-3 px-4 outline-none focus:border-accent transition-all text-lg font-light tracking-tight"
+                  className="w-full bg-transparent border-b border-foreground/10 py-3 px-2 sm:px-4 outline-none focus:border-accent transition-all text-base sm:text-lg font-light tracking-tight"
                 />
               </div>
             </div>
 
             {role === "ARTIST" && (
               <div className="space-y-2 group">
-                <label className="text-[10px] uppercase tracking-[0.3em] font-bold text-foreground/40 group-focus-within:text-accent transition-colors px-4">{t("artistName")}</label>
+                <label className="text-[10px] uppercase tracking-[0.3em] font-bold text-foreground/40 group-focus-within:text-accent transition-colors px-2 sm:px-4">{t("artistName")}</label>
                 <input
                   type="text"
                   required={role === "ARTIST"}
                   value={formData.artistName}
                   onChange={(e) => setFormData({ ...formData, artistName: e.target.value })}
                   placeholder={t("artistNamePlaceholder")}
-                  className="w-full bg-transparent border-b border-foreground/10 py-3 px-4 outline-none focus:border-accent transition-all text-lg font-light tracking-tight placeholder:text-foreground/5"
+                  className="w-full bg-transparent border-b border-foreground/10 py-3 px-2 sm:px-4 outline-none focus:border-accent transition-all text-base sm:text-lg font-light tracking-tight placeholder:text-foreground/5"
                 />
               </div>
             )}
 
             <div className="space-y-2 group">
-              <label className="text-[10px] uppercase tracking-[0.3em] font-bold text-foreground/40 group-focus-within:text-accent transition-colors px-4">{t("email")}</label>
+              <label className="text-[10px] uppercase tracking-[0.3em] font-bold text-foreground/40 group-focus-within:text-accent transition-colors px-2 sm:px-4">{t("email")}</label>
               <input
                 type="email"
                 required
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 placeholder={t("emailPlaceholder")}
-                className="w-full bg-transparent border-b border-foreground/10 py-3 px-4 outline-none focus:border-accent transition-all text-lg font-light tracking-tight placeholder:text-foreground/5"
+                className="w-full bg-transparent border-b border-foreground/10 py-3 px-2 sm:px-4 outline-none focus:border-accent transition-all text-base sm:text-lg font-light tracking-tight placeholder:text-foreground/5"
               />
             </div>
 
             <div className="space-y-2 group relative">
-              <label className="text-[10px] uppercase tracking-[0.3em] font-bold text-foreground/40 group-focus-within:text-accent transition-colors px-4">{t("password")}</label>
+              <label className="text-[10px] uppercase tracking-[0.3em] font-bold text-foreground/40 group-focus-within:text-accent transition-colors px-2 sm:px-4">{t("password")}</label>
               <div className="relative">
                 <input
                   type={showPassword ? "text" : "password"}
@@ -255,22 +254,22 @@ export default function RegisterPage() {
                   value={formData.password}
                   onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                   placeholder="••••••••"
-                  className="w-full bg-transparent border-b border-foreground/10 py-3 px-4 pr-12 outline-none focus:border-accent transition-all text-lg font-light tracking-tight placeholder:text-foreground/5"
+                  className="w-full bg-transparent border-b border-foreground/10 py-3 px-2 sm:px-4 pr-12 outline-none focus:border-accent transition-all text-base sm:text-lg font-light tracking-tight placeholder:text-foreground/5"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-foreground/20 hover:text-accent transition-all"
+                  className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 text-foreground/20 hover:text-accent transition-all"
                 >
                   {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
               </div>
             </div>
 
-            <div className="pt-8">
+            <div className="pt-6 sm:pt-8">
               <button
                 disabled={loading}
-                className={`w-full py-5 px-8 text-xs uppercase tracking-[0.4em] font-bold text-white transition-all duration-500 shadow-xl group flex items-center justify-center gap-4 disabled:opacity-50 disabled:cursor-not-allowed ${role === 'COLLECTOR' ? 'bg-foreground hover:bg-black' : 'bg-accent hover:opacity-90'}`}
+                className={`w-full py-4 sm:py-5 px-4 sm:px-8 text-[10px] sm:text-xs uppercase tracking-[0.25em] sm:tracking-[0.4em] font-bold text-white transition-all duration-500 shadow-xl group flex items-center justify-center gap-3 sm:gap-4 disabled:opacity-50 disabled:cursor-not-allowed ${role === 'COLLECTOR' ? 'bg-foreground hover:bg-black' : 'bg-accent hover:opacity-90'}`}
               >
                 {loading ? (
                   <Loader2 className="animate-spin" size={20} />
@@ -284,12 +283,15 @@ export default function RegisterPage() {
             </div>
           </form>
 
-          <div className="mt-12 text-center">
-            <p className="text-[10px] uppercase tracking-[0.2em] font-medium text-foreground/30 mb-8">
+          <div className="mt-8 sm:mt-12 text-center">
+            <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.15em] sm:tracking-[0.2em] font-medium text-foreground/30 mb-6 sm:mb-8 leading-relaxed">
               {t("termsPrefix")} <Link href="#" className="underline">{t("terms")}</Link>{t("termsSuffix")}
             </p>
-            <p className="text-foreground/40 font-light italic">
-              {t("alreadyAccount")} <Link href="/login" className="text-accent font-bold not-italic hover:underline ml-2">{t("login")}</Link>
+            <p className="text-foreground/40 font-light italic text-sm sm:text-base">
+              {t("alreadyAccount")}{" "}
+              <Link href="/login" className="text-accent font-bold not-italic hover:underline inline-block mt-1 sm:mt-0 sm:ml-2">
+                {t("login")}
+              </Link>
             </p>
           </div>
         </div>

@@ -35,21 +35,21 @@ export function LandingAcquisitions() {
   const [featured, vertical, panorama] = withImages
 
   return (
-    <section className="w-full max-w-[1400px] mx-auto px-6 sm:px-12 mt-20 z-10 relative">
-      <div className="flex flex-col md:flex-row justify-between items-end mb-16 border-b border-foreground/5 pb-10">
+    <section className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 md:px-12 mt-12 sm:mt-20 z-10 relative">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 sm:mb-16 border-b border-foreground/5 pb-8 sm:pb-10 gap-6">
         <div className="relative group">
-          <span className="w-24 h-[2px] bg-accent absolute -top-10 left-0 transition-all duration-700 group-hover:w-40" />
-          <h2 className="font-serif text-6xl md:text-7xl font-light mb-6 text-foreground tracking-tighter">
+          <span className="w-16 sm:w-24 h-[2px] bg-accent absolute -top-6 sm:-top-10 left-0 transition-all duration-700 group-hover:w-40" />
+          <h2 className="font-serif text-4xl sm:text-6xl md:text-7xl font-light mb-4 sm:mb-6 text-foreground tracking-tighter">
             {t('newTitleStart')}{' '}
             <span className="italic font-normal">{t('newTitleAccent')}</span>
           </h2>
-          <p className="text-foreground/40 font-light text-2xl max-w-md leading-tight">
+          <p className="text-foreground/40 font-light text-lg sm:text-2xl max-w-md leading-tight">
             {t('newDescription')}
           </p>
         </div>
         <Link
           href="/galerie"
-          className="group flex items-center gap-4 text-xs font-bold uppercase tracking-[0.3em] text-accent hover:text-foreground transition-all mt-10 md:mt-0"
+          className="group flex items-center gap-4 text-[10px] sm:text-xs font-bold uppercase tracking-[0.25em] sm:tracking-[0.3em] text-accent hover:text-foreground transition-all"
         >
           <span className="border-b border-accent/30 group-hover:border-foreground pb-2">
             {t('browseGallery')}

@@ -69,31 +69,31 @@ export default function ShopIndexPage() {
   const isLoading = isLoadingProducts || (artistIds.length > 0 && isLoadingArtists) || (artworkIds.length > 0 && isLoadingArtworks);
 
   return (
-    <div className="mx-auto w-full max-w-[1400px] px-6 sm:px-12 pt-32 pb-24 canvas-texture canvas-grain relative overflow-hidden">
+    <div className="mx-auto w-full max-w-[1400px] px-4 sm:px-6 md:px-12 pt-24 sm:pt-32 pb-16 sm:pb-24 canvas-texture canvas-grain relative overflow-x-hidden">
       
       {/* Backgrounds */}
-      <div className="absolute inset-0 z-[-5] pointer-events-none">
+      <div className="absolute inset-0 z-[-5] pointer-events-none overflow-hidden">
         <AnimatedBlob className="top-[-5%] right-[-10%] w-[40vw] h-[40vw]" color="accent" opacity={0.1} />
         <AnimatedBlob className="bottom-[10%] left-[5%] w-[30vw] h-[30vw]" color="amber" opacity={0.05} delay />
       </div>
 
       {/* Hero Section: Artistique & Épuré */}
-      <section className="relative w-full min-h-[40vh] flex flex-col justify-center mb-24 reveal">
+      <section className="relative w-full min-h-[28vh] sm:min-h-[36vh] md:min-h-[40vh] flex flex-col justify-center mb-12 sm:mb-20 md:mb-24 reveal">
         
         {/* Lettrine Géante en Arrière-plan (Esprit du site) */}
-        <div className="absolute top-1/2 left-0 -translate-y-1/2 -translate-x-16 font-serif text-[30rem] font-black text-foreground/[0.02] select-none pointer-events-none z-0 leading-none">
+        <div className="absolute top-1/2 left-0 -translate-y-1/2 -translate-x-8 sm:-translate-x-16 font-serif text-[12rem] sm:text-[20rem] md:text-[30rem] font-black text-foreground/[0.02] select-none pointer-events-none z-0 leading-none">
           S
         </div>
 
         <div className="relative z-10 max-w-4xl">
-          <div className="flex items-center gap-6 mb-10">
-            <span className="w-16 h-[1px] bg-accent"></span>
+          <div className="flex items-center gap-4 sm:gap-6 mb-6 sm:mb-10">
+            <span className="w-10 sm:w-16 h-[1px] bg-accent"></span>
             <p className="text-[10px] uppercase tracking-[0.5em] font-black text-accent">
               {t("eyebrow")}
             </p>
           </div>
           
-          <h1 className="font-serif text-6xl md:text-8xl lg:text-9xl font-light leading-[0.9] tracking-tighter mb-8">
+          <h1 className="font-serif text-4xl sm:text-6xl md:text-8xl lg:text-9xl font-light leading-[0.9] tracking-tighter mb-6 sm:mb-8">
             {t("heroTitleStart")} <br />
             <span className="italic font-normal text-accent relative">
               {t("heroTitleAccent")}
@@ -102,14 +102,14 @@ export default function ShopIndexPage() {
         </div>
       </section>
 
-      <div className="mb-16 flex flex-col md:flex-row justify-between items-end gap-10 border-b border-foreground/5 pb-12">
+      <div className="mb-10 sm:mb-16 flex flex-col md:flex-row justify-between items-start md:items-end gap-6 sm:gap-10 border-b border-foreground/5 pb-8 sm:pb-12">
         <div className="max-w-md">
-          <h2 className="font-serif text-5xl tracking-tighter mb-4">{t("selectionTitle")}</h2>
-          <p className="text-foreground/30 font-light text-lg">{t("selectionDescription")}</p>
+          <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl tracking-tighter mb-3 sm:mb-4">{t("selectionTitle")}</h2>
+          <p className="text-foreground/30 font-light text-base sm:text-lg">{t("selectionDescription")}</p>
         </div>
         
         {/* Filtre Raffiné */}
-        <div className="flex items-center gap-8">
+        <div className="flex items-center gap-4 sm:gap-8">
            <span className="text-[10px] uppercase tracking-[0.4em] font-black text-foreground/20">{t("sortBy")}</span>
            <button className="text-[10px] uppercase tracking-[0.3em] font-bold text-foreground hover:text-accent transition-colors border-b border-foreground/20 pb-1">
              {t("relevance")}
@@ -118,7 +118,7 @@ export default function ShopIndexPage() {
       </div>
 
       {isLoading ? (
-        <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="grid grid-cols-1 gap-8 sm:gap-12 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
             <div key={i}>
               <Skeleton className="aspect-[4/5] rounded-2xl mb-4" />
@@ -128,7 +128,7 @@ export default function ShopIndexPage() {
           ))}
         </div>
       ) : (
-        <section className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <section className="grid grid-cols-1 gap-6 sm:gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {paginatedProducts.map((product) => {
             const artist = product.artistId ? artistsMap?.get(product.artistId) : undefined;
             const artwork = product.artworkId ? artworksMap?.get(product.artworkId) : undefined;

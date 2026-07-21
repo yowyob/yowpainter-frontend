@@ -3,7 +3,7 @@ import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query
 import GalerieClient from "./GalerieClient";
 import { ArtworksService } from "@/lib/services/ArtworksService";
 import { configureServerApi } from "@/lib/serverApiInit";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { pageMetadata } from "@/lib/seo";
 
 export const generateMetadata = async ({
@@ -24,9 +24,12 @@ export const generateMetadata = async ({
 
 export default async function GaleriePage(
     props: {
+        params: Promise<{ locale: string }>;
         searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
     }
 ) {
+    const { locale } = await props.params;
+    setRequestLocale(locale);
     configureServerApi();
 
     const searchParams = await props.searchParams;
@@ -38,7 +41,6 @@ export default async function GaleriePage(
         search: (searchParams.search as string) || undefined,
     };
 
-    // Prefetch data for SSR/ISR to match useArtworks client hook exactly
     await queryClient.prefetchQuery({
         queryKey: ["artworks", filters, undefined],
         queryFn: async () => {

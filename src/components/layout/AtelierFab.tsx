@@ -23,7 +23,7 @@ export default function AtelierFab() {
     <Link
       href="/atelier"
       aria-label={t('fabAria')}
-      className="group fixed right-4 sm:right-6 top-24 z-40 flex items-center gap-3 rounded-full border border-accent/30 bg-background/80 px-4 py-3 shadow-[0_18px_40px_-14px_rgba(var(--accent-rgb),0.55)] backdrop-blur-xl transition-all duration-500 hover:-translate-y-0.5 hover:border-accent hover:shadow-[0_22px_50px_-12px_rgba(var(--accent-rgb),0.7)] active:scale-95"
+      className="group fixed right-4 sm:right-6 top-24 z-[40] flex items-center gap-3 rounded-full border border-accent/30 bg-background/80 px-4 py-3 shadow-[0_18px_40px_-14px_rgba(var(--accent-rgb),0.55)] backdrop-blur-xl transition-all duration-500 hover:-translate-y-0.5 hover:border-accent hover:shadow-[0_22px_50px_-12px_rgba(var(--accent-rgb),0.7)] active:scale-95"
     >
       <span className="flex h-9 w-9 items-center justify-center rounded-full bg-accent text-white transition-transform duration-500 group-hover:rotate-12">
         <Palette size={18} strokeWidth={2} />

@@ -1,9 +1,10 @@
 import type { Metadata } from 'next'
-import { getTranslations } from 'next-intl/server'
+import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query'
+import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { configureServerApi } from '@/lib/serverApiInit'
+import { ActuService } from '@/lib/services/ActuService'
+import { pageMetadata } from '@/lib/seo'
 import AllActuContent from './AllActuContent'
-
-configureServerApi()
 
 export async function generateMetadata({
   params,
@@ -13,12 +14,33 @@ export async function generateMetadata({
   const { locale } = await params
   const t = await getTranslations({ locale, namespace: 'AllActu' })
 
-  return {
+  return pageMetadata({
+    locale,
+    path: '/actualites',
     title: t('metadataTitle'),
     description: t('metadataDescription'),
-  }
+  })
 }
 
-export default function AllActuPage() {
-  return <AllActuContent />
+export default async function AllActuPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}) {
+  const { locale } = await params
+  setRequestLocale(locale)
+  configureServerApi()
+
+  const queryClient = new QueryClient()
+
+  await queryClient.prefetchQuery({
+    queryKey: ['all-public-actu'],
+    queryFn: () => ActuService.getLatestPublicActu(),
+  })
+
+  return (
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <AllActuContent />
+    </HydrationBoundary>
+  )
 }

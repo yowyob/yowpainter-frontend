@@ -44,8 +44,8 @@ export default function ArtworkDetailPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen pt-32 px-6 sm:px-12 max-w-[1400px] mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+      <div className="min-h-screen pt-24 sm:pt-32 px-4 sm:px-6 md:px-12 max-w-[1400px] mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-16">
            <Skeleton className="aspect-square rounded-3xl" />
            <div className="space-y-6">
               <Skeleton className="h-12 w-3/4" />
@@ -59,29 +59,29 @@ export default function ArtworkDetailPage() {
 
   if (error || !artwork) {
      return (
-        <div className="min-h-screen flex flex-col items-center justify-center pt-32 text-center">
-          <h2 className="font-serif text-4xl mb-6">Œuvre introuvable</h2>
+        <div className="min-h-screen flex flex-col items-center justify-center pt-24 sm:pt-32 px-4 text-center">
+          <h2 className="font-serif text-3xl sm:text-4xl mb-6">Œuvre introuvable</h2>
           <Link href={`/${slug}`} className="text-accent underline uppercase tracking-widest text-xs font-bold">Retour à la galerie</Link>
         </div>
      )
   }
 
   return (
-    <main className="min-h-screen canvas-texture canvas-grain pb-24">
-      <div className="pt-32 px-6 sm:px-12 max-w-[1400px] mx-auto">
+    <main className="min-h-screen canvas-texture canvas-grain pb-16 sm:pb-24 overflow-x-hidden">
+      <div className="pt-24 sm:pt-32 px-4 sm:px-6 md:px-12 max-w-[1400px] mx-auto">
         
         {/* Navigation */}
         <button 
           onClick={() => router.back()}
-          className="flex items-center gap-2 text-[10px] uppercase tracking-[0.3em] font-bold text-foreground/40 hover:text-accent transition-colors mb-12"
+          className="flex items-center gap-2 text-[10px] uppercase tracking-[0.3em] font-bold text-foreground/40 hover:text-accent transition-colors mb-8 sm:mb-12"
         >
           <ChevronLeft className="w-4 h-4" /> Retour
         </button>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 sm:gap-16 lg:gap-24">
           
           {/* Image/Video Section */}
-          <div className="relative aspect-square md:aspect-[4/5] bg-white p-4 shadow-2xl border border-foreground/5 transform -rotate-1 group">
+          <div className="relative aspect-square md:aspect-[4/5] bg-white p-2 sm:p-4 shadow-2xl border border-foreground/5 transform lg:-rotate-1 group">
              <div className="relative h-full w-full overflow-hidden bg-foreground/[0.02]">
                 {currentMedia ? (
                   currentMedia.type === 'image' ? (
@@ -119,19 +119,19 @@ export default function ArtworkDetailPage() {
                <>
                  <button 
                    onClick={() => setActiveMediaIdx(p => (p > 0 ? p - 1 : mediaItems.length - 1))}
-                   className="absolute left-6 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/70 backdrop-blur-md shadow-md border border-foreground/5 flex items-center justify-center text-foreground hover:bg-white hover:scale-105 transition-all z-20"
+                   className="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/70 backdrop-blur-md shadow-md border border-foreground/5 flex items-center justify-center text-foreground hover:bg-white hover:scale-105 transition-all z-20"
                  >
                    <ChevronLeft className="w-5 h-5" />
                  </button>
                  <button 
                    onClick={() => setActiveMediaIdx(p => (p < mediaItems.length - 1 ? p + 1 : 0))}
-                   className="absolute right-6 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/70 backdrop-blur-md shadow-md border border-foreground/5 flex items-center justify-center text-foreground hover:bg-white hover:scale-105 transition-all z-20"
+                   className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/70 backdrop-blur-md shadow-md border border-foreground/5 flex items-center justify-center text-foreground hover:bg-white hover:scale-105 transition-all z-20"
                  >
                    <ChevronLeft className="w-5 h-5 rotate-180" />
                  </button>
 
                  {/* Dots */}
-                 <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-1.5 z-20 bg-black/35 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10">
+                 <div className="absolute bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 flex gap-1.5 z-20 bg-black/35 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10">
                    {mediaItems.map((_, idx) => (
                      <button
                        key={idx}
@@ -144,15 +144,15 @@ export default function ArtworkDetailPage() {
              )}
 
              {/* Signature effect */}
-             <div className="absolute bottom-10 right-10 font-serif italic text-foreground/20 text-xl pointer-events-none">
+             <div className="absolute bottom-6 right-6 sm:bottom-10 sm:right-10 font-serif italic text-foreground/20 text-base sm:text-xl pointer-events-none">
                 {artwork.artistName}
              </div>
           </div>
 
           {/* Details Section */}
           <div className="flex flex-col justify-center">
-            <div className="flex items-center gap-4 mb-6">
-              <span className="bg-accent/10 text-accent px-4 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest">
+            <div className="flex flex-wrap items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
+              <span className="bg-accent/10 text-accent px-3 sm:px-4 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest">
                 {artwork.style}
               </span>
               <span className="text-foreground/40 text-[10px] font-bold uppercase tracking-widest">
@@ -160,34 +160,34 @@ export default function ArtworkDetailPage() {
               </span>
             </div>
 
-            <h1 className="font-serif text-5xl md:text-7xl leading-tight tracking-tighter mb-8">
+            <h1 className="font-serif text-3xl sm:text-5xl md:text-7xl leading-tight tracking-tighter mb-6 sm:mb-8">
               {associatedProduct?.name || artwork.title}
             </h1>
 
-            <div className="h-[1px] w-full bg-foreground/5 mb-8"></div>
+            <div className="h-[1px] w-full bg-foreground/5 mb-6 sm:mb-8"></div>
 
-            <div className="flex items-center justify-between mb-12">
-              <div className="flex flex-col">
+            <div className="flex items-center justify-between gap-4 mb-8 sm:mb-12">
+              <div className="flex flex-col min-w-0">
                  <span className="text-xs text-foreground/40 uppercase tracking-widest font-bold mb-1">Prix de l'œuvre</span>
-                 <span className="text-4xl font-black tracking-tighter text-accent">
+                 <span className="text-2xl sm:text-4xl font-black tracking-tighter text-accent">
                    {associatedProduct ? formatPrice(associatedProduct.price || 0) : 'Prix sur demande'}
                  </span>
               </div>
-              <div className="flex gap-4">
-                 <button className="w-14 h-14 rounded-full border border-foreground/10 flex items-center justify-center hover:bg-accent hover:border-accent hover:text-white transition-all">
-                    <Heart className="w-6 h-6" />
+              <div className="flex gap-2 sm:gap-4 shrink-0">
+                 <button className="w-11 h-11 sm:w-14 sm:h-14 rounded-full border border-foreground/10 flex items-center justify-center hover:bg-accent hover:border-accent hover:text-white transition-all">
+                    <Heart className="w-5 h-5 sm:w-6 sm:h-6" />
                  </button>
-                 <button className="w-14 h-14 rounded-full border border-foreground/10 flex items-center justify-center hover:bg-accent hover:border-accent hover:text-white transition-all">
-                    <Share2 className="w-6 h-6" />
+                 <button className="w-11 h-11 sm:w-14 sm:h-14 rounded-full border border-foreground/10 flex items-center justify-center hover:bg-accent hover:border-accent hover:text-white transition-all">
+                    <Share2 className="w-5 h-5 sm:w-6 sm:h-6" />
                  </button>
               </div>
             </div>
 
-            <div className="prose prose-slate dark:prose-invert mb-12 font-light leading-relaxed text-foreground/70">
+            <div className="prose prose-slate dark:prose-invert mb-8 sm:mb-12 font-light leading-relaxed text-foreground/70 text-sm sm:text-base">
               <p>{associatedProduct?.description || artwork.description || "Aucune description fournie pour cette œuvre."}</p>
             </div>
 
-            <div className="grid grid-cols-2 gap-8 mb-12 border-y border-foreground/5 py-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 mb-8 sm:mb-12 border-y border-foreground/5 py-6 sm:py-8">
                <div>
                   <span className="block text-[10px] text-foreground/30 uppercase tracking-widest font-bold mb-2">Dimensions</span>
                   <span className="font-mono text-sm">{artwork.dimensions || 'N/A'}</span>

@@ -11,7 +11,7 @@ export default function PublicLayout({
         <>
             <Navbar />
             <AtelierFab />
-            <main className="min-h-screen relative z-10 pt-20">
+            <main className="min-h-screen relative pt-16 sm:pt-20">
                 {children}
             </main>
             <Footer />

@@ -15,11 +15,11 @@ export default function PurchasesPage() {
   });
 
   return (
-    <div className="mx-auto w-full max-w-[1400px]">
-      <section className="reveal mb-8 rounded-[2rem] border border-foreground/10 bg-background/80 p-8">
+    <div className="mx-auto w-full max-w-[1400px] px-4 sm:px-6 md:px-12 pt-24 sm:pt-32 pb-16 sm:pb-24">
+      <section className="reveal mb-6 sm:mb-8 rounded-[1.5rem] sm:rounded-[2rem] border border-foreground/10 bg-background/80 p-5 sm:p-8">
         <p className="text-xs uppercase tracking-[0.4em] text-accent">{t("purchasesEyebrow")}</p>
-        <h1 className="mt-3 font-serif text-4xl md:text-5xl">{t("purchasesTitle")}</h1>
-        <p className="mt-4 max-w-2xl text-foreground/70">
+        <h1 className="mt-3 font-serif text-3xl sm:text-4xl md:text-5xl">{t("purchasesTitle")}</h1>
+        <p className="mt-3 sm:mt-4 max-w-2xl text-sm sm:text-base text-foreground/70">
           {t("purchasesDescription")}
         </p>
       </section>

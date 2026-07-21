@@ -74,11 +74,11 @@ export default function AtelierPage() {
   }
 
   return (
-    <div className="space-y-16 py-8">
+    <div className="space-y-10 sm:space-y-16 py-4 sm:py-8 px-1">
       {/* Sub Header & Search Section */}
-      <div className="flex flex-col md:flex-row items-center justify-between gap-6 pb-6 border-b border-foreground/5">
+      <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 sm:gap-6 pb-6 border-b border-foreground/5">
         <div className="space-y-1">
-          <h2 className="font-serif text-3xl md:text-4xl font-medium tracking-tight">Atelier de Création</h2>
+          <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl font-medium tracking-tight">Atelier de Création</h2>
           <p className="text-muted-foreground text-sm">Découvrez nos fiches techniques, roadmaps guidées et interagissez avec les artistes.</p>
         </div>
         
@@ -92,23 +92,23 @@ export default function AtelierPage() {
       </div>
 
       {/* Hero / Banner */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-amber-500/10 via-amber-700/5 to-transparent border border-amber-500/10 p-8 md:p-12 lg:p-16 flex flex-col md:flex-row gap-10 items-center justify-between">
-        <div className="max-w-2xl space-y-6">
+      <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-gradient-to-br from-amber-500/10 via-amber-700/5 to-transparent border border-amber-500/10 p-6 sm:p-8 md:p-12 lg:p-16 flex flex-col md:flex-row gap-8 sm:gap-10 items-center justify-between">
+        <div className="max-w-2xl space-y-4 sm:space-y-6">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">
             <Sparkles className="w-3.5 h-3.5" /> Espace Savoir & Techniques
           </div>
-          <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-light leading-tight">
+          <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light leading-tight">
             L'art plastique, <br />
             <span className="italic text-accent">maîtrisé.</span>
           </h1>
-          <p className="text-muted-foreground text-base md:text-lg max-w-lg leading-relaxed">
+          <p className="text-muted-foreground text-sm sm:text-base md:text-lg max-w-lg leading-relaxed">
             Des fiches de connaissances autonomes et des parcours d'apprentissage structurés pour progresser à votre propre rythme.
           </p>
-          <div className="flex flex-wrap gap-4">
-            <Link href="/atelier/fiches" className="px-6 py-3 bg-accent hover:bg-accent/95 text-accent-foreground font-bold text-sm rounded-xl transition-all shadow-md hover:shadow-lg">
+          <div className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4">
+            <Link href="/atelier/fiches" className="px-6 py-3 bg-accent hover:bg-accent/95 text-accent-foreground font-bold text-sm rounded-xl transition-all shadow-md hover:shadow-lg text-center">
               Explorer les fiches
             </Link>
-            <Link href="/atelier/roadmaps" className="px-6 py-3 bg-background hover:bg-foreground/5 text-foreground border border-foreground/10 font-bold text-sm rounded-xl transition-all">
+            <Link href="/atelier/roadmaps" className="px-6 py-3 bg-background hover:bg-foreground/5 text-foreground border border-foreground/10 font-bold text-sm rounded-xl transition-all text-center">
               Voir les roadmaps
             </Link>
           </div>

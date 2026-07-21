@@ -162,16 +162,16 @@ export function EventCard({ event, variant = 'grid', artistSlug, artist }: Event
                     )}
 
                     {/* Status Badge - Positionné en haut à droite par rapport à l'image */}
-                    <div className="absolute top-8 right-8 z-20">
-                        <span className="px-5 py-2 text-[11px] uppercase tracking-[0.3em] font-bold bg-accent text-white border border-accent/20 shadow-lg backdrop-blur-md">
+                    <div className="absolute top-4 right-4 sm:top-8 sm:right-8 z-20">
+                        <span className="px-3 sm:px-5 py-1.5 sm:py-2 text-[9px] sm:text-[11px] uppercase tracking-[0.2em] sm:tracking-[0.3em] font-bold bg-accent text-white border border-accent/20 shadow-lg backdrop-blur-md">
                             {event.ticketPrice && event.ticketPrice > 0 ? `${event.ticketPrice.toLocaleString()} CFA` : 'GRATUIT'}
                         </span>
                     </div>
 
-                    <div className="absolute inset-x-0 bottom-0 px-10 pb-16 pt-20 flex flex-col items-center text-center text-white z-10 transition-transform duration-500 group-hover:-translate-y-2 pointer-events-none">
+                    <div className="absolute inset-x-0 bottom-0 px-5 sm:px-10 pb-10 sm:pb-16 pt-12 sm:pt-20 flex flex-col items-center text-center text-white z-10 transition-transform duration-500 group-hover:-translate-y-2 pointer-events-none">
 
 
-                        <h3 className="font-serif text-3xl md:text-5xl lg:text-6xl font-light mb-6 uppercase leading-[1.1] group-hover:text-accent transition-colors">
+                        <h3 className="font-serif text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-light mb-4 sm:mb-6 uppercase leading-[1.1] group-hover:text-accent transition-colors">
                             {event.name}
                         </h3>
 
@@ -195,15 +195,15 @@ export function EventCard({ event, variant = 'grid', artistSlug, artist }: Event
                 </div>
 
                 {/* BOTTOM: Details area */}
-                <div style={bottomMask} className="relative z-0 p-10 pb-12 pt-14 flex flex-col bg-background border border-foreground/5 pointer-events-none">
-                    <div className="grid grid-cols-2 gap-8 font-mono text-sm text-foreground/80">
-                        <div className="flex flex-col border-l-2 border-accent/20 pl-4">
-                            <span className="text-[10px] text-foreground/40 mb-2 tracking-[0.3em] uppercase">DATE DE L&apos;ÉVÉNEMENT</span>
-                            <span className="font-medium text-lg text-foreground tracking-tight">{formatDateShort(event.startDateTime)}</span>
+                <div style={bottomMask} className="relative z-0 p-5 sm:p-10 pb-8 sm:pb-12 pt-10 sm:pt-14 flex flex-col bg-background border border-foreground/5 pointer-events-none">
+                    <div className="grid grid-cols-2 gap-4 sm:gap-8 font-mono text-xs sm:text-sm text-foreground/80">
+                        <div className="flex flex-col border-l-2 border-accent/20 pl-3 sm:pl-4">
+                            <span className="text-[9px] sm:text-[10px] text-foreground/40 mb-1 sm:mb-2 tracking-[0.2em] sm:tracking-[0.3em] uppercase">DATE DE L&apos;ÉVÉNEMENT</span>
+                            <span className="font-medium text-sm sm:text-lg text-foreground tracking-tight">{formatDateShort(event.startDateTime)}</span>
                         </div>
-                        <div className="flex flex-col text-right border-r-2 border-foreground/5 pr-4">
-                            <span className="text-[10px] text-foreground/40 mb-2 tracking-[0.3em] uppercase">LIEU / VILLE</span>
-                            <span className="font-medium text-lg text-foreground tracking-tight">{event.location?.split(',')[0]}</span>
+                        <div className="flex flex-col text-right border-r-2 border-foreground/5 pr-3 sm:pr-4">
+                            <span className="text-[9px] sm:text-[10px] text-foreground/40 mb-1 sm:mb-2 tracking-[0.2em] sm:tracking-[0.3em] uppercase">LIEU / VILLE</span>
+                            <span className="font-medium text-sm sm:text-lg text-foreground tracking-tight">{event.location?.split(',')[0]}</span>
                         </div>
                     </div>
                 </div>

@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 import { EventGrid } from '@/components/events/EventGrid';
 import { Suspense } from 'react';
 import { AnimatedBlob } from '@/components/ui/AnimatedBlob';
-import { getTranslations } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { pageMetadata } from '@/lib/seo';
 
 export const generateMetadata = async ({
@@ -28,6 +28,7 @@ export default async function EventsPage({
     params: Promise<{ locale: string }>;
 }) {
     const { locale } = await params;
+    setRequestLocale(locale);
     const t = await getTranslations({ locale, namespace: 'Events' });
 
     return (
@@ -69,28 +70,28 @@ export default async function EventsPage({
             </div>
 
             {/* Hero section */}
-            <section className="relative w-full min-h-[40vh] flex flex-col justify-center pt-32 lg:pt-40 px-6 sm:px-12 max-w-[1400px] mx-auto z-10">
-                <div className="absolute top-1/2 right-0 -translate-y-1/2 font-serif text-[25rem] font-black text-foreground/[0.02] dark:text-white/[0.01] select-none pointer-events-none z-0">
+            <section className="relative w-full min-h-[30vh] sm:min-h-[40vh] flex flex-col justify-center pt-24 sm:pt-32 lg:pt-40 px-4 sm:px-6 md:px-12 max-w-[1400px] mx-auto z-10">
+                <div className="absolute top-1/2 right-0 -translate-y-1/2 font-serif text-[10rem] sm:text-[18rem] md:text-[25rem] font-black text-foreground/[0.02] dark:text-white/[0.01] select-none pointer-events-none z-0">
                     É
                 </div>
 
                 <div className="relative z-10">
-                    <p className="text-accent uppercase tracking-[0.4em] text-sm font-bold mb-4">
-                        <span className="w-12 h-[1.5px] bg-accent inline-block mr-4 align-middle"></span>
+                    <p className="text-accent uppercase tracking-[0.25em] sm:tracking-[0.4em] text-[11px] sm:text-sm font-bold mb-3 sm:mb-4">
+                        <span className="w-8 sm:w-12 h-[1.5px] bg-accent inline-block mr-3 sm:mr-4 align-middle"></span>
                         {t('eyebrow')}
                     </p>
-                    <h1 className="font-serif text-6xl md:text-7xl lg:text-8xl font-light leading-[1.1] tracking-tighter mb-6">
+                    <h1 className="font-serif text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-light leading-[1.1] tracking-tighter mb-4 sm:mb-6">
                         {t('titleStart')}<br />
                         <span className="italic font-normal">{t('titleAccent')}</span>
                     </h1>
-                    <p className="text-xl text-foreground/60 max-w-2xl font-light">
+                    <p className="text-base sm:text-xl text-foreground/60 max-w-2xl font-light">
                         {t('description')}
                     </p>
                 </div>
             </section>
 
             {/* Grille des événements */}
-            <div className="max-w-[1400px] mx-auto px-6 sm:px-12 mt-12">
+            <div className="max-w-[1400px] mx-auto px-4 sm:px-6 md:px-12 mt-8 sm:mt-12">
                 <Suspense fallback={
                     <div className="flex justify-center items-center h-64">
                         <div className="w-12 h-12 border-2 border-accent border-t-transparent rounded-full animate-spin"></div>

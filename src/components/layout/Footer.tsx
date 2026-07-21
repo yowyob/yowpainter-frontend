@@ -8,7 +8,7 @@ export default function Footer() {
   const t = useTranslations("Footer");
 
   return (
-    <footer className="relative z-10 w-full overflow-hidden pt-20 pb-12 reveal">
+    <footer className="relative z-10 w-full overflow-hidden pt-12 sm:pt-20 pb-8 sm:pb-12 reveal">
       
       {/* Triangle Penché Décoratif (Retour à gauche) */}
       <div className="absolute top-[10%] left-[-10%] w-[35vw] h-[35vw] text-amber-500/10 pointer-events-none -z-10 transform -rotate-[30deg]">
@@ -24,38 +24,38 @@ export default function Footer() {
         </svg>
       </div>
 
-      <div className="max-w-[1400px] mx-auto px-6 sm:px-12">
-        <div className="w-full h-[1px] bg-gradient-to-r from-transparent via-foreground/10 to-transparent mb-24"></div>
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 md:px-12">
+        <div className="w-full h-[1px] bg-gradient-to-r from-transparent via-foreground/10 to-transparent mb-12 sm:mb-24"></div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-20 mb-32">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 sm:gap-16 lg:gap-20 mb-16 sm:mb-32">
           
           {/* Bloc d'Impact (Newsletter) */}
-          <div className="lg:col-span-5 flex flex-col gap-8">
-            <h2 className="font-serif text-5xl md:text-7xl font-light mb-4 leading-none tracking-tighter">
+          <div className="lg:col-span-5 flex flex-col gap-6 sm:gap-8">
+            <h2 className="font-serif text-4xl sm:text-5xl md:text-7xl font-light mb-2 sm:mb-4 leading-none tracking-tighter">
               {t("headlineStart")} <br/> <span className="italic font-normal">{t("headlineAccent")}</span>
             </h2>
-            <p className="text-foreground/50 font-light text-xl max-w-sm mb-8 leading-relaxed">
+            <p className="text-foreground/50 font-light text-base sm:text-xl max-w-sm mb-4 sm:mb-8 leading-relaxed">
               {t("description")}
             </p>
-            <form className="flex w-full max-w-md border-b-[1.5px] border-foreground/20 focus-within:border-accent transition-all duration-700 pb-4">
+            <form className="flex flex-col sm:flex-row w-full max-w-md gap-3 sm:gap-0 sm:border-b-[1.5px] sm:border-foreground/20 sm:focus-within:border-accent transition-all duration-700 sm:pb-4">
               <input 
                 type="email" 
                 placeholder={t("emailPlaceholder")} 
-                className="flex-1 bg-transparent border-none outline-none text-xl text-foreground placeholder:text-foreground/20 font-light tracking-tight"
+                className="flex-1 bg-transparent border-b sm:border-none border-foreground/20 outline-none text-lg sm:text-xl text-foreground placeholder:text-foreground/20 font-light tracking-tight py-3 sm:py-0"
                 required
               />
-              <button type="submit" className="text-xs font-bold uppercase tracking-[0.4em] hover:text-accent transition-colors">
+              <button type="submit" className="text-xs font-bold uppercase tracking-[0.3em] sm:tracking-[0.4em] hover:text-accent transition-colors py-3 sm:py-0 self-start sm:self-auto">
                 {t("subscribe")}
               </button>
             </form>
           </div>
           
           {/* Navigation Structurée */}
-          <div className="lg:col-span-7 grid grid-cols-2 sm:grid-cols-3 gap-12 sm:gap-16">
+          <div className="lg:col-span-7 grid grid-cols-2 sm:grid-cols-3 gap-8 sm:gap-12 md:gap-16">
             
-            <div className="flex flex-col gap-6">
-              <h4 className="font-medium text-xs uppercase tracking-[0.3em] mb-4 text-foreground/30">{t("collections")}</h4>
-              <ul className="flex flex-col gap-4 font-serif text-lg italic">
+            <div className="flex flex-col gap-4 sm:gap-6">
+              <h4 className="font-medium text-[10px] sm:text-xs uppercase tracking-[0.3em] mb-2 sm:mb-4 text-foreground/30">{t("collections")}</h4>
+              <ul className="flex flex-col gap-3 sm:gap-4 font-serif text-base sm:text-lg italic">
                 <li><Link href="/galerie?category=peinture" className="text-foreground/70 hover:text-accent transition-colors">{t("classicPainting")}</Link></li>
                 <li><Link href="/galerie?category=sculpture" className="text-foreground/70 hover:text-accent transition-colors">{t("sculpture")}</Link></li>
                 <li><Link href="/galerie?category=photographie" className="text-foreground/70 hover:text-accent transition-colors">{t("photography")}</Link></li>
@@ -63,9 +63,9 @@ export default function Footer() {
               </ul>
             </div>
 
-            <div className="flex flex-col gap-6">
-              <h4 className="font-medium text-xs uppercase tracking-[0.3em] mb-4 text-foreground/30">{t("platform")}</h4>
-              <ul className="flex flex-col gap-4 text-sm font-bold uppercase tracking-widest">
+            <div className="flex flex-col gap-4 sm:gap-6">
+              <h4 className="font-medium text-[10px] sm:text-xs uppercase tracking-[0.3em] mb-2 sm:mb-4 text-foreground/30">{t("platform")}</h4>
+              <ul className="flex flex-col gap-3 sm:gap-4 text-[11px] sm:text-sm font-bold uppercase tracking-widest">
                 <li><Link href="/artists" className="text-foreground/80 hover:text-accent transition-colors">{t("artistVillage")}</Link></li>
                 <li><Link href="/events" className="text-foreground/80 hover:text-accent transition-colors">{t("openings")}</Link></li>
                 <li><Link href="/shop" className="text-foreground/80 hover:text-accent transition-colors">{t("shop")}</Link></li>
@@ -74,9 +74,9 @@ export default function Footer() {
               </ul>
             </div>
 
-            <div className="flex flex-col gap-6">
-              <h4 className="font-medium text-xs uppercase tracking-[0.3em] mb-4 text-foreground/30">{t("archives")}</h4>
-              <ul className="flex flex-col gap-4 text-sm font-light">
+            <div className="flex flex-col gap-4 sm:gap-6 col-span-2 sm:col-span-1">
+              <h4 className="font-medium text-[10px] sm:text-xs uppercase tracking-[0.3em] mb-2 sm:mb-4 text-foreground/30">{t("archives")}</h4>
+              <ul className="flex flex-col sm:flex-col gap-3 sm:gap-4 text-sm font-light">
                 <li><Link href="/faq" className="text-foreground/60 hover:text-accent transition-colors">{t("support")}</Link></li>
                 <li><Link href="/terms" className="text-foreground/60 hover:text-accent transition-colors">{t("terms")}</Link></li>
                 <li><Link href="/privacy" className="text-foreground/60 hover:text-accent transition-colors">{t("privacy")}</Link></li>
@@ -87,9 +87,9 @@ export default function Footer() {
         </div>
         
         {/* Ligne de droits */}
-        <div className="flex flex-col sm:flex-row justify-between items-center gap-8 pt-12 border-t border-foreground/5">
-          <div className="flex items-center gap-6">
-            <div className="relative w-20 h-20 overflow-hidden">
+        <div className="flex flex-col sm:flex-row justify-between items-center gap-6 sm:gap-8 pt-8 sm:pt-12 border-t border-foreground/5 text-center sm:text-left">
+          <div className="flex items-center gap-4 sm:gap-6">
+            <div className="relative w-14 h-14 sm:w-20 sm:h-20 overflow-hidden shrink-0">
               <Image 
                 src="/images/logo.png" 
                 alt="YowPainter Logo" 
@@ -98,9 +98,9 @@ export default function Footer() {
                 className="object-contain opacity-80 scale-[2]"
               />
             </div>
-            <span className="font-serif text-2xl font-medium tracking-tighter">Yow<span className="text-accent italic">Painter</span></span>
+            <span className="font-serif text-xl sm:text-2xl font-medium tracking-tighter">Yow<span className="text-accent italic">Painter</span></span>
           </div>
-          <p className="text-foreground/20 text-[10px] uppercase tracking-[0.5em] font-bold">© {new Date().getFullYear()} {t("rights")}</p>
+          <p className="text-foreground/20 text-[9px] sm:text-[10px] uppercase tracking-[0.3em] sm:tracking-[0.5em] font-bold">© {new Date().getFullYear()} {t("rights")}</p>
         </div>
       </div>
     </footer>

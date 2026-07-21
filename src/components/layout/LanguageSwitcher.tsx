@@ -40,7 +40,7 @@ export function LanguageSwitcher() {
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 py-1 w-20 bg-background border border-foreground/10 shadow-lg rounded-xl z-50 flex flex-col overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
+        <div className="absolute right-0 mt-2 py-1 w-20 bg-background border border-foreground/10 shadow-lg rounded-xl z-[110] flex flex-col overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
           {LOCALES.map((nextLocale) => (
             <Link
               key={nextLocale}
