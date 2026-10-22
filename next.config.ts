@@ -37,6 +37,17 @@ const nextConfig: NextConfig = {
         hostname: 'yowpainter-backend-lpbz.onrender.com',
         pathname: '/**',
       },
+      // Fichiers publics du noyau (oeuvres, avatars) : servis sans session, adresse permanente.
+      {
+        protocol: 'https',
+        hostname: 'kernel-core.yowyob.com',
+        pathname: '/api/public/files/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'kernel-core.yowyob.com',
+        pathname: '/kernel-api/api/public/files/**',
+      },
     ],
   },
   async rewrites() {
