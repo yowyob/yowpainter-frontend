@@ -17,7 +17,9 @@ ENV NODE_ENV=production NEXT_TELEMETRY_DISABLED=1
 RUN addgroup -S nodejs && adduser -S nextjs -G nodejs
 COPY --from=build /app/package.json /app/package-lock.json* ./
 COPY --from=build /app/node_modules ./node_modules
-COPY --from=build /app/.next ./.next
+# .next appartient a nextjs : Next y ecrit son cache d'images et ses pages regenerees (ISR).
+# Copie en root, chaque optimisation d'image echouait (EACCES, mkdir .next/cache/images).
+COPY --from=build --chown=nextjs:nodejs /app/.next ./.next
 COPY --from=build /app/public ./public
 COPY --from=build /app/next.config.* ./
 USER nextjs
